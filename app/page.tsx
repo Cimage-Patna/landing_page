@@ -33,8 +33,8 @@ export default function Page() {
       <BiharMosaic />
       <WhyChoose />
       <Programs />
-      <Quadruped />
       <Recruiters />
+      <Quadruped />
       <Reasons />
       <Stack />
       <Labs />

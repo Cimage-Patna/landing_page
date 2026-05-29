@@ -4,13 +4,6 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Reveal from "./Reveal";
 
-const CAPABILITIES = [
-  "Legged locomotion",
-  "Perception & SLAM",
-  "Balance & control",
-  "Autonomous navigation",
-];
-
 export default function Quadruped() {
   const ref = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
@@ -61,9 +54,6 @@ export default function Quadruped() {
             walks, balances and finds its own way across the floor. On campus,
             students program real locomotion and perception on actual hardware,
             not a simulation.
-          </p>
-          <p className="mt-6 text-[12px] uppercase tracking-[0.22em] text-[#cbd5e1]">
-            {CAPABILITIES.join("    ·    ")}
           </p>
         </Reveal>
       </div>
