@@ -1,0 +1,286 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent: #f5a524;
+  --color-accent-dim: #b07314;
+}
+
+/* Theme tokens — used by ParticleField canvas and a few inline styles */
+:root,
+[data-theme="dark"] {
+  --page-bg: #000000;
+  --page-bg-2: #0a0a0a;
+  --card-bg: #171717;
+  --fg: #f5f5f5;
+  --fg-muted: #a3a3a3;
+  --edge: rgba(255, 255, 255, 0.1);
+  --particle-color: 255, 240, 215;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --page-bg: #eef3fc;
+  --page-bg-2: #e4ecf9;
+  --card-bg: #ffffff;
+  --fg: #0c1424;
+  --fg-muted: #475068;
+  --edge: rgba(29, 78, 216, 0.12);
+  --particle-color: 30, 45, 90;
+  color-scheme: light;
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--page-bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 250ms ease, color 250ms ease;
+  }
+  body {
+    font-family: var(--font-body), system-ui, -apple-system, sans-serif;
+  }
+  ::selection {
+    background: rgba(245, 165, 36, 0.4);
+    color: #fff;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
+}
+
+/* Sticky nav — transparent while over the (always-dark) hero video, then a
+   themed glass bar once scrolled past it. */
+.nav-base {
+  transition: background-color 300ms ease, border-color 300ms ease,
+    backdrop-filter 300ms ease;
+}
+
+/* Scrolled state — glass, adapts to theme. */
+.nav-solid {
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+[data-theme="light"] .nav-solid {
+  background-color: rgba(238, 243, 252, 0.8);
+  border-bottom: 1px solid rgba(29, 78, 216, 0.12);
+}
+
+/* Hero state — fully transparent. */
+.nav-transparent {
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+}
+
+/* Nav items follow the theme in glass mode... */
+.nav-item {
+  color: var(--fg);
+  border-color: var(--edge);
+  transition: color 300ms ease, border-color 300ms ease, background-color 200ms ease;
+}
+.nav-item:hover {
+  background-color: var(--edge);
+}
+
+/* ...but over the dark hero video they must stay light in BOTH themes. */
+.nav-transparent .nav-item {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.32);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+.nav-transparent .nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+.nav-transparent .nav-ctl {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Popover / modal entrances */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.96) translateY(-4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.pop-in {
+  animation: popIn 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes modalFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-backdrop {
+  animation: modalFade 200ms ease;
+}
+.modal-card {
+  animation: modalIn 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pop-in,
+  .modal-backdrop,
+  .modal-card {
+    animation: none;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================================
+   LIGHT THEME OVERRIDES
+   Override the dark-mode utility classes used across components.
+   Specificity (0,2,0) beats Tailwind's (0,1,0) so no !important needed.
+   ============================================================ */
+
+[data-theme="light"] .bg-black { background-color: #eef3fc; }
+[data-theme="light"] .bg-neutral-950 { background-color: #e4ecf9; }
+[data-theme="light"] .bg-neutral-900 { background-color: #ffffff; }
+
+[data-theme="light"] .text-white { color: #0c1424; }
+[data-theme="light"] .text-neutral-300 { color: #2b3650; }
+[data-theme="light"] .text-neutral-400 { color: #475068; }
+[data-theme="light"] .text-neutral-500 { color: #697389; }
+[data-theme="light"] .text-neutral-600 { color: #9aa4ba; }
+[data-theme="light"] .text-neutral-700 { color: #ccd5e6; }
+
+[data-theme="light"] .border-white\/5 { border-color: rgba(29, 78, 216, 0.07); }
+[data-theme="light"] .border-white\/10 { border-color: rgba(29, 78, 216, 0.13); }
+[data-theme="light"] .border-white\/15 { border-color: rgba(29, 78, 216, 0.18); }
+
+[data-theme="light"] .bg-white\/\[0\.02\] { background-color: rgba(29, 78, 216, 0.03); }
+[data-theme="light"] .bg-white\/\[0\.03\] { background-color: rgba(29, 78, 216, 0.04); }
+[data-theme="light"] .bg-white\/\[0\.04\] { background-color: rgba(29, 78, 216, 0.05); }
+[data-theme="light"] .bg-white\/\[0\.05\] { background-color: rgba(29, 78, 216, 0.06); }
+[data-theme="light"] .bg-white\/\[0\.06\] { background-color: rgba(29, 78, 216, 0.07); }
+
+[data-theme="light"] .from-black { --tw-gradient-from: #eef3fc var(--tw-gradient-from-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
+[data-theme="light"] .via-black { --tw-gradient-via: #eef3fc var(--tw-gradient-via-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to, transparent); }
+[data-theme="light"] .to-black { --tw-gradient-to: #eef3fc var(--tw-gradient-to-position); }
+[data-theme="light"] .from-black\/85 { --tw-gradient-from: rgba(238, 243, 252, 0.85) var(--tw-gradient-from-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
+[data-theme="light"] .from-neutral-950 { --tw-gradient-from: #e4ecf9 var(--tw-gradient-from-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
+[data-theme="light"] .to-neutral-950 { --tw-gradient-to: #e4ecf9 var(--tw-gradient-to-position); }
+[data-theme="light"] .from-neutral-900 { --tw-gradient-from: #ffffff var(--tw-gradient-from-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
+[data-theme="light"] .to-neutral-900 { --tw-gradient-to: #ffffff var(--tw-gradient-to-position); }
+
+[data-theme="light"] .from-white\/\[0\.04\] { --tw-gradient-from: rgba(29, 78, 216, 0.05) var(--tw-gradient-from-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
+[data-theme="light"] .from-white\/\[0\.05\] { --tw-gradient-from: rgba(29, 78, 216, 0.06) var(--tw-gradient-from-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
+[data-theme="light"] .from-white\/\[0\.06\] { --tw-gradient-from: rgba(29, 78, 216, 0.07) var(--tw-gradient-from-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
+[data-theme="light"] .via-white\/\[0\.02\] { --tw-gradient-via: rgba(29, 78, 216, 0.03) var(--tw-gradient-via-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to, transparent); }
+
+/* ── Physical AI band ───────────────────────────────────────────────
+   Restrained, editorial. Theme-adaptive background; the robots are real
+   product photography grounded with soft realistic shadows (.robot-ground)
+   rather than neon glows. The shadow stays subtle but keeps the white arms
+   legible on the light theme. */
+.physical-ai {
+  background: linear-gradient(180deg, #0a0b0e 0%, #060709 100%);
+}
+[data-theme="light"] .physical-ai {
+  background: linear-gradient(180deg, #f4f7fc 0%, #e7eef8 100%);
+}
+
+/* Soft ambient pocket behind a robot — barely-there, for legibility only. */
+.robot-ground {
+  background: radial-gradient(ellipse 58% 46% at 50% 64%, rgba(0, 0, 0, 0.42), transparent 72%);
+}
+[data-theme="light"] .robot-ground {
+  background: radial-gradient(ellipse 58% 46% at 50% 64%, rgba(30, 48, 82, 0.12), transparent 72%);
+}
+
+/* Crisp elliptical contact shadow where the robot meets the floor. */
+.robot-contact {
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0, 0, 0, 0.5), transparent 70%);
+}
+[data-theme="light"] .robot-contact {
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(20, 35, 65, 0.22), transparent 70%);
+}
+
+@keyframes robotDrift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.robot-drift {
+  animation: robotDrift 9s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .robot-drift { animation: none; }
+}
+
+/* Hero scrim — very light full-bleed veil over the hero video so the
+   headline never competes with a busy frame. Switches with the theme. */
+.hero-scrim {
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: background-color 250ms ease;
+}
+[data-theme="light"] .hero-scrim {
+  background-color: rgba(219, 230, 250, 0.16);
+}
+
+/* Sticky Apply pill - flip in light mode */
+[data-theme="light"] .bg-white { background-color: #ffffff; }
+[data-theme="light"] [data-themed="invert-button"] { background-color: #0a0a0a; color: #fafaf9; }
+[data-theme="light"] [data-themed="invert-button"]:hover { background-color: #262626; }
+
+/* Reduce world map opacity in light mode so it doesn't sit too dark on the lighter card */
+[data-theme="light"] [data-themed="world-map"] { filter: invert(1) hue-rotate(180deg); opacity: 0.55; }
+
+/* Recruiter logos: white marks on dark, full-colour on light. */
+[data-themed="logo-color"] { display: none; }
+[data-themed="logo-white"] { display: block; }
+[data-theme="light"] [data-themed="logo-color"] { display: block; }
+[data-theme="light"] [data-themed="logo-white"] { display: none; }
+
+/* ============================================================
+   FLUID THEME TOGGLE — View Transitions API circular reveal
+   Falls back to a quick fade in browsers without VT support.
+   ============================================================ */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  animation: themeReveal 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes themeReveal {
+  from {
+    clip-path: circle(0% at var(--ripple-x, 50%) var(--ripple-y, 50%));
+  }
+  to {
+    clip-path: circle(160% at var(--ripple-x, 50%) var(--ripple-y, 50%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
