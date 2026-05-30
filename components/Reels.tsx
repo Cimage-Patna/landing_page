@@ -47,9 +47,6 @@ export default function Reels() {
                   </span>
                 </span>
               </span>
-              <span className="max-w-[176px] truncate text-center text-sm text-neutral-300">
-                {r.name}
-              </span>
             </button>
           ))}
         </div>
@@ -153,9 +150,11 @@ function ReelViewer({
           ref={videoRef}
           key={index}
           src={cur.video}
+          poster={cur.cover}
           autoPlay
           muted={muted}
           playsInline
+          preload="auto"
           onTimeUpdate={(e) => {
             const v = e.currentTarget;
             if (v.duration) setProgress((v.currentTime / v.duration) * 100);
@@ -168,11 +167,6 @@ function ReelViewer({
         <button aria-label="Previous reel" className="absolute left-0 top-0 z-10 h-full w-1/3" onClick={() => go(-1)} />
         <button aria-label="Play or pause" className="absolute left-1/3 top-0 z-10 h-full w-1/3" onClick={togglePlay} />
         <button aria-label="Next reel" className="absolute right-0 top-0 z-10 h-full w-1/3" onClick={() => go(1)} />
-
-        {/* Caption */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/85 to-transparent p-5">
-          <p className="font-display text-lg font-bold text-[#fff]">{cur.name}</p>
-        </div>
 
         {/* Top-right controls */}
         <div className="absolute right-2.5 top-2.5 z-40 flex translate-y-3 gap-2">

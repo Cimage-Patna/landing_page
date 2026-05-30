@@ -62,7 +62,7 @@ export default function Apply() {
       <div className="relative mx-auto grid max-w-6xl items-start gap-12 md:grid-cols-2 lg:gap-20">
         {/* ── INFO — no card, spread across the column ──────────────── */}
         <Reveal className="order-2 md:order-1">
-          <div className="relative">
+          <div className="relative" data-themed="on-dark">
             <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/[0.08] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-300">
               <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
               {a.infoEyebrow}

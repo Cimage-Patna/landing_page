@@ -1,3 +1,6 @@
+// Reel media is served from S3 (CDN-friendly, keeps heavy video off the app host).
+const REELS = "https://cimage-web.s3.ap-south-1.amazonaws.com/public/reels";
+
 export const copy = {
   hero: {
     display: "Mummy, job lag gaya — CIMAGE BCA Admissions 2026",
@@ -310,16 +313,18 @@ export const copy = {
   reels: {
     title: "Life at CIMAGE, in reels",
     sub: "Tap a story — placements, campus moments, and student journeys.",
-    // Placeholder media: covers reuse existing photos, video reuses the portrait
-    // campus clip. Replace `video` with real vertical reels (or YouTube Shorts).
+    // Real vertical reels — compressed (H.264, faststart) with a poster frame
+    // generated from each clip so the story bar loads instantly.
     items: [
-      { name: "317 in TCS", cover: "/alumni-cards/a7.webp", video: "/HRO-mobile.mp4" },
-      { name: "Rahul · ₹20 LPA", cover: "/alumni-cards/a5.webp", video: "/HRO-mobile.mp4" },
-      { name: "Campus Tour", cover: "/campus-live/c1.webp", video: "/HRO-mobile.mp4" },
-      { name: "Robo Race", cover: "/campus-live/c3.webp", video: "/HRO-mobile.mp4" },
-      { name: "Inspiro Fest", cover: "/campus-live/c6.webp", video: "/HRO-mobile.mp4" },
-      { name: "E-Yantra Lab", cover: "/labs/group-6.webp", video: "/HRO-mobile.mp4" },
-      { name: "Placed in Dubai", cover: "/alumni-cards/a1.webp", video: "/HRO-mobile.mp4" },
+      { name: "Campus Moments", cover: `${REELS}/reel-1.jpg`, video: `${REELS}/reel-1.mp4` },
+      { name: "Campus Tour", cover: `${REELS}/reel-6.jpg`, video: `${REELS}/reel-6.mp4` },
+      { name: "Student Diaries", cover: `${REELS}/reel-3.jpg`, video: `${REELS}/reel-3.mp4` },
+      { name: "On Campus", cover: `${REELS}/reel-4.jpg`, video: `${REELS}/reel-4.mp4` },
+      { name: "A Day at CIMAGE", cover: `${REELS}/reel-9.jpg`, video: `${REELS}/reel-9.mp4` },
+      { name: "Behind the Scenes", cover: `${REELS}/reel-5.jpg`, video: `${REELS}/reel-5.mp4` },
+      { name: "Student Voices", cover: `${REELS}/reel-7.jpg`, video: `${REELS}/reel-7.mp4` },
+      { name: "Fest Highlights", cover: `${REELS}/reel-8.jpg`, video: `${REELS}/reel-8.mp4` },
+      { name: "Life at CIMAGE", cover: `${REELS}/reel-2.jpg`, video: `${REELS}/reel-2.mp4` },
     ],
   },
   footer: {

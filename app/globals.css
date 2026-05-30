@@ -244,6 +244,12 @@
 /* Reduce world map opacity in light mode so it doesn't sit too dark on the lighter card */
 [data-theme="light"] [data-themed="world-map"] { filter: invert(1) hue-rotate(180deg); opacity: 0.55; }
 
+/* Copy sitting on a permanently-dark photo overlay (e.g. the Apply section's
+   info column) must stay light in both themes — the overlay never flips. */
+[data-theme="light"] [data-themed="on-dark"] .text-white { color: #ffffff; }
+[data-theme="light"] [data-themed="on-dark"] .text-neutral-300 { color: #d4d4d4; }
+[data-theme="light"] [data-themed="on-dark"] .text-neutral-400 { color: #a3a3a3; }
+
 /* Recruiter logos: white marks on dark, full-colour on light. */
 [data-themed="logo-color"] { display: none; }
 [data-themed="logo-white"] { display: block; }
