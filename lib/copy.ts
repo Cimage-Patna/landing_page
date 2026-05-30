@@ -231,8 +231,8 @@ export const copy = {
     eyebrow: "Since 2003 · Patliputra, Patna",
     title: "Bihar's largest IT & Management college,",
     titleAccent: "built for placements.",
-    body: "17+ years. 13,500+ alumni placed. The only BCA college in Bihar with an IIT Bombay E-Yantra Lab and a Wipro Centre of Excellence — where students from across Bihar are trained, certified, and placed at TCS, ICICI Bank, and beyond.",
-    cta: "Apply for BCA 2026",
+    body: "17+ years. 13,500+ alumni placed. The only college with an IIT Bombay E-Yantra Lab and a Wipro Centre of Excellence — where students from across Bihar are trained, certified, and placed at TCS, ICICI Bank, and beyond.",
+    cta: "Apply Now",
   },
   apply: {
     display: "Your move.",
