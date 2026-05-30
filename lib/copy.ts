@@ -237,7 +237,6 @@ export const copy = {
   apply: {
     display: "Your move.",
     sub: "Batch 2026 fills fast.",
-    fee: "Fee is ₹1.8 lakhs a year. Admission is a two-step process: a written test, then a personal interview.",
     cta: "Send me a call from admissions",
     successMsg: "Got it. We'll call you within one working day.",
     errorMsg: "Something went wrong. Please call 7250 767 676 or try again.",

@@ -84,10 +84,6 @@ export default function Apply() {
                 </li>
               ))}
             </ul>
-
-            <p className="mt-7 max-w-lg text-sm leading-relaxed text-neutral-400">
-              {a.fee}
-            </p>
           </div>
         </Reveal>
 
