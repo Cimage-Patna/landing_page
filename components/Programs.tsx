@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
 
@@ -30,20 +31,33 @@ export default function Programs() {
               {group.items.map((item, i) => (
                 <Reveal key={item.name} delay={(i % 3) * 0.07}>
                   <a
-                    href="#apply"
-                    className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:border-accent/40 hover:bg-white/[0.05]"
+                    href={item.href ?? "#apply"}
+                    target={item.href ? "_blank" : undefined}
+                    rel={item.href ? "noopener noreferrer" : undefined}
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition hover:border-accent/40 hover:bg-white/[0.05]"
                   >
+                    {item.img && (
+                      <div className="relative aspect-[16/10] w-full overflow-hidden">
+                        <Image
+                          src={item.img}
+                          alt={item.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover transition duration-500 group-hover:scale-105"
+                        />
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                      </div>
+                    )}
+                    <div className="flex flex-1 flex-col p-6">
                     <div className="flex items-baseline justify-between gap-3">
                       <h3 className="font-display text-2xl font-bold text-white">
                         {item.name}
                       </h3>
-                      <span className="text-sm text-neutral-500 transition group-hover:text-accent">
-                        Apply &rarr;
-                      </span>
                     </div>
                     <p className="mt-3 text-sm leading-relaxed text-neutral-400">
                       {item.desc}
                     </p>
+                    </div>
                   </a>
                 </Reveal>
               ))}

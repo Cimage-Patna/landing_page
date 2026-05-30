@@ -22,13 +22,13 @@ export const copy = {
     closing: "Consistently high placement rate, batch after batch.",
     items: [
       { value: "317", label: "selections in TCS, single drive" },
-      { value: "102", label: "ICICI Bank PO offers · ₹4.5 LPA each" },
+      { value: "110+", label: "ICICI Bank PO offers · ₹4.5 LPA each" },
       { value: "₹37 LPA", label: "highest package · BCA" },
-      { value: "₹12 LPA", label: "average package" },
+      { value: "₹4.5 LPA", label: "average package" },
       { value: "200+", label: "recruiting companies" },
-      { value: "13,500+", label: "alumni placed across 20+ years" },
+      { value: "13,500+", label: "alumni placed across 17+ years" },
       { value: "50%+", label: "of Bihar's IT placements" },
-      { value: "20+", label: "years of placement track record" },
+      { value: "17+", label: "years of placement track record" },
     ],
   },
   recruiters: {
@@ -48,7 +48,7 @@ export const copy = {
   reasons: {
     eyebrow: "Behtar aur Better.",
     display: "Six reasons it works.",
-    sub: "Why CIMAGE has been the first IT/Management pick in Bihar for two decades.",
+    sub: "Why CIMAGE has been the first IT/Management pick in Bihar for 17+ years.",
     items: [
       {
         title: "Industry-Aligned BCA Curriculum",
@@ -168,12 +168,12 @@ export const copy = {
     sub: "There's Inspiro (the annual cultural fest), Ojas Sports, Robo Race, and Holi that takes over the entire campus.",
     body: "An annual cultural fest the city shows up for. An innovation summit where startups pitch before they have an office. An inter-college sports tournament. A robo race that takes over the atrium. A Holi Mela that takes over campus. A one-day start-up challenge — and sometimes, a real start-up afterwards.",
     events: [
-      { name: "Inspiro", image: "/campus-live/c1.webp", desc: "Our annual cultural fest that the whole city shows up for." },
-      { name: "Ojas Sports", image: "/campus-live/c2.webp", desc: "An inter-college sports tournament that runs through the year." },
-      { name: "Robo Race", image: "/campus-live/c3.webp", desc: "A robotics race that takes over the campus atrium." },
-      { name: "Mentorship", image: "/campus-live/c4.webp", desc: "Faculty and industry mentors, one-on-one with students." },
-      { name: "Holi Mela", image: "/campus-live/c5.webp", desc: "A Holi celebration that takes over the entire campus." },
-      { name: "Cultural Fest", image: "/campus-live/c6.webp", desc: "Music, dance, and performances on the main stage." },
+      { name: "National Technology Day", image: "/event/ntd.jpeg", desc: "A campus-wide celebration of innovation, student projects, and tech demos." },
+      { name: "Ojas Sports", image: "/event/ojas.jpeg", desc: "An inter-college sports tournament that runs through the year." },
+      { name: "Robo Race", image: "/event/robo.jpeg", desc: "A robotics race that takes over the campus atrium." },
+      { name: "Industry Oriented Workshop", image: "/event/drone.jpeg", desc: "Hands-on workshops on AI, drones, and emerging tech led by industry experts." },
+      { name: "Holi Mela", image: "/event/holi.jpeg", desc: "A Holi celebration that takes over the entire campus." },
+      { name: "Cultural Fest", image: "/event/kathak.jpeg", desc: "Music, dance, and performances on the main stage." },
     ],
   },
   trust: {
@@ -231,7 +231,7 @@ export const copy = {
     eyebrow: "Since 2003 · Patliputra, Patna",
     title: "Bihar's largest IT & Management college,",
     titleAccent: "built for placements.",
-    body: "Two decades. 13,500+ alumni placed. The only BCA college in Bihar with an IIT Bombay E-Yantra Lab and a Wipro Centre of Excellence — where students from across Bihar are trained, certified, and placed at TCS, ICICI Bank, and beyond.",
+    body: "17+ years. 13,500+ alumni placed. The only BCA college in Bihar with an IIT Bombay E-Yantra Lab and a Wipro Centre of Excellence — where students from across Bihar are trained, certified, and placed at TCS, ICICI Bank, and beyond.",
     cta: "Apply for BCA 2026",
   },
   apply: {
@@ -245,10 +245,10 @@ export const copy = {
     // Lead-form section
     infoEyebrow: "Admissions Open 2026–27",
     infoTitle: "Bihar's #1 BCA College",
-    infoDesc: "For over 20 years, CIMAGE has been the first BCA pick in Bihar. More than 13,500 of our alumni now work at TCS, Wipro, ICICI and beyond, and ours is still the only campus in the state with an IIT Bombay E-Yantra robotics lab.",
+    infoDesc: "For over 17 years, CIMAGE has been the first BCA pick in Bihar. More than 13,500 of our alumni now work at TCS, Wipro, ICICI and beyond, and ours is still the only campus in the state with an IIT Bombay E-Yantra robotics lab.",
     infoPoints: [
       "317 students walked out with TCS offers in a single placement drive.",
-      "Highest package so far is ₹37 LPA, with the batch averaging around ₹12 LPA.",
+      "Highest package so far is ₹37 LPA, with the batch averaging around ₹4.5 LPA.",
       "On campus you get both an IIT Bombay E-Yantra lab and a Wipro Centre of Excellence.",
       "AICTE approved and NAAC B++ accredited.",
     ],
@@ -275,18 +275,17 @@ export const copy = {
       {
         label: "Undergraduate",
         items: [
-          { name: "BCA", desc: "Includes add-on courses aligned with industry needs, preparing students for IT roles." },
-          { name: "BBA", desc: "Designed to develop skills required for business and corporate roles with placement support." },
-          { name: "B.Sc. (IT)", desc: "Focused on Information Technology, preparing students for careers in the IT industry." },
-          { name: "B.Com (P)", desc: "Covers accounting, economics, business law, and taxation with a strong academic foundation." },
+          { name: "BCA", desc: "Includes add-on courses aligned with industry needs, preparing students for IT roles.", href: "https://cimage.in/courses/bca/", img: "https://cimage.in/wp-content/uploads/2025/06/bca-1-1024x818.webp" },
+          { name: "BBA", desc: "Designed to develop skills required for business and corporate roles with placement support.", href: "https://cimage.in/courses/bba/", img: "https://cimage.in/wp-content/uploads/2025/07/bba-1024x955.jpg" },
+          { name: "B.Sc. (IT)", desc: "Focused on Information Technology, preparing students for careers in the IT industry.", href: "https://cimage.in/courses/bsc/", img: "https://cimage.in/wp-content/uploads/2025/07/bsc-it-1024x955.jpg" },
+          { name: "B.Com (P)", desc: "Covers accounting, economics, business law, and taxation with a strong academic foundation.", href: "https://cimage.in/courses/b-comp/", img: "https://cimage.in/wp-content/uploads/2025/07/bcom-1-1024x955.jpg" },
         ],
       },
       {
         label: "Postgraduate",
         items: [
-          { name: "MCA", desc: "Advanced program focused on software development and deep technical expertise." },
-          { name: "MBA", desc: "Covers key areas of business administration and management with practical scenario learning." },
-          { name: "PGDM", desc: "Industry-recognized program designed for careers in corporate and PSU sectors with a strong curriculum." },
+          { name: "MCA", desc: "Advanced program focused on software development and deep technical expertise.", href: "https://cimage.in/courses/mca/", img: "https://cimage.in/wp-content/uploads/2025/07/pgdm-1024x955.jpg" },
+          { name: "MBA", desc: "Covers key areas of business administration and management with practical scenario learning.", href: "https://cimage.in/courses/mba/", img: "https://cimage.in/wp-content/uploads/2025/07/pgdm-1024x955.jpg" },
         ],
       },
     ],

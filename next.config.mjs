@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: "cimage-web.s3.ap-south-1.amazonaws.com",
         pathname: "/public/reels/**",
       },
+      {
+        protocol: "https",
+        hostname: "cimage.in",
+        pathname: "/wp-content/uploads/**",
+      },
     ],
   },
 };
