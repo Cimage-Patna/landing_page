@@ -28,15 +28,6 @@ export default function About() {
       </div>
 
       <div className="relative mx-auto max-w-4xl text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "0px 0px -80px 0px" }}
-          transition={{ duration: 0.6 }}
-          className="text-[11px] uppercase tracking-[0.35em] text-amber-400/70"
-        >
-          {a.eyebrow}
-        </motion.p>
 
         <h2 className="mt-8 font-display font-black leading-[0.98] tracking-tight">
           <motion.span

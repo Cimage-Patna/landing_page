@@ -165,11 +165,11 @@ export const copy = {
   },
   campus: {
     display: "Not just the classroom.",
-    sub: "There's Inspiro (the annual cultural fest), Ojas Sports, Robo Race, and Holi that takes over the entire campus.",
+    sub: "There's National Technology Day, the Ojas Sports Meet, Robo Race, and the Holi Mela that takes over the entire campus.",
     body: "An annual cultural fest the city shows up for. An innovation summit where startups pitch before they have an office. An inter-college sports tournament. A robo race that takes over the atrium. A Holi Mela that takes over campus. A one-day start-up challenge — and sometimes, a real start-up afterwards.",
     events: [
       { name: "National Technology Day", image: "/event/ntd.jpeg", desc: "A campus-wide celebration of innovation, student projects, and tech demos." },
-      { name: "Ojas Sports", image: "/event/ojas.jpeg", desc: "An inter-college sports tournament that runs through the year." },
+      { name: "Ojas Sports Meet", image: "/event/ojas.jpeg", desc: "An inter-college sports tournament that runs through the year." },
       { name: "Robo Race", image: "/event/robo.jpeg", desc: "A robotics race that takes over the campus atrium." },
       { name: "Industry Oriented Workshop", image: "/event/drone.jpeg", desc: "Hands-on workshops on AI, drones, and emerging tech led by industry experts." },
       { name: "Holi Mela", image: "/event/holi.jpeg", desc: "A Holi celebration that takes over the entire campus." },
@@ -228,7 +228,6 @@ export const copy = {
     ],
   },
   about: {
-    eyebrow: "Since 2003 · Patliputra, Patna",
     title: "Bihar's largest IT & Management college,",
     titleAccent: "built for placements.",
     body: "17+ years. 13,500+ alumni placed. The only college with an IIT Bombay E-Yantra Lab and a Wipro Centre of Excellence — where students from across Bihar are trained, certified, and placed at TCS, ICICI Bank, and beyond.",
@@ -249,7 +248,7 @@ export const copy = {
       "317 students walked out with TCS offers in a single placement drive.",
       "Highest package so far is ₹37 LPA, with the batch averaging around ₹4.5 LPA.",
       "On campus you get both an IIT Bombay E-Yantra lab and a Wipro Centre of Excellence.",
-      "AICTE approved and NAAC B++ accredited.",
+      "AICTE approved and NAAC accredited.",
     ],
     formHeading: "Book your seat — Batch 2026",
     formSub: "Drop your details and a counsellor calls you within one working day.",
@@ -274,7 +273,7 @@ export const copy = {
       {
         label: "Undergraduate",
         items: [
-          { name: "BCA", desc: "Includes add-on courses aligned with industry needs, preparing students for IT roles.", href: "https://cimage.in/courses/bca/", img: "https://cimage.in/wp-content/uploads/2025/06/bca-1-1024x818.webp" },
+          { name: "BCA", desc: "Includes add-on courses aligned with industry needs, preparing students for IT roles.", href: "https://cimage.in/courses/bca/", img: "/programs/bca.webp" },
           { name: "BBA", desc: "Designed to develop skills required for business and corporate roles with placement support.", href: "https://cimage.in/courses/bba/", img: "https://cimage.in/wp-content/uploads/2025/07/bba-1024x955.jpg" },
           { name: "B.Sc. (IT)", desc: "Focused on Information Technology, preparing students for careers in the IT industry.", href: "https://cimage.in/courses/bsc/", img: "https://cimage.in/wp-content/uploads/2025/07/bsc-it-1024x955.jpg" },
           { name: "B.Com (P)", desc: "Covers accounting, economics, business law, and taxation with a strong academic foundation.", href: "https://cimage.in/courses/b-comp/", img: "https://cimage.in/wp-content/uploads/2025/07/bcom-1-1024x955.jpg" },
