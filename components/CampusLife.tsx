@@ -14,7 +14,7 @@ export default function CampusLife() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="text-[11px] uppercase tracking-[0.3em] text-amber-400/80">
-            Chapter 06
+            Campus Life
           </p>
           <h2 className="mt-3 font-display text-5xl sm:text-7xl font-black text-white">
             {copy.campus.display}

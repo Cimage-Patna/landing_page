@@ -48,7 +48,7 @@ export default function Numbers() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="text-[11px] uppercase tracking-[0.3em] text-amber-400/80">
-            Chapter 02
+            By the Numbers
           </p>
           <h2 className="mt-3 font-display text-5xl sm:text-7xl font-black text-white">
             {copy.numbers.eyebrow}

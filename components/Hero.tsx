@@ -1,3 +1,5 @@
+"use client";
+
 import HeroVideo from "./HeroVideo";
 import HeroBadges from "./HeroBadges";
 // Disabled while the video background is active — re-add to the stack to bring back.
@@ -72,12 +74,15 @@ export default function Hero() {
             >
               {h.cta} <span aria-hidden>&rarr;</span>
             </a>
-            <a
-              href={`tel:${h.phone}`}
+            <button
+              type="button"
+              onClick={() =>
+                window.dispatchEvent(new Event("counsellor:open"))
+              }
               className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/40 bg-white/10 px-8 py-4 text-sm font-semibold text-[#ffffff] transition hover:bg-white/20 sm:w-auto sm:text-base"
             >
               {h.counsellorCta}
-            </a>
+            </button>
           </div>
         </div>
 

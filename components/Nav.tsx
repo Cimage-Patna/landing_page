@@ -28,23 +28,7 @@ export default function Nav() {
         solid ? "nav-solid" : "nav-transparent"
       }`}
     >
-      <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2.5 sm:px-8 sm:py-3">
-        {/* Logo */}
-        <a
-          href="#"
-          aria-label="CIMAGE — Knowledge. Skill. Success."
-          className="flex items-center"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/cimage-logo.webp"
-            alt="CIMAGE"
-            width={351}
-            height={171}
-            className="h-12 w-auto rounded-md sm:h-16"
-          />
-        </a>
-
+      <div className="relative mx-auto flex max-w-6xl items-center justify-end gap-4 px-5 py-2.5 sm:px-8 sm:py-3">
         {/* Right cluster */}
         <nav className="flex items-center gap-2 sm:gap-3">
           <CounsellorMenu />

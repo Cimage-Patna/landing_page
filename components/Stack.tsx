@@ -9,7 +9,7 @@ export default function Stack() {
       <div className="mx-auto max-w-6xl relative">
         <Reveal>
           <p className="text-[11px] uppercase tracking-[0.3em] text-amber-400/80">
-            Chapter 03
+            The Stack
           </p>
           <h2 className="mt-3 font-display text-5xl sm:text-7xl font-black text-white">
             {copy.stack.display}

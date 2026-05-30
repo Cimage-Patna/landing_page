@@ -27,7 +27,7 @@ export default function GlobalAlumni() {
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <p className="text-[11px] uppercase tracking-[0.3em] text-amber-400/80">
-            Chapter 05
+            The Alumni
           </p>
           <h2 className="mt-3 font-display text-5xl sm:text-7xl font-black text-white">
             {copy.alumni.display}

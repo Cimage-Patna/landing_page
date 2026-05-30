@@ -120,26 +120,26 @@ export const copy = {
     closing: "Sab kuch hands-on. First semester se.",
   },
   labs: {
-    display: "Industry Collaborations & Centre of Excellence",
-    sub: "Strategic academic collaborations with Wipro COE and IIT Bombay to provide advanced technical learning and hands-on industry exposure.",
+    display: "Wipro and IIT Bombay, on campus.",
+    sub: "We've signed an MoU with Wipro for the Centre of Excellence, and we're IIT Bombay's Spoken Tutorial Nodal Resource Centre for Patna. Both agreements are below.",
     blocks: [
       {
         title: "E-Yantra · IIT Bombay",
         body: "Robotics teams. Real competition tracks. Certified by an IIT.",
-        image: "/labs/group-6.webp",
+        image: "/collab/Left-Image.webp",
         badge: "IIT Bombay · E-Yantra Certified",
       },
       {
         title: "Wipro Centre of Excellence",
         body: "Industry-graded coursework, signed off by a Wipro panel. The certification sits on your CV before you graduate.",
-        image: "/labs/group-7.webp",
+        image: "/collab/Right-Image.webp",
         badge: "Wipro CoE · Active Partnership",
       },
     ],
   },
   alumni: {
-    display: "Our Alumni, Our Pride",
-    sub: "Our alumni are making CIMAGE proud — building successful careers with leading IT companies across India and the world.",
+    display: "Where the alumni went.",
+    sub: "Patna, Bengaluru, Dubai, London, Zurich. Here are a few of them.",
     closing: "",
     cards: [
       { img: "/alumni-cards/a1.webp", company: "Ernst & Young" },
@@ -161,8 +161,8 @@ export const copy = {
     patna: { x: 69, y: 41 },
   },
   campus: {
-    display: "More Happens Here Than You Expect",
-    sub: "Campus life at CIMAGE goes beyond classrooms — events, activities, and everyday experiences.",
+    display: "Not just the classroom.",
+    sub: "There's Inspiro (the annual cultural fest), Ojas Sports, Robo Race, and Holi that takes over the entire campus.",
     body: "An annual cultural fest the city shows up for. An innovation summit where startups pitch before they have an office. An inter-college sports tournament. A robo race that takes over the atrium. A Holi Mela that takes over campus. A one-day start-up challenge — and sometimes, a real start-up afterwards.",
     events: [
       { name: "Inspiro", image: "/campus-live/c1.webp", desc: "Our annual cultural fest that the whole city shows up for." },
@@ -174,8 +174,8 @@ export const copy = {
     ],
   },
   trust: {
-    display: "Government approved. Industry endorsed.",
-    sub: "AICTE-approved. NAAC B++ accredited. NIRF-ranked.",
+    display: "What the alumni say.",
+    sub: "Five graduates, in their own words.",
     visitorLine: "Past campus visitors include Dr. A.P.J. Abdul Kalam, Shri Nitish Kumar, and the Governor of Bihar.",
     badges: ["AICTE", "NAAC B++", "NIRF", "ISO 9001:2015"],
     testimonials: [
@@ -234,7 +234,7 @@ export const copy = {
   apply: {
     display: "Your move.",
     sub: "Batch 2026 fills fast.",
-    fee: "Fee: ₹1.8 lakhs / year · Two-step admission: written test + personal interview.",
+    fee: "Fee is ₹1.8 lakhs a year. Admission is a two-step process: a written test, then a personal interview.",
     cta: "Send me a call from admissions",
     successMsg: "Got it. We'll call you within one working day.",
     errorMsg: "Something went wrong. Please call 7250 767 676 or try again.",
@@ -242,12 +242,12 @@ export const copy = {
     // Lead-form section
     infoEyebrow: "Admissions Open 2026–27",
     infoTitle: "Bihar's #1 BCA College",
-    infoDesc: "Two decades on. 13,500+ alumni placed at TCS, Wipro, ICICI and beyond — on the only campus in Bihar with an IIT Bombay E-Yantra Lab.",
+    infoDesc: "For over 20 years, CIMAGE has been the first BCA pick in Bihar. More than 13,500 of our alumni now work at TCS, Wipro, ICICI and beyond, and ours is still the only campus in the state with an IIT Bombay E-Yantra robotics lab.",
     infoPoints: [
-      "317 placements in TCS — highest in the region",
-      "₹37 LPA highest · ₹12 LPA average package",
-      "IIT Bombay E-Yantra Lab · Wipro Centre of Excellence",
-      "AICTE Approved · NAAC B++ · 20+ years track record",
+      "317 students walked out with TCS offers in a single placement drive.",
+      "Highest package so far is ₹37 LPA, with the batch averaging around ₹12 LPA.",
+      "On campus you get both an IIT Bombay E-Yantra lab and a Wipro Centre of Excellence.",
+      "AICTE approved and NAAC B++ accredited.",
     ],
     formHeading: "Book your seat — Batch 2026",
     formSub: "Drop your details and a counsellor calls you within one working day.",
@@ -274,7 +274,6 @@ export const copy = {
         items: [
           { name: "BCA", desc: "Includes add-on courses aligned with industry needs, preparing students for IT roles." },
           { name: "BBA", desc: "Designed to develop skills required for business and corporate roles with placement support." },
-          { name: "B.Tech", desc: "Combines core engineering with industry training, preparing students for top IT and technical careers." },
           { name: "B.Sc. (IT)", desc: "Focused on Information Technology, preparing students for careers in the IT industry." },
           { name: "B.Com (P)", desc: "Covers accounting, economics, business law, and taxation with a strong academic foundation." },
         ],

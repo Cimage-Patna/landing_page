@@ -8,7 +8,7 @@ export default function Trust() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="text-[11px] uppercase tracking-[0.3em] text-amber-400/80">
-            Chapter 07
+            Proof
           </p>
           <h2 className="mt-3 font-display text-5xl sm:text-7xl font-black text-white">
             {copy.trust.display}
@@ -16,26 +16,7 @@ export default function Trust() {
           <p className="mt-4 max-w-2xl text-neutral-400">{copy.trust.sub}</p>
         </Reveal>
 
-        <Reveal delay={0.1} className="mt-10">
-          <div className="flex flex-wrap gap-2 sm:gap-3">
-            {copy.trust.badges.map((b) => (
-              <span
-                key={b}
-                className="inline-flex items-center px-4 py-2 rounded-full border border-white/15 bg-white/[0.03] text-sm text-neutral-300"
-              >
-                {b}
-              </span>
-            ))}
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.15} className="mt-8">
-          <p className="text-sm text-neutral-500 italic max-w-3xl">
-            {copy.trust.visitorLine}
-          </p>
-        </Reveal>
-
-        <div className="mt-14 -mx-6 px-6 overflow-x-auto sm:overflow-visible no-scrollbar">
+        <div className="mt-12 -mx-6 px-6 overflow-x-auto sm:overflow-visible no-scrollbar">
           <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 snap-x snap-mandatory">
             {copy.trust.testimonials.map((t, i) => (
               <Reveal key={t.photo} delay={i * 0.05}>

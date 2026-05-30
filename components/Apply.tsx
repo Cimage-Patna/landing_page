@@ -1,19 +1,21 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import Image from "next/image";
 import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
 
 type Status = "idle" | "loading" | "success" | "error";
 
+// Theme-aware: bg-white/[0.05], border-white/10, text-white, text-neutral-500
+// all auto-flip in light theme via globals.css. Focus blue is fixed.
 const inputCls =
-  "w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-[#1d4ed8] focus:outline-none focus:ring-2 focus:ring-[#1d4ed8]/20 transition";
+  "w-full rounded-lg border border-white/10 bg-white/[0.05] px-3.5 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-[#1d4ed8] focus:outline-none focus:ring-2 focus:ring-[#1d4ed8]/20 transition";
 
 export default function Apply() {
   const a = copy.apply;
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
-  const [imgFailed, setImgFailed] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,69 +43,65 @@ export default function Apply() {
   }
 
   return (
-    <section id="apply" className="bg-neutral-950 px-5 py-14 sm:py-20">
-      <div className="mx-auto grid max-w-5xl items-start gap-5 md:grid-cols-2">
-        {/* ── INFO CARD — its own distinctive card ─────────────── */}
-        <Reveal>
-          <div className="relative flex flex-col overflow-hidden rounded-3xl bg-gradient-to-br from-[#1e3a8a] to-[#0b2452] p-8 text-white shadow-2xl ring-1 ring-white/10 sm:p-10">
-            {/* dotted texture */}
-            <div
-              className="pointer-events-none absolute inset-0 opacity-[0.06]"
-              style={{ backgroundImage: "radial-gradient(#fff 1px, transparent 1px)", backgroundSize: "16px 16px" }}
-            />
-            {/* amber glow + accent bar */}
-            <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-amber-400/20 blur-3xl" />
-            <div className="pointer-events-none absolute left-0 top-0 h-1.5 w-24 bg-amber-400" />
+    <section id="apply" className="relative overflow-hidden bg-neutral-950 px-5 py-16 sm:py-24">
+      {/* Background — group photo of placed CIMAGE students */}
+      <Image
+        src="/gp.png"
+        alt=""
+        aria-hidden="true"
+        fill
+        sizes="100vw"
+        priority
+        className="pointer-events-none object-cover object-center opacity-40"
+      />
+      {/* Dark overlay so the spread copy + white form card stay legible */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-neutral-950/75 via-neutral-950/55 to-neutral-950/85" />
+      {/* Single warm glow for atmosphere (the photo carries the rest) */}
+      <div className="pointer-events-none absolute -left-40 top-24 h-[28rem] w-[28rem] rounded-full bg-amber-400/[0.08] blur-[140px]" />
 
-            <div className="relative z-10">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                {a.infoEyebrow}
-              </span>
-              <h2 className="mt-4 font-display text-3xl font-bold leading-tight sm:text-4xl">
-                {a.infoTitle}
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-blue-100/85">
-                {a.infoDesc}
-              </p>
+      <div className="relative mx-auto grid max-w-6xl items-start gap-12 md:grid-cols-2 lg:gap-20">
+        {/* ── INFO — no card, spread across the column ──────────────── */}
+        <Reveal className="order-2 md:order-1">
+          <div className="relative">
+            <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/[0.08] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+              {a.infoEyebrow}
+            </span>
 
-              {/* stats in a glassy inset block */}
-              <ul className="mt-6 space-y-2.5 rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-                {a.infoPoints.map((p, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-blue-50/90">
-                    <CheckIcon />
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
+            <h2 className="mt-6 font-display text-4xl font-black leading-[1.05] text-white sm:text-5xl lg:text-[3.5rem]">
+              {a.infoTitle}
+            </h2>
 
-              <p className="mt-5 text-xs text-blue-100/70">{a.fee}</p>
-            </div>
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-neutral-300">
+              {a.infoDesc}
+            </p>
 
-            {/* Real campus image — drop a cutout at public/apply/student.webp to override */}
-            <div className="relative z-10 mt-7 overflow-hidden rounded-2xl border border-white/15 shadow-xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={imgFailed ? "/campus-live/c4.webp" : "/apply/student.webp"}
-                onError={() => setImgFailed(true)}
-                alt="Students at the CIMAGE campus"
-                className="aspect-[16/9] w-full object-cover"
-              />
-            </div>
+            <ul className="mt-7 space-y-3.5">
+              {a.infoPoints.map((p, i) => (
+                <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-neutral-200">
+                  <CheckIcon />
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-7 max-w-lg text-sm leading-relaxed text-neutral-400">
+              {a.fee}
+            </p>
           </div>
         </Reveal>
 
-        {/* ── FORM CARD — a separate card ──────────────────────── */}
-        <Reveal delay={0.08}>
-          <div className="rounded-3xl border border-white/10 bg-white p-8 shadow-2xl sm:p-10">
-            <h3 className="font-display text-2xl font-bold text-neutral-900 sm:text-3xl">
+        {/* ── FORM CARD — appears first on mobile, right on desktop ──── */}
+        <Reveal delay={0.08} className="order-1 md:order-2">
+          <div className="rounded-3xl border border-white/10 bg-neutral-900 p-8 shadow-2xl sm:p-10">
+            <h3 className="font-display text-2xl font-bold text-white sm:text-3xl">
               {a.formHeading}
             </h3>
-            <p className="mt-2 text-sm text-neutral-500">{a.formSub}</p>
+            <p className="mt-2 text-sm text-neutral-400">{a.formSub}</p>
 
             {status === "success" ? (
-              <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-6 text-center">
-                <p className="font-semibold text-green-800">{a.successMsg}</p>
+              <div className="mt-6 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center">
+                <p className="font-semibold text-emerald-500">{a.successMsg}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="mt-6 space-y-3" noValidate>
@@ -180,7 +178,7 @@ export default function Apply() {
                 </button>
 
                 {status === "error" && (
-                  <p className="text-center text-sm text-red-600">
+                  <p className="text-center text-sm text-red-500">
                     {errorMsg || a.errorMsg}
                   </p>
                 )}
@@ -200,7 +198,7 @@ export default function Apply() {
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-medium text-neutral-600">{label}</span>
+      <span className="mb-1 block text-xs font-medium text-neutral-400">{label}</span>
       {children}
     </label>
   );

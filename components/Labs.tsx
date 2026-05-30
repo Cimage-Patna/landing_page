@@ -11,7 +11,7 @@ export default function Labs() {
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
           <p className="text-[11px] uppercase tracking-[0.3em] text-amber-400/80">
-            Chapter 04
+            Partnerships
           </p>
           <h2 className="mt-3 max-w-3xl font-display text-4xl font-black text-white sm:text-6xl">
             {copy.labs.display}
@@ -19,23 +19,12 @@ export default function Labs() {
           <p className="mt-4 max-w-2xl text-neutral-400">{copy.labs.sub}</p>
         </Reveal>
 
-        {/* Certificates — angled, overlapping mounted documents */}
-        <Reveal delay={0.1}>
-          <div className="mt-14 flex flex-col items-center justify-center gap-12 sm:mt-20 sm:flex-row sm:gap-0">
-            {blocks.map((b, i) => (
-              <figure
-                key={b.title}
-                className={`group relative w-full max-w-[330px] transition-transform duration-500 hover:z-20 sm:hover:!rotate-0 sm:hover:!translate-x-0 sm:hover:!translate-y-0 ${
-                  i === 0
-                    ? "sm:z-10 sm:translate-x-8 sm:translate-y-3 sm:rotate-[-4deg]"
-                    : "sm:-translate-x-8 sm:-translate-y-3 sm:rotate-[4deg]"
-                }`}
-              >
-                {/* soft glow on hover */}
-                <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-amber-400/10 opacity-0 blur-2xl transition duration-500 group-hover:opacity-100" />
-
-                {/* the certificate, mounted on a white mat */}
-                <div className="relative overflow-hidden rounded-xl border border-white/15 bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.75)]">
+        {/* Clean grid — no tilt, no hover motion. Certificate, then meta. */}
+        <div className="mt-12 grid gap-8 sm:mt-16 sm:grid-cols-2 sm:gap-10">
+          {blocks.map((b, i) => (
+            <Reveal key={b.title} delay={i * 0.08}>
+              <div className="flex flex-col">
+                <div className="overflow-hidden rounded-xl border border-white/10 bg-white shadow-xl">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={b.image}
@@ -43,15 +32,18 @@ export default function Labs() {
                     className="block h-auto w-full"
                   />
                 </div>
-
-                {/* floating badge */}
-                <figcaption className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-amber-400/30 bg-black/90 px-4 py-1.5 text-[11px] font-medium uppercase tracking-wider text-amber-400 backdrop-blur">
-                  {b.badge}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </Reveal>
+                <div className="mt-5">
+                  <h3 className="font-display text-2xl font-bold text-white sm:text-3xl">
+                    {b.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-neutral-400">
+                    {b.body}
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -33,14 +33,14 @@ export default function Page() {
       <BiharMosaic />
       <WhyChoose />
       <Programs />
+      <CampusLife />
       <Recruiters />
-      <Quadruped />
+      <PhysicalAI />
       <Reasons />
       <Stack />
       <Labs />
-      <PhysicalAI />
+      <Quadruped />
       <GlobalAlumni />
-      <CampusLife />
       <Reels />
       <JoinBanner />
       <Trust />

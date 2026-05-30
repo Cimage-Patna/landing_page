@@ -10,6 +10,14 @@ export default function CounsellorMenu() {
 
   useEffect(() => setMounted(true), []);
 
+  // Allow other components (e.g. the Hero CTA) to open this dialog by
+  // dispatching `window.dispatchEvent(new Event("counsellor:open"))`.
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener("counsellor:open", onOpen);
+    return () => window.removeEventListener("counsellor:open", onOpen);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
