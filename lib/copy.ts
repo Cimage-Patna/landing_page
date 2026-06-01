@@ -18,15 +18,15 @@ export const copy = {
   },
   numbers: {
     eyebrow: "The numbers do the talking.",
-    sub: "Three placement seasons. One pattern.",
+    sub: "Seventeen-plus years. One pattern.",
     closing: "Consistently high placement rate, batch after batch.",
     items: [
-      { value: "317", label: "selections in TCS, single drive" },
-      { value: "110+", label: "ICICI Bank PO offers · ₹4.5 LPA each" },
+      { value: "13,500+", label: "alumni placed across 17+ years" },
       { value: "₹37 LPA", label: "highest package · BCA" },
       { value: "₹4.5 LPA", label: "average package" },
+      { value: "317", label: "selections in TCS, single drive" },
+      { value: "130+", label: "ICICI Bank PO offers · ₹4.5 LPA each" },
       { value: "200+", label: "recruiting companies" },
-      { value: "13,500+", label: "alumni placed across 17+ years" },
       { value: "50%+", label: "of Bihar's IT placements" },
       { value: "17+", label: "years of placement track record" },
     ],
@@ -98,7 +98,7 @@ export const copy = {
     // CC-BY-SA, free "Attribution") all mandate crediting the source.
     items: [
       { name: "Dr. A.P.J. Abdul Kalam", role: "Former President of India", photo: "/visitors/abdul-kalam.jpg", credit: "Govt. of India · GODL-India" },
-      { name: "Shri Nitish Kumar", role: "Chief Minister of Bihar", photo: "/visitors/nitish-kumar.jpg", credit: "Govt. of Bihar" },
+      { name: "Shri Nitish Kumar", role: "Ex-Chief Minister of Bihar", photo: "/visitors/nitish-kumar.jpg", credit: "Govt. of Bihar" },
       { name: "Shri Rajendra Arlekar", role: "Hon. Governor of Bihar", photo: "/visitors/rajendra-arlekar.jpg", credit: "PMO, Govt. of India · GODL-India" },
       { name: "Shri Ramesh Pokhriyal", role: "Former HRD Minister, Govt. of India", photo: "/visitors/ramesh-pokhriyal.jpg", credit: "Ministry of Education · GODL-India" },
       { name: "Shri Ashok Choudhary", role: "Minister, Govt. of Bihar", photo: "/visitors/ashok-choudhary.jpg", credit: "Govt. of Bihar" },
@@ -242,8 +242,8 @@ export const copy = {
     trustLine: "No spam. Counsellor calls within one working day. CIMAGE Tower, Patliputra Industrial Area · 7250 767 676.",
     // Lead-form section
     infoEyebrow: "Admissions Open 2026–27",
-    infoTitle: "Bihar's #1 BCA College",
-    infoDesc: "For over 17 years, CIMAGE has been the first BCA pick in Bihar. More than 13,500 of our alumni now work at TCS, Wipro, ICICI and beyond, and ours is still the only campus in the state with an IIT Bombay E-Yantra robotics lab.",
+    infoTitle: "Bihar's #1 College",
+    infoDesc: "For over 17 years, CIMAGE has been the first pick in Bihar. More than 13,500 of our alumni now work at TCS, Wipro, ICICI and beyond, and ours is still the only campus in the state with an IIT Bombay E-Yantra robotics lab.",
     infoPoints: [
       "317 students walked out with TCS offers in a single placement drive.",
       "Highest package so far is ₹37 LPA, with the batch averaging around ₹4.5 LPA.",
@@ -327,7 +327,7 @@ export const copy = {
   footer: {
     brand: "CIMAGE",
     tagline: "Behtar aur Better.",
-    blurb: "Bihar's #1 BCA college and Patna's premier institution for industry-ready IT and business education since 2003.",
+    blurb: "Bihar's #1 college and Patna's premier institution for industry-ready IT and business education since 2003.",
     address: ["CIMAGE Tower, C, 10-11", "Off Atal Path, Patliputra Industrial Area", "Patna, Bihar 800013"],
     phones: ["7250 767 676", "9835 024 444"],
     email: "info@cimage.in",

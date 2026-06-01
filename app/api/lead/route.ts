@@ -19,7 +19,20 @@ type LeadInput = {
   city?: string;
   state?: string;
   comment?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
 };
+
+const UTM_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+] as const;
 
 export async function POST(req: Request) {
   let body: LeadInput;
@@ -40,6 +53,13 @@ export async function POST(req: Request) {
     );
   }
 
+  // Forward only the UTM params that were actually present on the URL.
+  const utm: Record<string, string> = {};
+  for (const key of UTM_KEYS) {
+    const value = (body[key] ?? "").trim();
+    if (value) utm[key] = value;
+  }
+
   const payload = {
     name,
     phone,
@@ -51,6 +71,7 @@ export async function POST(req: Request) {
     sub_source: SUB_SOURCE,
     comment: (body.comment ?? "").trim(),
     tags: TAGS,
+    ...utm,
   };
 
   try {

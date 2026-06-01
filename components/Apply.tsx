@@ -1,11 +1,19 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
 
 type Status = "idle" | "loading" | "success" | "error";
+
+const UTM_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+] as const;
 
 // Theme-aware: bg-white/[0.05], border-white/10, text-white, text-neutral-500
 // all auto-flip in light theme via globals.css. Focus blue is fixed.
@@ -16,13 +24,26 @@ export default function Apply() {
   const a = copy.apply;
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  // Capture UTM params once on mount — the query string may be stripped by
+  // later hash navigation (e.g. clicking "#apply"), so we snapshot it early.
+  const utmRef = useRef<Record<string, string>>({});
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const utm: Record<string, string> = {};
+    for (const key of UTM_KEYS) {
+      const value = params.get(key);
+      if (value) utm[key] = value;
+    }
+    utmRef.current = utm;
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     setStatus("loading");
     setErrorMsg("");
-    const payload = Object.fromEntries(new FormData(form));
+    const payload = { ...Object.fromEntries(new FormData(form)), ...utmRef.current };
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
