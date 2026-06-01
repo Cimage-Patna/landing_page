@@ -16,13 +16,13 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "BCA Admission 2026 — CIMAGE, Patna · Bihar's #1 BCA College",
+  title: "CIMAGE Patna — Best IT & Management College in Bihar",
   description:
-    "BCA at CIMAGE Patna: 317 in TCS, 102 in ICICI Bank, ₹37 LPA highest package, IIT Bombay E-Yantra Lab, Wipro Centre of Excellence. Batch 2026 admissions open. Fee ₹1.8 lakhs/year.",
+    "Bihar's #1 college for IT & Management. BCA, MCA, BBA, MBA, B.Sc-IT and B.Com.(P) with 13,500+ alumni placed, 317 selections at TCS in a single drive, ₹37 LPA highest package, IIT Bombay E-Yantra Lab and Wipro Centre of Excellence. Batch 2026 admissions open.",
   openGraph: {
-    title: "BCA. Built for what's next. — CIMAGE Patna",
+    title: "Best IT & Management College in Bihar — CIMAGE Patna",
     description:
-      "Bihar's #1 BCA college. Batch 2026 admissions open. Fee ₹1.8 lakhs/year.",
+      "Bihar's #1 college for IT & Management. 13,500+ alumni placed over 17+ years. Batch 2026 admissions open.",
     type: "website",
   },
 };
@@ -33,7 +33,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const noFlashThemeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`;
+const noFlashThemeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`;
 
 export default function RootLayout({
   children,

@@ -23,7 +23,8 @@ function readInitialTheme(): Theme {
     }
   })();
   if (stored === "light" || stored === "dark") return stored;
-  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  // Default to dark for new visitors, regardless of OS preference.
+  return "dark";
 }
 
 export default function ThemeToggle() {
