@@ -250,7 +250,7 @@ export const copy = {
       "On campus you get both an IIT Bombay E-Yantra lab and a Wipro Centre of Excellence.",
       "AICTE approved and NAAC accredited.",
     ],
-    formHeading: "Book your seat — Batch 2026",
+    formHeading: "Request a call - Batch 2026",
     formSub: "Drop your details and a counsellor calls you within one working day.",
     courses: ["BCA", "MCA", "B.Sc-IT", "MBA", "BBA", "B.Com"],
   },

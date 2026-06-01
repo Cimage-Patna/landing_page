@@ -135,36 +135,6 @@ export default function Apply() {
                   </Field>
                 </div>
 
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <Field label="Email (optional)">
-                    <input
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      placeholder="you@example.com"
-                      className={inputCls}
-                    />
-                  </Field>
-                  <Field label="City (optional)">
-                    <input
-                      name="city"
-                      type="text"
-                      autoComplete="address-level2"
-                      placeholder="Patna"
-                      className={inputCls}
-                    />
-                  </Field>
-                </div>
-
-                <Field label="Message (optional)">
-                  <textarea
-                    name="comment"
-                    rows={2}
-                    placeholder="Anything you'd like to ask?"
-                    className={inputCls}
-                  />
-                </Field>
-
                 <button
                   type="submit"
                   disabled={status === "loading"}
