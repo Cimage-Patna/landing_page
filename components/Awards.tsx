@@ -20,10 +20,19 @@ export default function Awards() {
           <div className="flex gap-3 awards-track">
             {doubled.map((a, i) => (
               <span
-                key={`${a}-${i}`}
-                className="shrink-0 text-xs sm:text-sm text-neutral-300 border border-white/10 bg-white/[0.02] rounded-full px-5 py-2 whitespace-nowrap"
+                key={`${a.name}-${i}`}
+                className="shrink-0 inline-flex items-center gap-2.5 text-xs sm:text-sm text-neutral-300 border border-white/10 bg-white/[0.02] rounded-full pl-1.5 pr-5 py-1 whitespace-nowrap"
               >
-                {a}
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white p-1 ring-1 ring-black/5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={a.logo}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-full w-full object-contain"
+                  />
+                </span>
+                {a.name}
               </span>
             ))}
           </div>

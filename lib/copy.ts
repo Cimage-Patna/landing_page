@@ -217,14 +217,11 @@ export const copy = {
   awards: {
     display: "Recognized where it counts.",
     items: [
-      "Shining Stars of Bihar · Hon. Governor",
-      "Atal Shresth Sansthan Samman · Govt. of India",
-      "Best B-School East · ASSOCHAM",
-      "Best Campus Placement East",
-      "NAAC B++",
-      "ISO 9001:2015",
-      "NIRF Ranked",
-      "AICTE Approved",
+      { name: "AICTE Approved", logo: "/badges/aicte.webp" },
+      { name: "NAAC B++", logo: "/badges/naac.webp" },
+      { name: "ISO 9001:2015", logo: "/badges/iso.svg" },
+      { name: "Atal Shresth Sansthan Samman · Govt. of India", logo: "/badges/emblem-india.png" },
+      { name: "Shining Stars of Bihar · Hon. Governor", logo: "/badges/affiliation.webp" },
     ],
   },
   about: {
