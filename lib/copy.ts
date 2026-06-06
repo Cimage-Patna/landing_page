@@ -163,6 +163,37 @@ export const copy = {
     ],
     patna: { x: 69, y: 41 },
   },
+  starPlacements: {
+    eyebrow: "The star placements",
+    display: "Real students. Real offers.",
+    sub: "From Patna classrooms to the Big Four and global tech — a few of the names behind the numbers.",
+    // Extracted from the official CIMAGE Star Placements records. `package` is
+    // the headline stat for domestic offers; `location` carries the same weight
+    // for the alumni placed abroad.
+    students: [
+      { img: "/star-placements/anup-gupta.webp", name: "Anup Gupta", course: "BCA", company: "PwC", role: "Manager / Principal Consultant", package: "26 LPA", district: "Chhapra" },
+      { img: "/star-placements/priyanka-kumari-novigo.webp", name: "Priyanka Kumari", course: "BCA", company: "Novigo Solutions", role: "Associate Test Manager", package: "24 LPA" },
+      { img: "/star-placements/pratik-kumar.webp", name: "Pratik Kumar", course: "BCA", company: "Ernst & Young LLP", role: "Senior Consultant", package: "15 LPA", district: "Patna" },
+      { img: "/star-placements/sushant-ketu.webp", name: "Sushant Ketu", course: "BSc. IT", company: "Coforge", role: "Technical Lead", package: "15 LPA", district: "Siwan, Bihar" },
+      { img: "/star-placements/ankit-raj-capgemini.webp", name: "Ankit Raj", course: "BSc. IT", company: "Capgemini", role: "Consultant", package: "15 LPA", district: "Bhojpur" },
+      { img: "/star-placements/raj-priyadarshi.webp", name: "Raj Priyadarshi", course: "BCA", company: "EY Global Services", role: "Consultant", package: "14.36 LPA" },
+      { img: "/star-placements/saket-kumar.webp", name: "Saket Kumar", course: "BBA", company: "Capgemini", package: "14 LPA", district: "Saran" },
+      { img: "/star-placements/diksha.webp", name: "Diksha", course: "BCA", company: "Gupshup Technology", role: "Bangalore", package: "6.5 LPA", district: "Patna" },
+      { img: "/star-placements/ritik-anand.webp", name: "Ritik Anand", course: "BBA", company: "Kotak Mahindra Bank", role: "Deputy Manager", package: "5.6 LPA" },
+      { img: "/star-placements/suman-kumar.webp", name: "Suman Kumar", course: "BBA", company: "Kotak Mahindra Bank", role: "Deputy Manager", package: "5.5 LPA", district: "Bhagalpur" },
+      { img: "/star-placements/vishesh-sahay.webp", name: "Vishesh Sahay", company: "Ernst & Young", location: "Dubai, UAE" },
+      { img: "/star-placements/amrendra-kumar-pandey.webp", name: "Amrendra Kumar Pandey", company: "Strong Plant Ground Engineering Services", location: "Dubai, UAE" },
+      { img: "/star-placements/sweta-kumari.webp", name: "Sweta Kumari", company: "J.P. Morgan", location: "London, UK" },
+      { img: "/star-placements/nishi-prakash.webp", name: "Nishi Prakash", company: "Rackspace", location: "London, UK" },
+      { img: "/star-placements/rahul-sharma.webp", name: "Rahul Sharma", company: "Rackspace", location: "London, UK" },
+      { img: "/star-placements/ankit-raj-wipro.webp", name: "Ankit Raj", company: "Wipro", location: "Zurich, Switzerland" },
+      { img: "/star-placements/samiksha-gupta.webp", name: "Samiksha Gupta", company: "Wipro", location: "Irving, Texas, USA" },
+      { img: "/star-placements/suraj-prakash.webp", name: "Suraj Prakash", company: "Wipro", location: "Sydney, Australia" },
+      { img: "/star-placements/priyanka-kumari-tcs.webp", name: "Priyanka Kumari", course: "BCA", company: "TCS", location: "Michigan, USA" },
+      { img: "/star-placements/monu-singh.webp", name: "Monu Singh", course: "BCA", company: "HCL Tech", location: "Vancouver, Canada" },
+      { img: "/star-placements/monika-roy.webp", name: "Monika Roy", company: "Ocado Technology", location: "Tokyo, Japan" },
+    ],
+  },
   campus: {
     display: "Not just the classroom.",
     sub: "There's National Technology Day, the Ojas Sports Meet, Robo Race, and the Holi Mela that takes over the entire campus.",

@@ -10,6 +10,7 @@ import Reasons from "@/components/Reasons";
 import Stack from "@/components/Stack";
 import Labs from "@/components/Labs";
 import PhysicalAI from "@/components/PhysicalAI";
+import StarPlacements from "@/components/StarPlacements";
 import GlobalAlumni from "@/components/GlobalAlumni";
 import CampusLife from "@/components/CampusLife";
 import Reels from "@/components/Reels";
@@ -41,6 +42,7 @@ export default function Page() {
       <Stack />
       <Labs />
       <Quadruped />
+      <StarPlacements />
       <GlobalAlumni />
       <JoinBanner />
       <Trust />

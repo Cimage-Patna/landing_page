@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "motion/react";
 import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
@@ -21,18 +20,20 @@ export default function GlobalAlumni() {
 
   return (
     <section
-      className="relative overflow-hidden py-16 sm:py-20"
+      className="relative overflow-hidden pb-4 pt-2 sm:pb-6 sm:pt-4"
       style={{ backgroundColor: BG }}
     >
-      <div className="mx-auto max-w-6xl px-6">
+      {/* Bridge caption — ties the faces above into the world map below, so the
+          two read as one story instead of two stacked sections. */}
+      <div className="mx-auto max-w-6xl px-6 text-center">
         <Reveal>
           <p className="text-[11px] uppercase tracking-[0.3em] text-amber-400/80">
-            The Alumni
+            And now — across the world
           </p>
-          <h2 className="mt-3 font-display text-5xl sm:text-7xl font-black text-white">
+          <h3 className="mt-2 font-display text-3xl sm:text-5xl font-black text-white">
             {copy.alumni.display}
-          </h2>
-          <p className="mt-4 max-w-2xl text-neutral-400">{copy.alumni.sub}</p>
+          </h3>
+          <p className="mx-auto mt-3 max-w-2xl text-neutral-400">{copy.alumni.sub}</p>
         </Reveal>
       </div>
 
@@ -40,7 +41,7 @@ export default function GlobalAlumni() {
           the image) so pins stay locked to cities; the strip just clips it
           thinner on desktop. */}
       <Reveal delay={0.1}>
-        <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden sm:mt-10 sm:aspect-[3/1]">
+        <div className="relative mt-4 aspect-[16/9] w-full overflow-hidden sm:mt-6 sm:aspect-[3/1]">
           {/* 16:9 map layer, vertically centered in the strip */}
           <div className="absolute left-0 top-1/2 aspect-[16/9] w-full -translate-y-1/2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -137,34 +138,6 @@ export default function GlobalAlumni() {
           </div>
         </div>
       </Reveal>
-
-      <div className="mx-auto max-w-6xl px-6">
-        {/* Real alumni — photo + the company they were placed at */}
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {copy.alumni.cards.map((c, i) => (
-            <Reveal key={i} delay={(i % 4) * 0.05}>
-              <div className="group relative aspect-[4/5] overflow-hidden rounded-xl border border-white/10 bg-neutral-900">
-                <Image
-                  src={c.img}
-                  alt={`CIMAGE alumnus placed at ${c.company}`}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  className="object-cover object-center opacity-90 transition duration-700 group-hover:scale-[1.04] group-hover:opacity-100"
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute inset-x-0 top-0 p-2.5">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/65 px-2.5 py-1 backdrop-blur">
-                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                    <span className="text-[10px] font-medium text-white/90">
-                      {c.company}
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
