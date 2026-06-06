@@ -1,4 +1,6 @@
 import Reveal from "./Reveal";
+import LazyVideo from "./LazyVideo";
+import { asset } from "@/lib/assets";
 
 /**
  * Full-bleed auto-looping text video, fused into the page. The clip is black
@@ -13,18 +15,11 @@ export default function JoinBanner() {
       style={{ backgroundColor: "var(--page-bg)" }}
     >
       <Reveal>
-        <video
+        <LazyVideo
+          src={asset("/text.mp4")}
+          poster={asset("/text-poster.webp")}
           className="join-video block aspect-[16/9] w-full object-cover sm:aspect-[21/9]"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/text-poster.webp"
-          aria-hidden="true"
-        >
-          <source src="/text.mp4" type="video/mp4" />
-        </video>
+        />
       </Reveal>
       <style>{`
         .join-video { filter: invert(1); }

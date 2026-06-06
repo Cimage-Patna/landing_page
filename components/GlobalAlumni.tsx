@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
+import { asset } from "@/lib/assets";
 
 // Matches the section background in BOTH themes (#0a0a0a dark / #f5f5f4 light),
 // so the edge fades are invisible — no shadow in light mode.
@@ -46,7 +47,7 @@ export default function GlobalAlumni() {
           <div className="absolute left-0 top-1/2 aspect-[16/9] w-full -translate-y-1/2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/alumni/world-map.webp"
+              src={asset("/alumni/world-map.webp")}
               alt=""
               aria-hidden="true"
               data-themed="world-map"

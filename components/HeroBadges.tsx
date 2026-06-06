@@ -1,3 +1,5 @@
+import { asset } from "@/lib/assets";
+
 /**
  * Accreditation + partner badges shown under the hero headline.
  * Each badge sits in a uniform square white chip so they all read at the same
@@ -22,7 +24,7 @@ export default function HeroBadges() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={b.src}
+            src={asset(b.src)}
             alt={b.alt}
             className="max-h-full max-w-full object-contain"
           />

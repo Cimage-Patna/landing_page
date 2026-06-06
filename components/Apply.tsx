@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
+import { asset } from "@/lib/assets";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -67,7 +68,7 @@ export default function Apply() {
     <section id="apply" className="relative overflow-hidden bg-neutral-950 px-5 py-16 sm:py-24">
       {/* Background — group photo of placed CIMAGE students */}
       <Image
-        src="/gp.png"
+        src={asset("/gp.png")}
         alt=""
         aria-hidden="true"
         fill

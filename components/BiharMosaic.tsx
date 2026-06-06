@@ -2,9 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import { BIHAR_PATH, BIHAR_VB } from "@/lib/biharPath";
+import { asset } from "@/lib/assets";
 
 // Tiles live at public/placed/p1.jpg .. p161.jpg
-const TILE_SRCS = Array.from({ length: 161 }, (_, i) => `/placed/p${i + 1}.jpg`);
+const TILE_SRCS = Array.from({ length: 161 }, (_, i) => asset(`/placed/p${i + 1}.jpg`));
 
 // Looping choreography (seconds): flow → converge → hold → disperse → repeat
 const LEAD = 1.0; // brief free-flow before the first assembly

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { asset } from "@/lib/assets";
 
 const DESKTOP = { video: "/HRO-web.mp4", poster: "/hero/hro-poster.webp" };
 const MOBILE = { video: "/HRO-mobile.mp4", poster: "/hero/hro-poster-mobile.webp" };
@@ -69,10 +70,10 @@ export default function HeroVideo() {
     <>
       {/* Server-rendered art-directed poster — the always-present base layer */}
       <picture>
-        <source media={MOBILE_Q} srcSet={MOBILE.poster} />
+        <source media={MOBILE_Q} srcSet={asset(MOBILE.poster)} />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={DESKTOP.poster}
+          src={asset(DESKTOP.poster)}
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover"
@@ -90,10 +91,10 @@ export default function HeroVideo() {
           loop
           playsInline
           preload="auto"
-          poster={src.poster}
+          poster={asset(src.poster)}
           aria-hidden="true"
         >
-          <source src={src.video} type="video/mp4" />
+          <source src={asset(src.video)} type="video/mp4" />
         </video>
       )}
     </>

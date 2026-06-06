@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    // Assets are pre-sized webp/jpg served from S3. Skip Next/Amplify's
+    // on-demand image optimizer entirely — it was a per-request Lambda cost and
+    // is redundant now that files come straight from the bucket.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",

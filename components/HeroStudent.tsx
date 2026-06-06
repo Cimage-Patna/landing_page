@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { asset } from "@/lib/assets";
 
 /**
  * Foreground cutout of a student, sitting on the iso-lab floor in the hero.
@@ -28,7 +29,7 @@ export default function HeroStudent() {
         {!imgFailed && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src="/hero/student-3d.webp"
+            src={asset("/hero/student-3d.webp")}
             alt=""
             onError={() => setImgFailed(true)}
             className="relative w-full h-auto drop-shadow-[0_30px_60px_rgba(0,0,0,0.55)]"

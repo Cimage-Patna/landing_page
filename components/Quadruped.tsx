@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Reveal from "./Reveal";
+import LazyVideo from "./LazyVideo";
+import { asset } from "@/lib/assets";
 
 export default function Quadruped() {
   const ref = useRef<HTMLElement | null>(null);
@@ -23,17 +25,7 @@ export default function Quadruped() {
         style={{ y }}
         className="pointer-events-none absolute inset-x-0 top-[-14%] h-[128%]"
       >
-        <video
-          className="h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        >
-          <source src="/adverb_bot.mp4" type="video/mp4" />
-        </video>
+        <LazyVideo src={asset("/adverb_bot.mp4")} className="h-full w-full object-cover" />
       </motion.div>
 
       {/* Legibility overlay over the footage (kept light) */}
