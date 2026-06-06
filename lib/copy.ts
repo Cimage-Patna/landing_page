@@ -97,12 +97,13 @@ export const copy = {
     // credit: required attribution — keep it; the licenses (GODL-India, CC-BY,
     // CC-BY-SA, free "Attribution") all mandate crediting the source.
     items: [
-      { name: "Dr. A.P.J. Abdul Kalam", role: "Former President of India", photo: "/visitors/abdul-kalam.jpg", credit: "Govt. of India · GODL-India" },
-      { name: "Shri Nitish Kumar", role: "Ex-Chief Minister of Bihar", photo: "/visitors/nitish-kumar.jpg", credit: "Govt. of Bihar" },
+      { name: "Dr. A.P.J. Abdul Kalam", role: "Former President of India", photo: "/visitors/abdul-kalam-cimage.webp", credit: "CIMAGE Archives" },
+      { name: "Shri Nitish Kumar", role: "Ex-Chief Minister of Bihar", photo: "/visitors/nitish-kumar-cimage.webp", credit: "CIMAGE Archives" },
       { name: "Shri Rajendra Arlekar", role: "Hon. Governor of Bihar", photo: "/visitors/rajendra-arlekar.jpg", credit: "PMO, Govt. of India · GODL-India" },
       { name: "Shri Ramesh Pokhriyal", role: "Former HRD Minister, Govt. of India", photo: "/visitors/ramesh-pokhriyal.jpg", credit: "Ministry of Education · GODL-India" },
       { name: "Shri Ashok Choudhary", role: "Minister, Govt. of Bihar", photo: "/visitors/ashok-choudhary.jpg", credit: "Govt. of Bihar" },
       { name: "Dr. Sanjay Paswan", role: "Former Union Minister", photo: "/visitors/sanjay-paswan.jpg", credit: "Govt. of India · GODL-India" },
+      { name: "Piyush Mishra", role: "Actor, Lyricist & Theatre Artist", photo: "/visitors/piyush-mishra-cimage.webp", credit: "CIMAGE Archives" },
       { name: "Shri Shekhar Sen", role: "Theatre Artist", photo: "/visitors/shekhar-sen.jpg", credit: "Niteshukla / Wikimedia · CC BY-SA 4.0" },
       { name: "Sudesh Lehri", role: "Comedian & Actor", photo: "/visitors/sudesh-lehri.jpg", credit: "Bollywood Hungama · CC BY 3.0" },
       { name: "Shri Padamjit Sahrawat", role: "Author & Commentator" },
