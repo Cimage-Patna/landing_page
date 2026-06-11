@@ -14,7 +14,7 @@ function applyTheme(theme: Theme) {
 }
 
 function readInitialTheme(): Theme {
-  if (typeof window === "undefined") return "dark";
+  if (typeof window === "undefined") return "light";
   const stored = (() => {
     try {
       return localStorage.getItem(STORAGE_KEY) as Theme | null;
@@ -23,12 +23,12 @@ function readInitialTheme(): Theme {
     }
   })();
   if (stored === "light" || stored === "dark") return stored;
-  // Default to dark for new visitors, regardless of OS preference.
-  return "dark";
+  // Default to light for new visitors, regardless of OS preference.
+  return "light";
 }
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
