@@ -1,0 +1,167 @@
+"use client";
+
+import { useRef, useState } from "react";
+import Image from "next/image";
+import { copy } from "@/lib/copy";
+
+/* Exact replica of MU's .ourProgramme — black band, "Our Programmes" heading,
+   category tab pills with prev/next arrows, and a horizontal rail of large
+   detail cards (image + play, "UG Programme in <field>", blurb,
+   Format/Eligibility/Duration/Deadline grid, gradient-border Explore button).
+   Driven by CIMAGE's real programmes. */
+
+// Map each degree to the "field" wording MU uses (prefix + bold field).
+const FIELD: Record<string, string> = {
+  BCA: "Computer Applications (BCA)",
+  BBA: "Business Administration (BBA)",
+  "B.Sc. (IT)": "Information Technology (B.Sc.)",
+  "B.Com (P)": "Commerce — Professional (B.Com)",
+  MCA: "Computer Applications (MCA)",
+  MBA: "Business Administration (MBA)",
+};
+
+function facts(groupLabel: string) {
+  const pg = /post/i.test(groupLabel);
+  return {
+    format: { value: "On Campus", note: "Industry-integrated" },
+    eligibility: pg ? "Graduates in any discipline" : "Class 12th Students & Pass-outs",
+    duration: pg ? "2 Years (Full Time)" : "3 Years (Incl. industry training)",
+    deadline: "Admissions Open · Batch 2026",
+  };
+}
+
+const ICONS = {
+  format: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3 2 8l10 5 10-5-10-5Z" /><path d="M6 10.5V15c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4.5" />
+    </svg>
+  ),
+  eligibility: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 21h18M5 21V8l7-4 7 4v13" /><path d="M9 21v-5h6v5M9.5 11h0M14.5 11h0" />
+    </svg>
+  ),
+  duration: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" />
+    </svg>
+  ),
+  deadline: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 2h12M6 22h12M8 2c0 4 8 6 8 10s-8 6-8 10M16 2c0 4-8 6-8 10s8 6 8 10" />
+    </svg>
+  ),
+};
+
+function DiagArrow() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function Flexi({ icon, label, value, note }: { icon: React.ReactNode; label: string; value: string; note?: string }) {
+  return (
+    <div className="mu-prog-flexi">
+      <span className="ic">{icon}</span>
+      <div>
+        <p className="lbl">{label}</p>
+        <p className="val">
+          {value}
+          {note && (
+            <>
+              <br />
+              <span>({note})</span>
+            </>
+          )}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function MUPrograms() {
+  const p = copy.programs;
+  const [active, setActive] = useState(0);
+  const railRef = useRef<HTMLDivElement | null>(null);
+  const group = p.groups[active];
+  const f = facts(group.label);
+
+  const scrollBy = (dir: 1 | -1) => {
+    railRef.current?.scrollBy({ left: dir * 534, behavior: "smooth" });
+  };
+
+  return (
+    <section id="programs" className="bg-[#090909] py-16 text-white sm:py-24">
+      <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
+        <h2 className="mu-serif text-[2.1rem] leading-[1.1] sm:text-[3rem]">
+          Our <span className="italic">Programmes</span>
+        </h2>
+
+        {/* tab pills + prev/next arrows */}
+        <div className="mt-8 flex items-center justify-between gap-4">
+          <div className="mu-no-scrollbar min-w-0 flex-1">
+            <div className="mu-prog-tabs">
+              {p.groups.map((g, i) => (
+                <button
+                  key={g.label}
+                  type="button"
+                  onClick={() => setActive(i)}
+                  className={`mu-prog-tab ${i === active ? "is-active" : ""}`}
+                >
+                  {g.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="mu-prog-arrows hidden sm:flex">
+            <button type="button" aria-label="Previous" className="mu-prog-arrow-btn" onClick={() => scrollBy(-1)}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+            <button type="button" aria-label="Next" className="mu-prog-arrow-btn" onClick={() => scrollBy(1)}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          </div>
+        </div>
+
+        {/* card rail */}
+        <div ref={railRef} className="mu-no-scrollbar mt-6 mu-prog-rail">
+          {group.items.map((item) => {
+            const isUG = !/post/i.test(group.label);
+            return (
+              <article key={item.name} className="mu-prog-card">
+                <a href={item.href} target="_blank" rel="noopener noreferrer" className="mu-prog-imgwrap block">
+                  <Image src={item.img} alt={item.name} width={560} height={336} />
+                  <span className="mu-prog-play" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#090909"><path d="M8 5v14l11-7L8 5Z" /></svg>
+                  </span>
+                </a>
+
+                <div>
+                  <h3 className="mu-prog-title">
+                    {isUG ? "UG Programme in " : "PG Programme in "}
+                    <span>{FIELD[item.name] ?? item.name}</span>
+                  </h3>
+                  <p className="mu-prog-desc mt-2">{item.desc}</p>
+                </div>
+
+                <div className="mu-prog-info">
+                  <Flexi icon={ICONS.format} label="Format" value={f.format.value} note={f.format.note} />
+                  <Flexi icon={ICONS.eligibility} label="Eligibility" value={f.eligibility} />
+                  <Flexi icon={ICONS.duration} label="Duration" value={f.duration} />
+                  <Flexi icon={ICONS.deadline} label="Deadline" value={f.deadline} />
+                </div>
+
+                <a href={item.href} target="_blank" rel="noopener noreferrer" className="mu-prog-btn">
+                  Explore Programme
+                  <DiagArrow />
+                </a>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

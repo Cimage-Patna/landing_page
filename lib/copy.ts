@@ -247,6 +247,30 @@ export const copy = {
       },
     ],
   },
+  // ── "Hear Straight from Our Alumni" — MU's .sharkTank video coverflow. Each
+  //    story is a wide video still with a "Watch Video" pill (top-left), a name
+  //    plate (top-right: name + batch) and a company plate (bottom-left: role +
+  //    company / logo). The play button opens the YouTube clip in a lightbox.
+  //    NOTE: thumbnails are real star-placement photos used as placeholders —
+  //    swap `thumb` for the landscape video still and drop the 11-char id into
+  //    `youtube` (e.g. "dQw4w9WgXcQ") when the clips are ready. `logo` is an
+  //    optional company-logo image; leave "" to render the company as text.
+  videoStories: {
+    display: "Hear Straight from",
+    displayAccent: "Our Alumni",
+    // `youtube` = a YouTube video id (preferred). `video` = a direct mp4 fallback
+    // (currently CIMAGE reels as placeholders — swap in real alumni interview
+    // clips). The carousel plays whichever is set, inline in the centre card.
+    stories: [
+      { name: "Anup Gupta", batch: "BCA · Batch 2014", place: "Principal Consultant @", company: "PwC", logo: "", thumb: asset("/star-placements/anup-gupta.webp"), youtube: "", video: `${REELS}/reel-1.mp4` },
+      { name: "Priyanka Kumari", batch: "BCA · Batch 2018", place: "Associate Test Manager @", company: "Novigo Solutions", logo: "", thumb: asset("/star-placements/priyanka-kumari-novigo.webp"), youtube: "", video: `${REELS}/reel-6.mp4` },
+      { name: "Pratik Kumar", batch: "BCA · Batch 2016", place: "Senior Consultant @", company: "Ernst & Young", logo: "", thumb: asset("/star-placements/pratik-kumar.webp"), youtube: "", video: `${REELS}/reel-3.mp4` },
+      { name: "Sushant Ketu", batch: "BSc IT · Batch 2017", place: "Technical Lead @", company: "Coforge", logo: "", thumb: asset("/star-placements/sushant-ketu.webp"), youtube: "", video: `${REELS}/reel-4.mp4` },
+      { name: "Ankit Raj", batch: "BSc IT · Batch 2018", place: "Consultant @", company: "Capgemini", logo: "", thumb: asset("/star-placements/ankit-raj-capgemini.webp"), youtube: "", video: `${REELS}/reel-9.mp4` },
+      { name: "Sweta Kumari", batch: "BCA · Batch 2015", place: "Analyst, London @", company: "J.P. Morgan", logo: "", thumb: asset("/star-placements/sweta-kumari.webp"), youtube: "", video: `${REELS}/reel-5.mp4` },
+      { name: "Monu Singh", batch: "BCA · Batch 2016", place: "Engineer, Vancouver @", company: "HCL Tech", logo: "", thumb: asset("/star-placements/monu-singh.webp"), youtube: "", video: `${REELS}/reel-7.mp4` },
+    ],
+  },
   awards: {
     display: "Recognized where it counts.",
     items: [
