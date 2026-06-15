@@ -247,28 +247,24 @@ export const copy = {
       },
     ],
   },
-  // ── "Hear Straight from Our Alumni" — MU's .sharkTank video coverflow. Each
-  //    story is a wide video still with a "Watch Video" pill (top-left), a name
-  //    plate (top-right: name + batch) and a company plate (bottom-left: role +
-  //    company / logo). The play button opens the YouTube clip in a lightbox.
-  //    NOTE: thumbnails are real star-placement photos used as placeholders —
-  //    swap `thumb` for the landscape video still and drop the 11-char id into
-  //    `youtube` (e.g. "dQw4w9WgXcQ") when the clips are ready. `logo` is an
-  //    optional company-logo image; leave "" to render the company as text.
+  // ── "Hear straight from our alumni" — MU's .insightSection card rail. Each
+  //    card is a video still with a centred play button (opens the clip in a
+  //    lightbox), then a title + short description. `youtube` = a YouTube id
+  //    (preferred); `video` = a direct mp4 fallback (CIMAGE reels as placeholders
+  //    — swap in real alumni interview clips). Thumbnails are real star-placement
+  //    photos used as placeholders; swap `thumb` for the video still.
   videoStories: {
-    display: "Hear Straight from",
-    displayAccent: "Our Alumni",
-    // `youtube` = a YouTube video id (preferred). `video` = a direct mp4 fallback
-    // (currently CIMAGE reels as placeholders — swap in real alumni interview
-    // clips). The carousel plays whichever is set, inline in the centre card.
+    display: "Hear straight from",
+    displayAccent: "our alumni",
+    sub: "Placements, the campus, internships and the years in between — all in their own words.",
     stories: [
-      { name: "Anup Gupta", batch: "BCA · Batch 2014", place: "Principal Consultant @", company: "PwC", logo: "", thumb: asset("/star-placements/anup-gupta.webp"), youtube: "", video: `${REELS}/reel-1.mp4` },
-      { name: "Priyanka Kumari", batch: "BCA · Batch 2018", place: "Associate Test Manager @", company: "Novigo Solutions", logo: "", thumb: asset("/star-placements/priyanka-kumari-novigo.webp"), youtube: "", video: `${REELS}/reel-6.mp4` },
-      { name: "Pratik Kumar", batch: "BCA · Batch 2016", place: "Senior Consultant @", company: "Ernst & Young", logo: "", thumb: asset("/star-placements/pratik-kumar.webp"), youtube: "", video: `${REELS}/reel-3.mp4` },
-      { name: "Sushant Ketu", batch: "BSc IT · Batch 2017", place: "Technical Lead @", company: "Coforge", logo: "", thumb: asset("/star-placements/sushant-ketu.webp"), youtube: "", video: `${REELS}/reel-4.mp4` },
-      { name: "Ankit Raj", batch: "BSc IT · Batch 2018", place: "Consultant @", company: "Capgemini", logo: "", thumb: asset("/star-placements/ankit-raj-capgemini.webp"), youtube: "", video: `${REELS}/reel-9.mp4` },
-      { name: "Sweta Kumari", batch: "BCA · Batch 2015", place: "Analyst, London @", company: "J.P. Morgan", logo: "", thumb: asset("/star-placements/sweta-kumari.webp"), youtube: "", video: `${REELS}/reel-5.mp4` },
-      { name: "Monu Singh", batch: "BCA · Batch 2016", place: "Engineer, Vancouver @", company: "HCL Tech", logo: "", thumb: asset("/star-placements/monu-singh.webp"), youtube: "", video: `${REELS}/reel-7.mp4` },
+      { title: "From Chhapra to PwC", desc: "Anup Gupta on the BCA years and the placement drive that took him to a Principal Consultant role at PwC.", thumb: asset("/star-placements/anup-gupta.webp"), youtube: "", video: `${REELS}/reel-1.mp4` },
+      { title: "Testing her way up at Novigo", desc: "Priyanka Kumari on going from CIMAGE to an Associate Test Manager role at Novigo Solutions.", thumb: asset("/star-placements/priyanka-kumari-novigo.webp"), youtube: "", video: `${REELS}/reel-6.mp4` },
+      { title: "Consulting at Ernst & Young", desc: "Pratik Kumar on the projects, mock interviews and prep that took him from Patna to EY.", thumb: asset("/star-placements/pratik-kumar.webp"), youtube: "", video: `${REELS}/reel-3.mp4` },
+      { title: "Leading tech at Coforge", desc: "Sushant Ketu on the BSc IT journey from Siwan to a Technical Lead role at Coforge.", thumb: asset("/star-placements/sushant-ketu.webp"), youtube: "", video: `${REELS}/reel-4.mp4` },
+      { title: "Cracking Capgemini", desc: "Ankit Raj on the aptitude and interview training that earned him a Consultant offer at Capgemini.", thumb: asset("/star-placements/ankit-raj-capgemini.webp"), youtube: "", video: `${REELS}/reel-9.mp4` },
+      { title: "From Patna to London", desc: "Sweta Kumari on the skills she built at CIMAGE that took her to J.P. Morgan in London.", thumb: asset("/star-placements/sweta-kumari.webp"), youtube: "", video: `${REELS}/reel-5.mp4` },
+      { title: "All the way to Vancouver", desc: "Monu Singh on the BCA foundation behind his move to HCL Tech in Vancouver.", thumb: asset("/star-placements/monu-singh.webp"), youtube: "", video: `${REELS}/reel-7.mp4` },
     ],
   },
   awards: {

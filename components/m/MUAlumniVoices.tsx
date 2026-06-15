@@ -3,228 +3,159 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { copy } from "@/lib/copy";
-import { Reveal } from "./ui";
 
-/* MU's .sharkTank "Hear Straight from Our Alumni" — a wide video coverflow.
-   The centre (active) card carries the "Watch Video" pill, a name plate that
-   overhangs the top-right and a company plate that overhangs the bottom-left;
-   its play button opens the YouTube clip in a lightbox. Pure CSS transforms
-   (depth, not tilt) + a little React for the active index, swipe and modal.
+/* MU's .insightSection card rail — "Hear straight from our alumni". A header
+   (heading + sub on the left, prev/next arrows on the right) over a
+   horizontally-scrolling rail of cards: a video still with a centred play
+   button (opens the clip in a lightbox), then a title + short description.
+   Native scroll-snap rail (no Swiper) + a little React for the arrows + modal.
    Driven by copy.videoStories. */
 
 const v = copy.videoStories;
 const stories = v.stories;
-const LAST = stories.length - 1;
-
-/* Neighbour spread comes from the CSS var --mu-vx (flexed per breakpoint);
-   scale + opacity fall off by |offset| from the active card. Flat — no tilt,
-   exactly like MU's coverflow (rotateY 0, depth via scale). */
-function cardStyle(offset: number): React.CSSProperties {
-  const abs = Math.abs(offset);
-  const scale = abs === 0 ? 1 : abs === 1 ? 0.92 : 0.82;
-  return {
-    transform: `translate(calc(-50% + ${offset} * var(--mu-vx)), -50%) scale(${scale})`,
-    opacity: abs > 2 ? 0 : abs === 2 ? 0.5 : 1,
-    zIndex: 10 - abs,
-    pointerEvents: abs > 2 ? "none" : "auto",
-  };
-}
 
 export default function MUAlumniVoices() {
-  const [active, setActive] = useState(stories.length > 2 ? 2 : 0);
-  // Which centre video is playing inline (the YouTube id), or null.
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const touchX = useRef<number | null>(null);
+  const railRef = useRef<HTMLDivElement | null>(null);
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
 
-  // Any navigation stops the inline video so it never plays off-centre.
-  const select = useCallback((i: number) => {
-    setPlayingId(null);
-    setActive(Math.min(LAST, Math.max(0, i)));
-  }, []);
-  const go = useCallback((dir: number) => {
-    setPlayingId(null);
-    setActive((a) => Math.min(LAST, Math.max(0, a + dir)));
+  const updateArrows = useCallback(() => {
+    const el = railRef.current;
+    if (!el) return;
+    setAtStart(el.scrollLeft <= 4);
+    setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 4);
   }, []);
 
-  // Escape stops playback.
   useEffect(() => {
-    if (!playingId) return;
+    updateArrows();
+    const el = railRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateArrows, { passive: true });
+    window.addEventListener("resize", updateArrows);
+    return () => {
+      el.removeEventListener("scroll", updateArrows);
+      window.removeEventListener("resize", updateArrows);
+    };
+  }, [updateArrows]);
+
+  const scrollByCard = (dir: number) => {
+    const el = railRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>(".mu-insight-card");
+    const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
+
+  // Lock scroll + close on Escape while the lightbox is open.
+  useEffect(() => {
+    if (openIdx === null) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setPlayingId(null);
+      if (e.key === "Escape") setOpenIdx(null);
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [playingId]);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [openIdx]);
+
+  const playing = openIdx !== null ? stories[openIdx] : null;
 
   return (
-    <section className="mu-voices relative overflow-hidden bg-[#090909] py-16 sm:py-24">
-      <div className="mu-voices-watermark" aria-hidden="true">
-        CIMAGE
-      </div>
+    <section className="mu-insight bg-[#090909] py-16 text-white sm:py-24">
+      <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
+        {/* header: heading + sub (left), prev/next (right) */}
+        <div className="mu-insight-head">
+          <div>
+            <h2 className="text-[2rem] font-semibold leading-[1.1] text-white sm:text-[2.6rem]">
+              {v.display} <span className="mu-serif font-normal italic">{v.displayAccent}</span>
+            </h2>
+            <p className="mt-3 max-w-xl text-[16px] text-white/60">{v.sub}</p>
+          </div>
 
-      <Reveal className="relative z-[1] px-5 text-center">
-        <h2 className="mu-serif text-[2rem] leading-[1.12] text-white sm:text-[3rem]">
-          {v.display}
-          <br />
-          <span className="italic mu-gradient-text">{v.displayAccent}</span>
-        </h2>
-      </Reveal>
-
-      <div
-        className="mu-voices-stage"
-        onTouchStart={(e) => {
-          touchX.current = e.touches[0].clientX;
-        }}
-        onTouchEnd={(e) => {
-          if (touchX.current == null) return;
-          const dx = e.changedTouches[0].clientX - touchX.current;
-          if (Math.abs(dx) > 44) go(dx < 0 ? 1 : -1);
-          touchX.current = null;
-        }}
-      >
-        {stories.map((s, i) => {
-          const offset = i - active;
-          const isActive = offset === 0;
-          const hidden = Math.abs(offset) > 2;
-          const playKey = s.youtube || s.video;
-          const playingThis = isActive && playingId !== null && playingId === playKey;
-          return (
-            <div
-              key={i}
-              className={`mu-voices-card${isActive ? " is-active" : ""}`}
-              style={cardStyle(offset)}
-              aria-hidden={hidden}
-              role={isActive ? "group" : "button"}
-              tabIndex={isActive || hidden ? -1 : 0}
-              aria-label={isActive ? undefined : `Show ${s.name}'s story`}
-              onClick={isActive ? undefined : () => select(i)}
-              onKeyDown={
-                isActive
-                  ? undefined
-                  : (e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        select(i);
-                      }
-                    }
-              }
-            >
-              <div className="mu-voices-screen">
-                {playingThis ? (
-                  s.youtube ? (
-                    <iframe
-                      className="mu-voices-iframe"
-                      src={`https://www.youtube.com/embed/${s.youtube}?autoplay=1&rel=0&modestbranding=1`}
-                      title={`${s.name} — alumni video`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  ) : (
-                    // eslint-disable-next-line jsx-a11y/media-has-caption
-                    <video
-                      className="mu-voices-iframe mu-voices-video"
-                      src={s.video}
-                      poster={s.thumb}
-                      controls
-                      autoPlay
-                      playsInline
-                    />
-                  )
-                ) : (
-                  <>
-                    <Image
-                      src={s.thumb}
-                      alt={s.name}
-                      fill
-                      sizes="(max-width:1024px) 80vw, 900px"
-                      className="mu-voices-img"
-                    />
-                    <div className="mu-voices-tint" />
-
-                    {isActive && (
-                      <button
-                        type="button"
-                        className="mu-voices-play"
-                        aria-label={`Watch ${s.name}'s video`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (s.youtube || s.video) setPlayingId(s.youtube || s.video);
-                        }}
-                      >
-                        <span className="mu-voices-disc">
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="#090909" aria-hidden="true">
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </span>
-                        <span className="mu-voices-watch">Watch Video</span>
-                      </button>
-                    )}
-                  </>
-                )}
-              </div>
-
-              {isActive && !playingThis && (
-                <>
-                  <div className="mu-voices-plate mu-voices-plate-name">
-                    <div>
-                      <span className="mu-voices-pname">{s.name}</span>
-                      <span className="mu-voices-pbatch">{s.batch}</span>
-                    </div>
-                    <span className="mu-voices-scribble" aria-hidden="true" />
-                  </div>
-
-                  <div className="mu-voices-plate mu-voices-plate-company">
-                    <span className="mu-voices-plabel">{s.place}</span>
-                    {s.logo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={s.logo} alt={s.company} className="mu-voices-logo" />
-                    ) : (
-                      <span className="mu-voices-company">{s.company}</span>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="mu-voices-controls">
-        <button
-          className="mu-prog-arrow-btn"
-          onClick={() => go(-1)}
-          disabled={active === 0}
-          aria-label="Previous story"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-
-        <div className="mu-voices-dots" role="tablist" aria-label="Alumni stories">
-          {stories.map((_, i) => (
+          <div className="mu-insight-arrows">
             <button
-              key={i}
-              role="tab"
-              aria-selected={i === active}
-              aria-label={`Go to story ${i + 1}`}
-              className={`mu-voices-dot${i === active ? " is-active" : ""}`}
-              onClick={() => select(i)}
-            />
-          ))}
+              className="mu-prog-arrow-btn"
+              onClick={() => scrollByCard(-1)}
+              disabled={atStart}
+              aria-label="Previous"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              className="mu-prog-arrow-btn"
+              onClick={() => scrollByCard(1)}
+              disabled={atEnd}
+              aria-label="Next"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <button
-          className="mu-prog-arrow-btn"
-          onClick={() => go(1)}
-          disabled={active === LAST}
-          aria-label="Next story"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+        {/* card rail */}
+        <div ref={railRef} className="mu-insight-rail mu-no-scrollbar">
+          {stories.map((s, i) => (
+            <article key={i} className="mu-insight-card">
+              <div className="mu-insight-img">
+                <Image src={s.thumb} alt={s.title} fill sizes="(max-width:768px) 82vw, (max-width:1024px) 46vw, 400px" />
+                <button
+                  type="button"
+                  className="mu-insight-play"
+                  aria-label={`Play: ${s.title}`}
+                  onClick={() => {
+                    if (s.youtube || s.video) setOpenIdx(i);
+                  }}
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="#090909" aria-hidden="true">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </button>
+              </div>
+              <div className="mu-insight-text">
+                <p className="mu-insight-title">{s.title}</p>
+                <p className="mu-insight-desc">{s.desc}</p>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
+
+      {playing && (
+        <div
+          className="mu-voices-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={playing.title}
+          onClick={() => setOpenIdx(null)}
+        >
+          <button className="mu-voices-close" aria-label="Close video" onClick={() => setOpenIdx(null)}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+          <div className="mu-voices-frame" onClick={(e) => e.stopPropagation()}>
+            {playing.youtube ? (
+              <iframe
+                src={`https://www.youtube.com/embed/${playing.youtube}?autoplay=1&rel=0`}
+                title={playing.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              // eslint-disable-next-line jsx-a11y/media-has-caption
+              <video src={playing.video} poster={playing.thumb} controls autoPlay playsInline />
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

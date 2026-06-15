@@ -1,99 +1,142 @@
-import { copy } from "@/lib/copy";
-import { Reveal } from "./ui";
+"use client";
 
-function Icon({ name }: { name: string }) {
-  const common = {
-    width: 26,
-    height: 26,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.7,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
+import { useRef, type CSSProperties } from "react";
+
+/* "Why Choose CIMAGE" — exact replica of the upGrad "Built Different" feature
+   grid: a 4-col bordered grid where each cell has an animated icon, on-hover
+   grid-pattern + glow, a growing left accent bar, and a 3D cursor tilt.
+   Keyed to the MU theme — yellow as --primary, on the dark band. */
+
+const PRIMARY = "#fad133";
+
+type Feature = { icon: string; title: string; desc: string };
+
+// Real CIMAGE strengths; icons reuse upGrad's animated gif set (swap for own).
+const FEATURES: Feature[] = [
+  {
+    icon: "https://sot.upgrad.com/assets/brain.gif",
+    title: "Industry-Aligned Curriculum",
+    desc: "Java, Python, DBMS, Cloud & AI — the syllabus is rebuilt every year against what the IT market is actually hiring for.",
+  },
+  {
+    icon: "https://sot.upgrad.com/assets/system.gif",
+    title: "IIT Bombay E-Yantra Lab",
+    desc: "The only BCA college in Bihar with an IIT Bombay-certified robotics & AI lab on campus.",
+  },
+  {
+    icon: "https://sot.upgrad.com/assets/intern.gif",
+    title: "Wipro Centre of Excellence",
+    desc: "An active MoU with Wipro Ltd. — a signed industry certification on your CV before you graduate.",
+  },
+  {
+    icon: "https://sot.upgrad.com/assets/placement.gif",
+    title: "Placement-First Training",
+    desc: "Aptitude, mock interviews & GD prep from year one — 317 TCS offers came in a single drive.",
+  },
+  {
+    icon: "https://sot.upgrad.com/assets/map.gif",
+    title: "Google for Education Partner",
+    desc: "The only Google for Education partner in the state — you train on the same tools the industry runs on.",
+  },
+  {
+    icon: "https://sot.upgrad.com/assets/career.gif",
+    title: "13,500+ Alumni Network",
+    desc: "Alumni placed at TCS, ICICI, EY and beyond — from Patna to London, Dubai and Zurich.",
+  },
+  {
+    icon: "https://sot.upgrad.com/assets/root.gif",
+    title: "Language Lab Support",
+    desc: "A full year of English-communication training so the language gap is closed by placement season.",
+  },
+  {
+    icon: "https://sot.upgrad.com/assets/scholar.gif",
+    title: "Scholarships & Recognition",
+    desc: "Merit scholarships and flexible financing — AICTE-approved and NAAC-accredited.",
+  },
+];
+
+function FeatureCard({ f }: { f: Feature }) {
+  const tilt = useRef<HTMLDivElement | null>(null);
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = tilt.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    el.style.transform = `rotateX(${-py * 9}deg) rotateY(${px * 9}deg)`;
   };
-  switch (name) {
-    case "rank":
-      return (
-        <svg {...common}>
-          <path d="M12 15l-3 6 3-1.5L15 21l-3-6" />
-          <circle cx="12" cy="9" r="6" />
-          <path d="M12 6v3l2 1" />
-        </svg>
-      );
-    case "lab":
-      return (
-        <svg {...common}>
-          <path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3" />
-          <path d="M7 15h10" />
-        </svg>
-      );
-    case "link":
-      return (
-        <svg {...common}>
-          <path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" />
-          <path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" />
-        </svg>
-      );
-    case "laptop":
-      return (
-        <svg {...common}>
-          <rect x="3" y="5" width="18" height="12" rx="2" />
-          <path d="M2 20h20" />
-        </svg>
-      );
-    default:
-      return (
-        <svg {...common}>
-          <rect x="3" y="7" width="18" height="13" rx="2" />
-          <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-        </svg>
-      );
-  }
-}
-
-/* MU .bentoSection — black band, mixed-size tiles, a featured headline
-   tile plus feature cards. */
-export default function MUWhyChoose() {
-  const w = copy.whyChoose;
+  const reset = () => {
+    if (tilt.current) tilt.current.style.transform = "rotateX(0deg) rotateY(0deg)";
+  };
 
   return (
-    <section id="why" className="border-y border-[#1e1e1e] bg-[#090909] py-20 text-white sm:py-28">
-      <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
-        <div className="grid auto-rows-[minmax(170px,auto)] grid-cols-2 gap-4 lg:grid-cols-4">
-          {/* featured headline tile (spans) */}
-          <Reveal className="col-span-2 flex flex-col justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] p-7 lg:row-span-2">
-            <div>
-              <h2 className="mu-serif text-[2rem] leading-[1.06] sm:text-[2.8rem]">
-                <span className="mu-gradient-text">
-                  {w.title}
-                  <span className="italic">{w.titleAccent}</span>
-                </span>
-              </h2>
-              <p className="mt-4 max-w-sm text-[15px] text-white/55">
-                Six reasons Bihar&apos;s students have made us their first IT &amp; Management pick
-                for 17+ years.
-              </p>
-            </div>
-          </Reveal>
+    <div
+      className="group/feature relative flex flex-col overflow-hidden bg-white py-10 [perspective:1000px]"
+      onMouseMove={onMove}
+      onMouseLeave={reset}
+    >
+      {/* hover grid pattern */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover/feature:opacity-100"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, color-mix(in srgb, var(--primary) 12%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--primary) 12%, transparent) 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+        }}
+      />
+      {/* hover glow */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover/feature:opacity-100"
+        style={{ background: "linear-gradient(to top, color-mix(in srgb, var(--primary) 7%, transparent), transparent)" }}
+      />
+      {/* left accent bar */}
+      <div className="absolute left-0 top-1/2 h-8 w-1 origin-center -translate-y-1/2 rounded-br-full rounded-tr-full bg-[#d4d4d4] transition-all duration-300 group-hover/feature:h-20">
+        <div
+          className="absolute inset-0 rounded-br-full rounded-tr-full opacity-0 transition-opacity duration-300 group-hover/feature:opacity-100"
+          style={{ background: "var(--primary)", boxShadow: "0 0 20px color-mix(in srgb, var(--primary) 60%, transparent)" }}
+        />
+      </div>
 
-          {w.items.map((item, i) => (
-            <Reveal
-              key={i}
-              delay={(i % 4) * 0.05}
-              className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#141414] p-6 transition-colors hover:border-[#fad133]/40"
-            >
-              <span
-                className="flex h-12 w-12 items-center justify-center rounded-2xl text-[#fad133]"
-                style={{ background: "rgba(250,209,51,0.12)" }}
-              >
-                <Icon name={item.icon} />
-              </span>
-              <div className="mt-6">
-                <h3 className="text-[18px] font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-[14px] leading-relaxed text-white/55">{item.body}</p>
-              </div>
-            </Reveal>
+      {/* tilt content */}
+      <div
+        ref={tilt}
+        className="relative flex flex-col items-center px-8 transition-transform duration-150 [transform-style:preserve-3d]"
+      >
+        <div style={{ transform: "translateZ(60px)" }} className="flex flex-col items-center">
+          <div className="mb-5 flex h-24 w-24 items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={f.icon}
+              alt={f.title}
+              width={112}
+              height={112}
+              className="h-full w-full select-none object-contain transition-transform duration-300 group-hover/feature:scale-110"
+            />
+          </div>
+          <h3 className="text-center text-lg font-bold">
+            <span className="inline-block text-[#171717] transition duration-300 group-hover/feature:translate-x-1">
+              {f.title}
+            </span>
+          </h3>
+          <p className="mt-3 max-w-xs text-center text-sm leading-relaxed text-[#595959]">{f.desc}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function MUWhyChoose() {
+  return (
+    <section
+      id="why"
+      className="bg-white py-16 sm:py-24"
+      style={{ ["--primary" as string]: PRIMARY } as CSSProperties}
+    >
+      <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[#e5e5e5] bg-[#e5e5e5] md:grid-cols-2 lg:grid-cols-4">
+          {FEATURES.map((f, i) => (
+            <FeatureCard key={i} f={f} />
           ))}
         </div>
       </div>

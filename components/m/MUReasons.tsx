@@ -1,14 +1,13 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { copy } from "@/lib/copy";
 
-/* MU .LearnApply sticky-STACK section. White cards on the black band; each
-   card pins (position: sticky) and the next scrolls up to cover/fold it —
-   scrolling back up unfolds them. Rich card: image + play, Fraunces tag,
-   sans/serif-italic heading, gradient copy, two mini stat-chart widgets, CTA.
-   CIMAGE's six reasons + real placement numbers. */
+/* MU .LearnApply sticky-STACK section, deck style. White cards on the black
+   band; each card pins (position: sticky) a little lower than the one before
+   (top = base + index·peek) so every card's header bar — number + reason name —
+   stays visible as a stacked deck, and the active card "opens up" below its bar
+   to reveal the rich content: image + play, gradient copy, two mini stat-chart
+   widgets, CTA. CIMAGE's six reasons + real placement numbers. */
 
 type Stat = { label: string; value: string; kind: "bar" | "line"; data: number[]; hi: number };
 const PURPLE = "#6d5ef0";
@@ -145,42 +144,6 @@ function StatWidget({ s }: { s: Stat }) {
 
 export default function MUReasons() {
   const r = copy.reasons;
-  const stackRef = useRef<HTMLDivElement | null>(null);
-
-  // Fold effect: as the next card scrolls up to cover a pinned card, scale the
-  // covered card down slightly; scrolling up reverses it.
-  useEffect(() => {
-    const root = stackRef.current;
-    if (!root) return;
-    const cards = Array.from(root.querySelectorAll<HTMLElement>(".mu-stack-card"));
-    const STICKY = 92;
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      for (let i = 0; i < cards.length - 1; i++) {
-        const card = cards[i];
-        const next = cards[i + 1];
-        const h = card.offsetHeight;
-        const nextTop = next.getBoundingClientRect().top;
-        let p = (STICKY + h - nextTop) / h; // 0 → uncovered, 1 → fully covered
-        p = Math.max(0, Math.min(1, p));
-        card.style.transform = `scale(${1 - 0.06 * p})`;
-        card.style.opacity = `${1 - 0.18 * p}`;
-      }
-      cards[cards.length - 1].style.transform = "";
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
 
   return (
     <section className="bg-[#090909] py-16 text-white sm:py-24">
@@ -192,35 +155,49 @@ export default function MUReasons() {
           <p className="mt-4 text-[17px] text-white/60">{r.sub}</p>
         </div>
 
-        <div ref={stackRef} className="mu-stack mt-12 flex flex-col gap-10">
+        <div className="mu-stack mt-12">
           {BLOCKS.map((b, i) => (
-            <article key={i} className="mu-stack-card">
-              <div className={`mu-stack-left ${b.contain ? "contain" : ""}`}>
-                <Image src={b.img} alt={b.accent} width={620} height={460} sizes="(max-width:900px) 100vw, 560px" />
-                <span className="mu-stack-play" aria-hidden="true">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#090909"><path d="M8 5v14l11-7L8 5Z" /></svg>
-                </span>
+            <article key={i} className="mu-stack-card" style={{ "--i": i } as CSSProperties}>
+              {/* Header bar — stays visible (peeks) when the card is stacked. */}
+              <div className="mu-stack-bar">
+                <span className="mu-stack-num">{b.glyph}</span>
+                <span className="mu-stack-label">{b.accent}</span>
+                <span className="mu-stack-tag">{b.tag}</span>
               </div>
 
-              <div className="mu-stack-right">
-                <span className="mu-stack-tag">{b.tag}</span>
-                <h3 className="mu-stack-head">
-                  {b.lead} <span className="ac">{b.accent}</span>
-                </h3>
-                <p className="mu-stack-sub">
-                  {b.body.map((seg, j) => (seg.g ? <span key={j} className="g">{seg.t}</span> : <span key={j}>{seg.t}</span>))}
-                </p>
-                <div className="mu-stack-stats">
-                  <StatWidget s={b.stats[0]} />
-                  <StatWidget s={b.stats[1]} />
+              {/* Body — revealed as the card opens up. */}
+              <div className="mu-stack-body">
+                <div className={`mu-stack-left ${b.contain ? "contain" : ""}`}>
+                  <Image src={b.img} alt={b.accent} width={620} height={460} sizes="(max-width:900px) 100vw, 560px" />
+                  <span className="mu-stack-play" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#090909"><path d="M8 5v14l11-7L8 5Z" /></svg>
+                  </span>
                 </div>
-                <a href="#placements" className="mu-stack-cta">
-                  See the Placement Record
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                </a>
+
+                <div className="mu-stack-right">
+                  <h3 className="mu-stack-head">
+                    {b.lead} <span className="ac">{b.accent}</span>
+                  </h3>
+                  <p className="mu-stack-sub">
+                    {b.body.map((seg, j) => (seg.g ? <span key={j} className="g">{seg.t}</span> : <span key={j}>{seg.t}</span>))}
+                  </p>
+                  <div className="mu-stack-stats">
+                    <StatWidget s={b.stats[0]} />
+                    <StatWidget s={b.stats[1]} />
+                  </div>
+                  <a href="#placements" className="mu-stack-cta">
+                    See the Placement Record
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </a>
+                </div>
               </div>
             </article>
           ))}
+
+          {/* Trailing room so the last card can pin BELOW the others (completing
+              the stack) instead of scrolling up over them, and the finished deck
+              holds for a beat before the whole section scrolls away. */}
+          <div className="mu-stack-tail" aria-hidden="true" />
         </div>
       </div>
     </section>
