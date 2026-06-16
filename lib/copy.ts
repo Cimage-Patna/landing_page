@@ -258,9 +258,9 @@ export const copy = {
     displayAccent: "our alumni",
     sub: "Placements, the campus, internships and the years in between — all in their own words.",
     stories: [
-      { title: "From Chhapra to PwC", desc: "Anup Gupta on the BCA years and the placement drive that took him to a Principal Consultant role at PwC.", thumb: asset("/star-placements/anup-gupta.webp"), youtube: "", video: `${REELS}/reel-1.mp4` },
-      { title: "Testing her way up at Novigo", desc: "Priyanka Kumari on going from CIMAGE to an Associate Test Manager role at Novigo Solutions.", thumb: asset("/star-placements/priyanka-kumari-novigo.webp"), youtube: "", video: `${REELS}/reel-6.mp4` },
-      { title: "Consulting at Ernst & Young", desc: "Pratik Kumar on the projects, mock interviews and prep that took him from Patna to EY.", thumb: asset("/star-placements/pratik-kumar.webp"), youtube: "", video: `${REELS}/reel-3.mp4` },
+      { title: "From Chhapra to PwC", desc: "Anup Gupta on the BCA years and the placement drive that took him to a Principal Consultant role at PwC.", thumb: asset("/star-placements/anup-gupta.webp"), youtube: "5zeCApp1j_0", video: `${REELS}/reel-1.mp4` },
+      { title: "Testing her way up at Novigo", desc: "Priyanka Kumari on going from CIMAGE to an Associate Test Manager role at Novigo Solutions.", thumb: asset("/star-placements/priyanka-kumari-novigo.webp"), youtube: "u5XQRM_Efb8", video: `${REELS}/reel-6.mp4` },
+      { title: "Consulting at Ernst & Young", desc: "Pratik Kumar on the projects, mock interviews and prep that took him from Patna to EY.", thumb: asset("/star-placements/pratik-kumar.webp"), youtube: "cYCpDu11fXc", video: `${REELS}/reel-3.mp4` },
       { title: "Leading tech at Coforge", desc: "Sushant Ketu on the BSc IT journey from Siwan to a Technical Lead role at Coforge.", thumb: asset("/star-placements/sushant-ketu.webp"), youtube: "", video: `${REELS}/reel-4.mp4` },
       { title: "Cracking Capgemini", desc: "Ankit Raj on the aptitude and interview training that earned him a Consultant offer at Capgemini.", thumb: asset("/star-placements/ankit-raj-capgemini.webp"), youtube: "", video: `${REELS}/reel-9.mp4` },
       { title: "From Patna to London", desc: "Sweta Kumari on the skills she built at CIMAGE that took her to J.P. Morgan in London.", thumb: asset("/star-placements/sweta-kumari.webp"), youtube: "", video: `${REELS}/reel-5.mp4` },

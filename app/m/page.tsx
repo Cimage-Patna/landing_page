@@ -9,13 +9,17 @@ import MULabs from "@/components/m/MULabs";
 import MUPhysicalAI from "@/components/m/MUPhysicalAI";
 import MUQuadruped from "@/components/m/MUQuadruped";
 import MUStarPlacements from "@/components/m/MUStarPlacements";
+import MUPlacementMaps from "@/components/m/MUPlacementMaps";
 import MUAlumniWall from "@/components/m/MUAlumniWall";
 import MUVisitors from "@/components/m/MUVisitors";
 import MUCampus from "@/components/m/MUCampus";
+import MUReels from "@/components/m/MUReels";
 import MUAlumniVoices from "@/components/m/MUAlumniVoices";
-import MUAwards from "@/components/m/MUAwards";
+import MUAdmissionProcess from "@/components/m/MUAdmissionProcess";
 import MUFAQ from "@/components/m/MUFAQ";
 import MUApply from "@/components/m/MUApply";
+import MUStickyCta from "@/components/m/MUStickyCta";
+import MUBrandMarquee from "@/components/m/MUBrandMarquee";
 import Footer from "@/components/Footer";
 
 export default function MPage() {
@@ -31,15 +35,19 @@ export default function MPage() {
       <MULabs />
       <MUPhysicalAI />
       <MUStarPlacements />
+      <MUPlacementMaps />
       <MUAlumniWall />
       <MUQuadruped />
       <MUVisitors />
       <MUCampus />
+      <MUReels />
       <MUAlumniVoices />
-      <MUAwards />
+      <MUAdmissionProcess />
       <MUFAQ />
+      <MUBrandMarquee />
       <MUApply />
       <Footer />
+      <MUStickyCta />
     </main>
   );
 }

@@ -50,8 +50,8 @@ const FEATURES: Feature[] = [
   },
   {
     icon: "https://sot.upgrad.com/assets/scholar.gif",
-    title: "Scholarships & Recognition",
-    desc: "Merit scholarships and flexible financing — AICTE-approved and NAAC-accredited.",
+    title: "Curriculum-integrated Add-on Courses",
+    desc: "Industry-aligned add-on courses built into the curriculum, so you graduate with job-ready skills beyond the degree.",
   },
 ];
 

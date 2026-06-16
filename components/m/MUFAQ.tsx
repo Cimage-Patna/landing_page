@@ -35,7 +35,7 @@ export default function MUFAQ() {
 
         <div className="mu-faq-wrap">
           {/* left category tabs */}
-          <nav className="mu-faq-nav">
+          <nav className="mu-faq-nav mu-no-scrollbar">
             {TABS.map((t, i) => (
               <button
                 key={t.label}

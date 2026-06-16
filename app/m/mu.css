@@ -303,13 +303,16 @@
   max-width: 100px;
   height: 50px;
 }
-/* Full-width (8) bottom card: ALL logos in ONE row, stretched to fill the
-   width (MU's immersions card). */
-.mu-bento-grid .mu-stat-card:nth-child(8) .mu-bento-logos { flex-wrap: nowrap; }
+/* Full-width (8) bottom card: a centred row of fixed-size logos (not stretched,
+   so it reads cleanly with a handful of unique logos). */
+.mu-bento-grid .mu-stat-card:nth-child(8) .mu-bento-logos {
+  flex-wrap: wrap;
+  justify-content: center;
+}
 .mu-bento-grid .mu-stat-card:nth-child(8) .mu-bento-logo {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: none;
+  flex: 0 0 auto;
+  width: 132px;
+  max-width: 132px;
   height: 50px;
 }
 
@@ -852,7 +855,8 @@
   .mu-bento-grid .mu-stat-card:nth-child(8) .mu-bento-logos { flex-wrap: wrap; }
   .mu-bento-grid .mu-stat-card:nth-child(8) .mu-bento-logo { flex: 0 0 auto; width: 96px; }
 }
-@media (max-width: 560px) {
+@media (max-width: 640px) {
+  /* phones: clean single-column stack (each stat card full width) */
   .mu-bento-grid { grid-template-columns: 1fr; }
   .mu-bento-grid .mu-stat-card:nth-child(5),
   .mu-bento-grid .mu-stat-card:nth-child(8) { grid-column: auto !important; }
@@ -1152,6 +1156,252 @@
   .mu-aw-track.right {
     animation: none;
   }
+}
+
+/* ============================================================
+   BIHAR MOSAIC — immersive dark band where placed-student photos converge into
+   the shape of Bihar, with an ambient gold glow behind the map.
+   ============================================================ */
+.mu-bihar {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(120% 95% at 50% 36%, #151515 0%, #080808 62%);
+}
+.mu-bihar-glow {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: min(920px, 84vw);
+  height: min(640px, 60vw);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(250, 209, 51, 0.16) 0%, rgba(250, 209, 51, 0.05) 38%, transparent 66%);
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+/* the two placement maps fused into one section: shared header + one glow */
+.mu-maps {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 28%, #161616 0%, #080808 60%);
+  padding: 72px 0 44px;
+}
+.mu-maps-glow {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: min(1400px, 94vw);
+  height: min(660px, 52vw);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(250, 209, 51, 0.13) 0%, rgba(250, 209, 51, 0.04) 42%, transparent 68%);
+  filter: blur(24px);
+  pointer-events: none;
+}
+.mu-maps-pair {
+  position: relative;
+  z-index: 1;
+}
+@media (min-width: 1024px) {
+  .mu-maps-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+  /* match the world-map height to the square-ish Bihar canvas */
+  .mu-maps-pair .mu-global-strip {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* ============================================================
+   BRAND MARQUEE — CIMAGE wordmark scrolling across a dark strip above the
+   footer. Reuses the shared .mu-marquee / .mu-marquee-track animation.
+   ============================================================ */
+.mu-brandmq {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  padding: 12px 0;
+}
+/* straight, thin, transparent strip — just the scrolling wordmark */
+.mu-brandmq-band {
+  width: 100%;
+  overflow: hidden;
+}
+.mu-brandmq-logo {
+  flex: none;
+  margin: 0 34px;
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+}
+@media (min-width: 1024px) {
+  .mu-brandmq-logo {
+    margin: 0 46px;
+    height: 30px;
+  }
+}
+
+/* ============================================================
+   ADMISSION PROCESS — scholarship "ticket": dark card with a red glow and a
+   notch cut on each side (the section's black bg shows through the notches).
+   ============================================================ */
+.mu-adm-ticket {
+  position: relative;
+  border-radius: 16px;
+  background: radial-gradient(150% 130% at 100% 0%, rgba(231, 0, 11, 0.06), transparent 55%), #ffffff;
+  border: 1px solid #ececec;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+}
+.mu-adm-ticket::before,
+.mu-adm-ticket::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #ececec;
+  transform: translateY(-50%);
+}
+.mu-adm-ticket::before {
+  left: -13px;
+}
+.mu-adm-ticket::after {
+  right: -13px;
+}
+
+/* ── Apply popup (opened from the sticky CTA): centred lead-form card ── */
+.mu-applymodal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: mu-rise 0.2s ease both;
+}
+.mu-applymodal-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: calc(100dvh - 36px);
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px 22px 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+.mu-applymodal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid #ececec;
+  background: #ffffff;
+  color: #404040;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.mu-applymodal-close:hover {
+  background: #f5f5f5;
+}
+
+/* ============================================================
+   STICKY CTA — BookMyShow-style mobile bottom bar: admission info + Apply Now.
+   ============================================================ */
+.mu-stickycta {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+}
+.mu-stickycta.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.mu-stickycta-inner {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  min-height: 64px;
+  background: #ffffff;
+  border-top: 1px solid #ececec;
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.14);
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow: hidden;
+}
+.mu-stickycta-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  padding: 8px 20px;
+}
+.mu-stickycta-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #090909;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mu-stickycta-title::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: 7px;
+  height: 7px;
+  margin: -2px 8px 0 0;
+  border-radius: 50%;
+  background: var(--mu-yellow);
+  box-shadow: 0 0 0 3px rgba(250, 209, 51, 0.28);
+}
+.mu-stickycta-sub {
+  font-size: 11.5px;
+  line-height: 1.2;
+  color: #6b6b6b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* full-height block button, flush to the bar's right edge — uses the theme
+   accent colour (--color-accent) so it follows the current theme. */
+.mu-stickycta .mu-stickycta-btn {
+  flex: none;
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 0;
+  padding: 0 26px;
+  font-size: 15px;
+  font-weight: 600;
+  background: var(--color-accent);
+  color: #0a0a0a;
+}
+.mu-stickycta .mu-stickycta-btn:hover {
+  background: var(--color-accent-dim);
+  color: #ffffff;
+}
+.mu-stickycta .mu-stickycta-btn:active {
+  transform: none;
+  filter: brightness(0.94);
 }
 
 /* ============================================================

@@ -59,7 +59,7 @@ const BLOCKS: Block[] = [
     stats: [S.tcs, S.yrs],
   },
   {
-    img: R[2].image, glyph: R[2].glyph, tag: "Industry MoU",
+    img: "/reasons/wipro-coe.webp", glyph: R[2].glyph, tag: "Industry MoU",
     lead: "A Wipro", accent: "Centre of Excellence",
     body: [
       { t: "An active MoU with " },

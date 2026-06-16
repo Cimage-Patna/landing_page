@@ -11,19 +11,21 @@ type Card = { amount: string; line1: string; line2?: string; logos: BrandKey[] }
 
 // Order matches MU's nth-child spans: 1=tall, 4=taller, 5=wide(row), 6=short,
 // 7=taller, 8=full-width.
+// Each recruiter appears on exactly ONE card — no logo is repeated across the
+// bento. (Only 11 brand glyphs exist, so the shorter cards stay number-only.)
 const CARDS: Card[] = [
-  { amount: "13,500+", line1: "Alumni Placed", line2: "across 17+ years", logos: ["tcs", "accenture", "ibm", "wipro"] },
-  { amount: "₹37 LPA", line1: "Highest Package", line2: "BCA · single offer", logos: ["ibm", "accenture", "cognizant", "hsbc"] },
-  { amount: "317", line1: "TCS Selections", line2: "in a single drive", logos: ["tcs", "accenture", "cognizant", "wipro"] },
-  { amount: "200+", line1: "Recruiting Companies", line2: "hiring on campus", logos: ["wipro", "hcl", "accenture", "cognizant", "ibm", "tcs"] },
-  { amount: "₹4.5 LPA", line1: "Average Package", line2: "across the batch", logos: ["infosys", "cognizant", "hcl", "wipro", "accenture", "tcs"] },
+  { amount: "13,500+", line1: "Alumni Placed", line2: "across 17+ years", logos: ["tcs", "accenture"] },
+  { amount: "₹37 LPA", line1: "Highest Package", line2: "BCA · single offer", logos: ["hsbc", "hdfcbank"] },
+  { amount: "317", line1: "TCS Selections", line2: "in a single drive", logos: [] },
+  { amount: "200+", line1: "Recruiting Companies", line2: "hiring on campus", logos: ["wipro", "hcl"] },
+  { amount: "₹4.5 LPA", line1: "Average Package", line2: "across the batch", logos: [] },
   { amount: "17+", line1: "Years of Placement", line2: "track record, batch after batch", logos: [] },
-  { amount: "130+", line1: "ICICI Bank PO Offers", line2: "₹4.5 LPA each", logos: ["icicibank", "hdfcbank", "hsbc", "ibm", "tcs"] },
+  { amount: "130+", line1: "ICICI Bank PO Offers", line2: "₹4.5 LPA each", logos: ["icicibank"] },
   {
     amount: "50%+",
     line1: "of Bihar's IT Placements",
     line2: "across the state, year on year",
-    logos: ["tcs", "wipro", "hcl", "cognizant", "accenture", "ibm", "infosys", "cocacola"],
+    logos: ["ibm", "cognizant", "infosys", "cocacola"],
   },
 ];
 

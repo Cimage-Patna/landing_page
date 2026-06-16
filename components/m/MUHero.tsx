@@ -22,10 +22,13 @@ export default function MUHero() {
       {/* bottom-centred content */}
       <div className="mu-herofull-content">
         <h1 className="mu-herofull-head">
-          <span>Mummy,</span>
-          <span className="mu-serif accent">job lag gaya.</span>
+          <span>Where Bihar</span>
+          <span className="mu-serif accent">meets the world.</span>
         </h1>
-        <p className="mu-herofull-sub">{h.sub}</p>
+        <p className="mu-herofull-sub">
+          Bihar&apos;s #1 institute for IT &amp; Management — where students are trained, certified and
+          placed from Bengaluru to London, Dubai and the Big Four.
+        </p>
 
         <div className="mu-herofull-btns">
           <a href="#apply" className="mu-herofull-btn primary">

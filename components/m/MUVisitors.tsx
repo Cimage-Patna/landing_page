@@ -4,7 +4,6 @@ import { copy } from "@/lib/copy";
 export default function MUVisitors() {
   const v = copy.visitors;
   const withPhoto = v.items.filter((i) => "photo" in i && i.photo);
-  const withoutPhoto = v.items.filter((i) => !("photo" in i) || !i.photo);
 
   return (
     <section className="bg-[#090909] py-20 text-white sm:py-28">
@@ -43,19 +42,6 @@ export default function MUVisitors() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
-
-        {withoutPhoto.length > 0 && (
-          <p className="mt-8 text-[15px] text-white/55">
-            <span className="font-semibold text-white/80">Also on campus: </span>
-            {withoutPhoto.map((p, i) => (
-              <span key={i}>
-                {p.name} ({p.role}){i < withoutPhoto.length - 1 ? " · " : ""}
-              </span>
-            ))}
-          </p>
-        )}
-      </div>
     </section>
   );
 }
