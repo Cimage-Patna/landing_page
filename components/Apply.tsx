@@ -5,6 +5,7 @@ import Image from "next/image";
 import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
 import { asset } from "@/lib/assets";
+import { reportApplyConversion } from "@/lib/gtag";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -56,6 +57,7 @@ export default function Apply() {
         error?: string;
       };
       if (!res.ok || !data.ok) throw new Error(data.error || "");
+      reportApplyConversion();
       setStatus("success");
       form.reset();
     } catch (err) {
