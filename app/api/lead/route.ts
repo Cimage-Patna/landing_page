@@ -68,6 +68,15 @@ export async function POST(req: Request) {
     );
   }
 
+  // 12th marks must be a percentage strictly between 40 and 100.
+  const marks = parseFloat(twelfthMarks.replace("%", "").trim());
+  if (!(marks > 40 && marks < 100)) {
+    return NextResponse.json(
+      { ok: false, error: "12th marks must be a percentage between 40 and 100." },
+      { status: 422 },
+    );
+  }
+
   // Forward only the UTM params that were actually present on the URL.
   const utm: Record<string, string> = {};
   for (const key of UTM_KEYS) {

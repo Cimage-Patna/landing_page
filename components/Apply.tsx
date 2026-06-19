@@ -43,6 +43,15 @@ export default function Apply() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+
+    // 12th marks must be a percentage strictly between 40 and 100.
+    const marks = parseFloat(String(new FormData(form).get("twelfth_marks") ?? "").replace("%", "").trim());
+    if (!(marks > 40 && marks < 100)) {
+      setErrorMsg("Enter your 12th marks as a percentage between 40 and 100.");
+      setStatus("error");
+      return;
+    }
+
     setStatus("loading");
     setErrorMsg("");
     const payload = { ...Object.fromEntries(new FormData(form)), ...utmRef.current };
@@ -160,13 +169,14 @@ export default function Apply() {
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <Field label="12th marks">
+                  <Field label="12th marks (%)">
                     <input
                       name="twelfth_marks"
                       required
                       type="text"
+                      inputMode="decimal"
                       maxLength={50}
-                      placeholder="e.g. 92% or 450/500"
+                      placeholder="e.g. 85"
                       className={inputCls}
                     />
                   </Field>
