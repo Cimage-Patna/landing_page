@@ -159,6 +159,55 @@ export default function Apply() {
                   </Field>
                 </div>
 
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Field label="12th marks">
+                    <input
+                      name="twelfth_marks"
+                      required
+                      type="text"
+                      maxLength={50}
+                      placeholder="e.g. 92% or 450/500"
+                      className={inputCls}
+                    />
+                  </Field>
+                  <Field label="District (optional)">
+                    <input
+                      name="district"
+                      type="text"
+                      autoComplete="address-level2"
+                      placeholder="e.g. Patna"
+                      className={inputCls}
+                    />
+                  </Field>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Field label="Board">
+                    <select name="board" required defaultValue="" className={inputCls}>
+                      <option value="" disabled>
+                        Select board
+                      </option>
+                      {a.boards.map((b) => (
+                        <option key={b} value={b}>
+                          {b}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                  <Field label="Stream">
+                    <select name="stream" required defaultValue="" className={inputCls}>
+                      <option value="" disabled>
+                        Select stream
+                      </option>
+                      {a.streams.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                </div>
+
                 <button
                   type="submit"
                   disabled={status === "loading"}

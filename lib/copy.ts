@@ -283,6 +283,8 @@ export const copy = {
     formHeading: "Request a call - Batch 2026",
     formSub: "Drop your details and a counsellor calls you within one working day.",
     courses: ["BCA", "B.Tech", "MCA", "B.Sc-IT", "MBA", "BBA", "B.Com.(P)"],
+    boards: ["CBSE", "BSEB", "BIOS", "ICSE", "JAC", "UP Board", "NIOS", "Other"],
+    streams: ["PCM", "PCB", "Commerce", "Arts", "Vocational", "Polytechnic"],
   },
   whyChoose: {
     title: "Why Choose ",
