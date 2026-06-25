@@ -1,3 +1,5 @@
+"use client";
+
 /* "Admission Process" — red step timeline on the left, sticky scholarship
    "ticket" card on the right (stacks on mobile). Ported to CIMAGE's flow. */
 
@@ -89,17 +91,18 @@ function Ticket() {
     <div className="mu-adm-ticket w-full max-w-[583px]">
       <div className="relative flex min-h-[282px] flex-col justify-center px-8 py-10 sm:px-10 sm:py-11 lg:px-12">
         <h3 className="text-xl font-semibold leading-snug text-[#090909]">
-          Study Without Limits: <span style={{ color: RED }}>Merit Scholarships</span>
+          Admissions Made Simple: <span style={{ color: RED }}>Talk to Our Team</span>
         </h3>
         <div className="mt-[18px] h-px w-full max-w-[390px] border-t border-dashed border-[#090909]/20" aria-hidden="true" />
         <p className="mt-[18px] text-base font-normal leading-normal text-[#404040]">
-          Your entrance performance decides your scholarship — talk to our team to check how much you can save.
+          From choosing the right course to understanding the fees and entrance process — our admissions team guides you through every step.
         </p>
         <p className="mt-4 text-sm font-normal leading-relaxed text-[#737373]">
-          To apply and check your scholarship eligibility, register or speak with our admissions team.
+          To apply or get your questions answered, register or speak with our admissions team.
         </p>
-        <a
-          href="#apply"
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event("apply:open"))}
           className="mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded px-3 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: RED }}
         >
@@ -120,7 +123,7 @@ function Ticket() {
             <path d="M5 12h14" />
             <path d="m12 5 7 7-7 7" />
           </svg>
-        </a>
+        </button>
       </div>
     </div>
   );

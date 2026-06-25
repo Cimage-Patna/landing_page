@@ -52,7 +52,7 @@ export const copy = {
     sub: "Why CIMAGE has been the first IT/Management pick in Bihar for 17+ years.",
     items: [
       {
-        title: "Industry-Aligned BCA Curriculum",
+        title: "Industry-Aligned Curriculum",
         body: "Java, Python, DBMS, Web Dev, Cloud — updated each year against what the IT market is actually testing for.",
         glyph: "01",
         image: asset("/sumedh.webp"),
@@ -126,7 +126,7 @@ export const copy = {
   },
   labs: {
     display: "Wipro and IIT Bombay, on campus.",
-    sub: "We've signed an MoU with Wipro for the Centre of Excellence, and we're IIT Bombay's Spoken Tutorial Nodal Resource Centre for Patna. Both agreements are below.",
+    sub: "The only BCA college in Bihar with an IIT Bombay-certified robotics & AI lab on campus. We've signed an MoU with Wipro for the Centre of Excellence, and we're IIT Bombay's Spoken Tutorial Nodal Resource Centre for Patna. Both agreements are below.",
     blocks: [
       {
         title: "E-Yantra · IIT Bombay",
@@ -139,6 +139,18 @@ export const copy = {
         body: "Industry-graded coursework, signed off by a Wipro panel. The certification sits on your CV before you graduate.",
         image: asset("/collab/Right-Image.webp"),
         badge: "Wipro CoE · Active Partnership",
+      },
+      {
+        title: "Google for Education Partner",
+        body: "The only Google for Education partner in Bihar — certified Google tools and Workspace built into everyday teaching, so you train on the platforms the industry actually runs on.",
+        image: "https://cimage.in/wp-content/uploads/2026/05/Google-Cloud-2.png",
+        badge: "Google Partner · Certified",
+      },
+      {
+        title: "Skill Acceleration Lab",
+        body: "Hands-on AI, full-stack and industry-certification tracks that fast-track you from coursework to a job-ready portfolio — on campus, every semester.",
+        image: "https://cimagedigital.com/wp-content/uploads/2026/05/Recognition-and-appreciation-for-establishing-the-Spoken-Tutorial-Skill-Accelerator-Lab-at-CIMAGE.jpeg",
+        badge: "Skill Acceleration · On Campus",
       },
     ],
   },
@@ -258,13 +270,12 @@ export const copy = {
     displayAccent: "our alumni",
     sub: "Placements, the campus, internships and the years in between — all in their own words.",
     stories: [
-      { title: "From Chhapra to PwC", desc: "Anup Gupta on the BCA years and the placement drive that took him to a Principal Consultant role at PwC.", thumb: asset("/star-placements/anup-gupta.webp"), youtube: "5zeCApp1j_0", video: `${REELS}/reel-1.mp4` },
-      { title: "Testing her way up at Novigo", desc: "Priyanka Kumari on going from CIMAGE to an Associate Test Manager role at Novigo Solutions.", thumb: asset("/star-placements/priyanka-kumari-novigo.webp"), youtube: "u5XQRM_Efb8", video: `${REELS}/reel-6.mp4` },
-      { title: "Consulting at Ernst & Young", desc: "Pratik Kumar on the projects, mock interviews and prep that took him from Patna to EY.", thumb: asset("/star-placements/pratik-kumar.webp"), youtube: "cYCpDu11fXc", video: `${REELS}/reel-3.mp4` },
-      { title: "Leading tech at Coforge", desc: "Sushant Ketu on the BSc IT journey from Siwan to a Technical Lead role at Coforge.", thumb: asset("/star-placements/sushant-ketu.webp"), youtube: "", video: `${REELS}/reel-4.mp4` },
-      { title: "Cracking Capgemini", desc: "Ankit Raj on the aptitude and interview training that earned him a Consultant offer at Capgemini.", thumb: asset("/star-placements/ankit-raj-capgemini.webp"), youtube: "", video: `${REELS}/reel-9.mp4` },
-      { title: "From Patna to London", desc: "Sweta Kumari on the skills she built at CIMAGE that took her to J.P. Morgan in London.", thumb: asset("/star-placements/sweta-kumari.webp"), youtube: "", video: `${REELS}/reel-5.mp4` },
-      { title: "All the way to Vancouver", desc: "Monu Singh on the BCA foundation behind his move to HCL Tech in Vancouver.", thumb: asset("/star-placements/monu-singh.webp"), youtube: "", video: `${REELS}/reel-7.mp4` },
+      { title: "Vijaya Shree (BBA) shares her experience", desc: "CIMAGE alumna Vijaya Shree on her BBA years and life after CIMAGE — in her own words.", thumb: "https://i.ytimg.com/vi/pP7u0AeeQZo/hqdefault.jpg", youtube: "pP7u0AeeQZo", video: "" },
+      { title: "₹20 LPA at Rackspace", desc: "Rahul on landing a ₹20 lakh annual package at cloud-computing company Rackspace.", thumb: "https://i.ytimg.com/vi/lrfEqlEA7C8/hqdefault.jpg", youtube: "lrfEqlEA7C8", video: "" },
+      { title: "₹11 LPA — Logistics Head at Toyota", desc: "A CIMAGE student lands the Bihar–Jharkhand Logistics Head role at Toyota with an ₹11 lakh package.", thumb: "https://i.ytimg.com/vi/up0pUqzVaR8/hqdefault.jpg", youtube: "up0pUqzVaR8", video: "" },
+      { title: "₹16.5 LPA in US cyber security", desc: "Prashant on his ₹16.5 lakh offer from a California-based cyber security company.", thumb: "https://i.ytimg.com/vi/7CFZT1_0lFQ/hqdefault.jpg", youtube: "7CFZT1_0lFQ", video: "" },
+      { title: "A ₹16 lakh placement story", desc: "The success story behind a CIMAGE student's ₹16 lakh placement.", thumb: "https://i.ytimg.com/vi/GERmSNbj8ZI/hqdefault.jpg", youtube: "GERmSNbj8ZI", video: "" },
+      { title: "Saurabh Kumar — ₹10 LPA", desc: "Saurabh Kumar (BBA/BCA) on his journey to a ₹10 lakh package — a CIMAGE Patna placement story.", thumb: "https://i.ytimg.com/vi/YPYPVLT-b3U/hqdefault.jpg", youtube: "YPYPVLT-b3U", video: "" },
     ],
   },
   awards: {
@@ -302,7 +313,21 @@ export const copy = {
     ],
     formHeading: "Request a call - Batch 2026",
     formSub: "Drop your details and a counsellor calls you within one working day.",
-    courses: ["BCA", "B.Tech", "MCA", "B.Sc-IT", "MBA", "BBA", "B.Com.(P)"],
+    // `label` is shown in the dropdown; `value` is the short code sent to the
+    // admission backend. Backend must whitelist each `value` string below.
+    courses: [
+      { label: "BCA", value: "BCA" },
+      { label: "B.Tech – Computer Science & Engineering (CSE)", value: "B.Tech-CSE" },
+      { label: "B.Tech – Artificial Intelligence & Machine Learning (AI-ML)", value: "B.Tech-AIML" },
+      { label: "B.Tech – Electronics & Communication Engineering (ECE)", value: "B.Tech-ECE" },
+      { label: "B.Tech – Electrical Engineering (EE)", value: "B.Tech-EE" },
+      { label: "B.Tech – Civil Engineering (CE)", value: "B.Tech-CE" },
+      { label: "MCA", value: "MCA" },
+      { label: "B.Sc-IT", value: "B.Sc-IT" },
+      { label: "MBA", value: "MBA" },
+      { label: "BBA", value: "BBA" },
+      { label: "B.Com.(P)", value: "B.Com.(P)" },
+    ],
     boards: ["CBSE", "BSEB", "BIOS", "ICSE", "JAC", "UP Board", "NIOS", "Other"],
     streams: ["PCM", "PCB", "Commerce", "Arts", "Vocational", "Polytechnic"],
   },
@@ -326,6 +351,7 @@ export const copy = {
         label: "Undergraduate",
         items: [
           { name: "BCA", desc: "Includes add-on courses aligned with industry needs, preparing students for IT roles.", href: "https://cimage.in/courses/bca/", img: asset("/programs/bca.webp") },
+          { name: "B.Tech", desc: "Four-year engineering degree with hands-on labs, IIT Bombay-certified robotics & AI training, and strong placement support.", href: "https://cimage.in/courses/btech/", img: "https://cimage.in/wp-content/uploads/2025/07/bsc-it-1024x955.jpg" },
           { name: "BBA", desc: "Designed to develop skills required for business and corporate roles with placement support.", href: "https://cimage.in/courses/bba/", img: "https://cimage.in/wp-content/uploads/2025/07/bba-1024x955.jpg" },
           { name: "B.Sc. (IT)", desc: "Focused on Information Technology, preparing students for careers in the IT industry.", href: "https://cimage.in/courses/bsc/", img: "https://cimage.in/wp-content/uploads/2025/07/bsc-it-1024x955.jpg" },
           { name: "B.Com (P)", desc: "Covers accounting, economics, business law, and taxation with a strong academic foundation.", href: "https://cimage.in/courses/b-comp/", img: "https://cimage.in/wp-content/uploads/2025/07/bcom-1-1024x955.jpg" },

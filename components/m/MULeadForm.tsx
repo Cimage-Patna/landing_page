@@ -92,8 +92,8 @@ export default function MULeadForm() {
             <Field label="Course">
               <select name="course" defaultValue="BCA" className={inputCls}>
                 {a.courses.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
+                  <option key={c.value} value={c.value}>
+                    {c.label}
                   </option>
                 ))}
               </select>

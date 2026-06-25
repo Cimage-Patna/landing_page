@@ -38,7 +38,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const noFlashThemeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`;
+// Theme switcher removed — the site is locked to the light theme. Force it on
+// every load so returning visitors with a stale 'theme=dark' aren't stranded.
+const noFlashThemeScript = `(function(){try{document.documentElement.setAttribute('data-theme','light');}catch(e){}})();`;
 
 export default function RootLayout({
   children,

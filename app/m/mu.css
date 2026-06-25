@@ -409,37 +409,6 @@
 }
 .mu-prog-imgwrap img { width: 100%; height: 100%; object-fit: cover; }
 
-/* play button — translucent disc + gradient ring + triangle (MU masterPlay) */
-.mu-prog-play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(248, 248, 248, 0.82);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  transition: transform 0.25s ease;
-}
-.mu-prog-play::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  padding: 2px;
-  background: var(--mu-gradient);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-.mu-prog-play:hover { transform: translate(-50%, -50%) scale(1.06); }
-.mu-prog-play svg { margin-left: 3px; }
-
 .mu-prog-title { font-size: 26px; line-height: 124%; font-weight: 400; color: #fff; }
 .mu-prog-title span { font-weight: 700; color: #fff; }
 .mu-prog-desc { font-size: 14px; line-height: 155%; color: #e5e5e5; min-height: 44px; max-width: 94%; }
@@ -502,12 +471,53 @@
 .mu-prog-btn:hover svg { transform: translate(2px, -2px); }
 
 @media (max-width: 1024px) {
-  .mu-prog-card { flex-basis: 78vw; max-width: 78vw; }
+  /* Leave a clear peek of the next card so the rail reads as scrollable. */
+  .mu-prog-card { flex-basis: 72vw; max-width: 72vw; }
   .mu-prog-title { font-size: 21px; }
 }
 @media (max-width: 560px) {
-  .mu-prog-card { flex-basis: 86vw; max-width: 86vw; }
+  /* ~1.5 cards in view: one full card + a half-card peek on the right. */
+  .mu-prog-card { flex-basis: 70vw; max-width: 70vw; }
   .mu-prog-info { gap: 16px 12px; }
+}
+
+/* Scroll affordances for the programmes rail */
+.mu-prog-railwrap { position: relative; }
+.mu-prog-fade { display: none; }
+
+/* swipe hint sits where the arrows are on desktop */
+.mu-prog-swipe {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+.mu-prog-swipe svg { animation: mu-prog-nudge 1.4s ease-in-out infinite; }
+@keyframes mu-prog-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
+@media (max-width: 1024px) {
+  /* right-edge fade hinting that more cards continue off-screen */
+  .mu-prog-fade {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 10px;
+    width: 56px;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(9, 9, 9, 0), #090909 88%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mu-prog-swipe svg { animation: none; }
 }
 
 /* ============================================================
@@ -608,33 +618,6 @@
 .mu-stack-left.contain { background: #ffffff; border: 1px solid #eee; }
 .mu-stack-left img { width: 100%; height: 100%; object-fit: cover; }
 .mu-stack-left.contain img { object-fit: contain; padding: 44px; }
-.mu-stack-play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(248, 248, 248, 0.82);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-.mu-stack-play::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  padding: 2px;
-  background: var(--mu-gradient);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-.mu-stack-play svg { margin-left: 3px; }
 
 .mu-stack-right { flex: 1 1 53%; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
 .mu-stack-tag {

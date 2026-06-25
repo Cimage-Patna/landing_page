@@ -19,8 +19,8 @@ const CARDS: Card[] = [
   { amount: "317", line1: "TCS Selections", line2: "in a single drive", logos: [] },
   { amount: "200+", line1: "Recruiting Companies", line2: "hiring on campus", logos: ["wipro", "hcl"] },
   { amount: "₹4.5 LPA", line1: "Average Package", line2: "across the batch", logos: [] },
-  { amount: "17+", line1: "Years of Placement", line2: "track record, batch after batch", logos: [] },
-  { amount: "130+", line1: "ICICI Bank PO Offers", line2: "₹4.5 LPA each", logos: ["icicibank"] },
+  { amount: "17+", line1: "Years of Excellence", line2: "in IT & Management education", logos: [] },
+  { amount: "130+", line1: "ICICI Bank PO Offers in 2026", line2: "₹4.5 LPA each", logos: ["icicibank"] },
   {
     amount: "50%+",
     line1: "of Bihar's IT Placements",

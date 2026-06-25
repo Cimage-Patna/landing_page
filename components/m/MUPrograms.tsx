@@ -13,9 +13,10 @@ import { copy } from "@/lib/copy";
 // Map each degree to the "field" wording MU uses (prefix + bold field).
 const FIELD: Record<string, string> = {
   BCA: "Computer Applications (BCA)",
+  "B.Tech": "Engineering & Technology (B.Tech)",
   BBA: "Business Administration (BBA)",
-  "B.Sc. (IT)": "Information Technology (B.Sc.)",
-  "B.Com (P)": "Commerce — Professional (B.Com)",
+  "B.Sc. (IT)": "Information Technology (B.Sc. IT)",
+  "B.Com (P)": "Commerce — Professional (B.Com P)",
   MCA: "Computer Applications (MCA)",
   MBA: "Business Administration (MBA)",
 };
@@ -115,6 +116,11 @@ export default function MUPrograms() {
               ))}
             </div>
           </div>
+          {/* swipe hint — mobile only; arrows take over from sm: up */}
+          <span className="mu-prog-swipe sm:hidden" aria-hidden="true">
+            Swipe
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </span>
           <div className="mu-prog-arrows hidden sm:flex">
             <button type="button" aria-label="Previous" className="mu-prog-arrow-btn" onClick={() => scrollBy(-1)}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -125,17 +131,15 @@ export default function MUPrograms() {
           </div>
         </div>
 
-        {/* card rail */}
-        <div ref={railRef} className="mu-no-scrollbar mt-6 mu-prog-rail">
+        {/* card rail — wrapper holds the right-edge fade cue */}
+        <div className="mu-prog-railwrap mt-6">
+        <div ref={railRef} className="mu-no-scrollbar mu-prog-rail">
           {group.items.map((item) => {
             const isUG = !/post/i.test(group.label);
             return (
               <article key={item.name} className="mu-prog-card">
                 <a href={item.href} target="_blank" rel="noopener noreferrer" className="mu-prog-imgwrap block">
                   <Image src={item.img} alt={item.name} width={560} height={336} />
-                  <span className="mu-prog-play" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#090909"><path d="M8 5v14l11-7L8 5Z" /></svg>
-                  </span>
                 </a>
 
                 <div>
@@ -150,7 +154,7 @@ export default function MUPrograms() {
                   <Flexi icon={ICONS.format} label="Format" value={f.format.value} note={f.format.note} />
                   <Flexi icon={ICONS.eligibility} label="Eligibility" value={f.eligibility} />
                   <Flexi icon={ICONS.duration} label="Duration" value={f.duration} />
-                  <Flexi icon={ICONS.deadline} label="Deadline" value={f.deadline} />
+                  <Flexi icon={ICONS.deadline} label="Intake" value={f.deadline} />
                 </div>
 
                 <a href={item.href} target="_blank" rel="noopener noreferrer" className="mu-prog-btn">
@@ -160,6 +164,8 @@ export default function MUPrograms() {
               </article>
             );
           })}
+        </div>
+          <span className="mu-prog-fade" aria-hidden="true" />
         </div>
       </div>
     </section>

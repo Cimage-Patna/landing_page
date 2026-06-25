@@ -39,8 +39,8 @@ type Block = {
 const R = copy.reasons.items;
 const BLOCKS: Block[] = [
   {
-    img: R[0].image, glyph: R[0].glyph, tag: "Curriculum",
-    lead: "An industry-aligned", accent: "BCA Curriculum",
+    img: R[0].image, glyph: R[0].glyph, tag: "Syllabus",
+    lead: "An industry-aligned", accent: "Curriculum",
     body: [
       { t: "Java, Python, DBMS, web development and cloud fundamentals — the syllabus is " },
       { t: "rebuilt every year", g: true },
@@ -169,9 +169,6 @@ export default function MUReasons() {
               <div className="mu-stack-body">
                 <div className={`mu-stack-left ${b.contain ? "contain" : ""}`}>
                   <Image src={b.img} alt={b.accent} width={620} height={460} sizes="(max-width:900px) 100vw, 560px" />
-                  <span className="mu-stack-play" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#090909"><path d="M8 5v14l11-7L8 5Z" /></svg>
-                  </span>
                 </div>
 
                 <div className="mu-stack-right">

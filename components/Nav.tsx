@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ThemeToggle from "./ThemeToggle";
 import CounsellorMenu from "./CounsellorMenu";
 
 export default function Nav() {
@@ -32,7 +31,6 @@ export default function Nav() {
         {/* Right cluster */}
         <nav className="flex items-center gap-2 sm:gap-3">
           <CounsellorMenu />
-          <ThemeToggle />
         </nav>
       </div>
     </header>
