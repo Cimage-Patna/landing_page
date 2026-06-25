@@ -1,6 +1,11 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Big_Shoulders, Inter } from "next/font/google";
+import Script from "next/script";
+
+// Google Ads global site tag (gtag.js). Loaded once here so it runs on every
+// page (home + the Meta landing page, which share this root layout).
+const GOOGLE_ADS_ID = "AW-10885034048";
 
 const display = Big_Shoulders({
   subsets: ["latin"],
@@ -44,6 +49,18 @@ export default function RootLayout({
     <html lang="en" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: noFlashThemeScript }} />
+
+        {/* Google tag (gtag.js) — Google Ads */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GOOGLE_ADS_ID}');`}
+        </Script>
       </head>
       <body>{children}</body>
     </html>

@@ -16,6 +16,10 @@ type LeadInput = {
   phone?: string;
   email?: string;
   course?: string;
+  twelfth_marks?: string;
+  board?: string;
+  stream?: string;
+  district?: string;
   city?: string;
   state?: string;
   comment?: string;
@@ -53,6 +57,26 @@ export async function POST(req: Request) {
     );
   }
 
+  const twelfthMarks = (body.twelfth_marks ?? "").trim();
+  const board = (body.board ?? "").trim();
+  const stream = (body.stream ?? "").trim();
+
+  if (!twelfthMarks || !board || !stream) {
+    return NextResponse.json(
+      { ok: false, error: "12th marks, board and stream are required." },
+      { status: 422 },
+    );
+  }
+
+  // 12th marks must be a percentage strictly between 40 and 100.
+  const marks = parseFloat(twelfthMarks.replace("%", "").trim());
+  if (!(marks > 40 && marks < 100)) {
+    return NextResponse.json(
+      { ok: false, error: "12th marks must be a percentage between 40 and 100." },
+      { status: 422 },
+    );
+  }
+
   // Forward only the UTM params that were actually present on the URL.
   const utm: Record<string, string> = {};
   for (const key of UTM_KEYS) {
@@ -65,7 +89,11 @@ export async function POST(req: Request) {
     phone,
     email: (body.email ?? "").trim(),
     course: (body.course ?? "BCA").trim(),
-    city: (body.city ?? "").trim(),
+    twelfth_marks: twelfthMarks,
+    board,
+    stream,
+    // The form collects "district"; the backend stores it under the city key.
+    city: (body.district ?? body.city ?? "").trim(),
     state: (body.state ?? "Bihar").trim(),
     lead_type: "hot",
     sub_source: SUB_SOURCE,
