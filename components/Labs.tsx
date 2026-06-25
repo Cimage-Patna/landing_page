@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import ZoomableImage from "./ZoomableImage";
 import { copy } from "@/lib/copy";
 
 export default function Labs() {
@@ -24,14 +25,16 @@ export default function Labs() {
           {blocks.map((b, i) => (
             <Reveal key={b.title} delay={i * 0.08}>
               <div className="flex flex-col">
-                <div className="overflow-hidden rounded-xl border border-white/10 bg-white shadow-xl">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={b.image}
-                    alt={b.title}
-                    className="block h-auto w-full"
-                  />
-                </div>
+                <ZoomableImage src={b.image} alt={b.title}>
+                  <div className="overflow-hidden rounded-xl border border-white/10 bg-white shadow-xl">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={b.image}
+                      alt={b.title}
+                      className="block h-auto w-full"
+                    />
+                  </div>
+                </ZoomableImage>
                 <div className="mt-5">
                   <h3 className="font-display text-2xl font-bold text-white sm:text-3xl">
                     {b.title}

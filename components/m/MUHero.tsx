@@ -31,12 +31,16 @@ export default function MUHero() {
         </p>
 
         <div className="mu-herofull-btns">
-          <a href="#apply" className="mu-herofull-btn primary">
+          <button
+            type="button"
+            className="mu-herofull-btn primary"
+            onClick={() => window.dispatchEvent(new Event("apply:open"))}
+          >
             {h.cta}
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </a>
+          </button>
           <button
             type="button"
             className="mu-herofull-btn ghost"

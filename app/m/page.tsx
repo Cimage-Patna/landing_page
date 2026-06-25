@@ -19,6 +19,7 @@ import MUAdmissionProcess from "@/components/m/MUAdmissionProcess";
 import MUFAQ from "@/components/m/MUFAQ";
 import MUApply from "@/components/m/MUApply";
 import MUStickyCta from "@/components/m/MUStickyCta";
+import MUApplyModal from "@/components/m/MUApplyModal";
 import MUBrandMarquee from "@/components/m/MUBrandMarquee";
 import Footer from "@/components/Footer";
 
@@ -48,6 +49,7 @@ export default function MPage() {
       <MUApply />
       <Footer />
       <MUStickyCta />
+      <MUApplyModal />
     </main>
   );
 }
