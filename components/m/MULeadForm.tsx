@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { copy } from "@/lib/copy";
+import { reportApplyConversion } from "@/lib/gtag";
 import { Arrow } from "./ui";
 
 /* The "request a call" lead form — heading, fields, submit + success/error and
@@ -33,6 +34,15 @@ export default function MULeadForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+
+    // 12th marks must be a percentage strictly between 40 and 100.
+    const marks = parseFloat(String(new FormData(form).get("twelfth_marks") ?? "").replace("%", "").trim());
+    if (!(marks > 40 && marks < 100)) {
+      setErrorMsg("Enter your 12th marks as a percentage between 40 and 100.");
+      setStatus("error");
+      return;
+    }
+
     setStatus("loading");
     setErrorMsg("");
     const payload = { ...Object.fromEntries(new FormData(form)), ...utmRef.current };
@@ -44,6 +54,7 @@ export default function MULeadForm() {
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
       if (!res.ok || !data.ok) throw new Error(data.error || "");
+      reportApplyConversion();
       setStatus("success");
       form.reset();
     } catch (err) {
@@ -83,6 +94,56 @@ export default function MULeadForm() {
                 {a.courses.map((c) => (
                   <option key={c} value={c}>
                     {c}
+                  </option>
+                ))}
+              </select>
+            </Field>
+          </div>
+
+          <div className="grid gap-3.5 sm:grid-cols-2">
+            <Field label="12th marks (%)">
+              <input
+                name="twelfth_marks"
+                required
+                type="text"
+                inputMode="decimal"
+                maxLength={50}
+                placeholder="e.g. 85"
+                className={inputCls}
+              />
+            </Field>
+            <Field label="District (optional)">
+              <input
+                name="district"
+                type="text"
+                autoComplete="address-level2"
+                placeholder="e.g. Patna"
+                className={inputCls}
+              />
+            </Field>
+          </div>
+
+          <div className="grid gap-3.5 sm:grid-cols-2">
+            <Field label="Board">
+              <select name="board" required defaultValue="" className={inputCls}>
+                <option value="" disabled>
+                  Select board
+                </option>
+                {a.boards.map((b) => (
+                  <option key={b} value={b}>
+                    {b}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Stream">
+              <select name="stream" required defaultValue="" className={inputCls}>
+                <option value="" disabled>
+                  Select stream
+                </option>
+                {a.streams.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
                   </option>
                 ))}
               </select>
