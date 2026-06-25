@@ -1290,12 +1290,42 @@
   position: relative;
   width: 100%;
   max-width: 440px;
+  max-height: calc(100vh - 36px); /* fallback for browsers without dvh */
   max-height: calc(100dvh - 36px);
   overflow-y: auto;
   background: #ffffff;
   border-radius: 20px;
-  padding: 28px 22px 24px;
+  padding: 24px 20px 20px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+/* Compact the lead form inside the popup so all seven fields + the Apply button
+   fit on a phone screen instead of the button being pushed below the fold. The
+   inline apply-section form (also MULeadForm) is unaffected — these are scoped
+   to the modal card. */
+.mu-applymodal-card h3 {
+  font-size: 20px;
+}
+.mu-applymodal-card > p {
+  margin-top: 6px;
+  font-size: 13px;
+}
+.mu-applymodal-card form {
+  margin-top: 14px !important;
+}
+.mu-applymodal-card form > * + * {
+  margin-top: 10px !important;
+}
+.mu-applymodal-card form .grid {
+  gap: 10px !important;
+}
+.mu-applymodal-card form input,
+.mu-applymodal-card form select {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+.mu-applymodal-card form label > span {
+  margin-bottom: 4px !important;
 }
 .mu-applymodal-close {
   position: absolute;

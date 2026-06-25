@@ -100,7 +100,7 @@ export default function MULeadForm() {
             </Field>
           </div>
 
-          <div className="grid gap-3.5 sm:grid-cols-2">
+          <div className="grid grid-cols-2 gap-3.5">
             <Field label="12th marks (%)">
               <input
                 name="twelfth_marks"
@@ -123,7 +123,7 @@ export default function MULeadForm() {
             </Field>
           </div>
 
-          <div className="grid gap-3.5 sm:grid-cols-2">
+          <div className="grid grid-cols-2 gap-3.5">
             <Field label="Board">
               <select name="board" required defaultValue="" className={inputCls}>
                 <option value="" disabled>
@@ -150,11 +150,11 @@ export default function MULeadForm() {
             </Field>
           </div>
 
-          <div className="flex justify-center pt-1">
+          <div className="pt-1">
             <button
               type="submit"
               disabled={status === "loading"}
-              className="mu-btn mu-btn-black !rounded-2xl disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1d4ed8] to-[#1e3a8a] px-6 py-3.5 text-[15px] font-semibold text-[#ffffff] shadow-lg transition hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === "loading" ? "Sending…" : "Apply Now"}
               {status !== "loading" && <Arrow />}

@@ -11,7 +11,7 @@ import { asset } from "@/lib/assets";
       `.mu-recog-logobox`. `seal` just gives a logo the taller cap. */
 const ITEMS: { src: string; alt: string; label: string; seal?: boolean; scale?: number }[] = [
   { src: "/badges/aicte-n.png", alt: "AICTE", label: "Approved", seal: true, scale: 1.2 },
-  { src: "/badges/naac-n.png", alt: "NAAC", label: "B++ Accredited", seal: true, scale: 1.4 },
+  { src: "/badges/naac-n.png", alt: "NAAC", label: "Accredited", seal: true, scale: 1.4 },
   { src: "/badges/affiliation-n.png", alt: "Permanent Affiliation", label: "Permanent Affiliation", seal: true, scale: 1.5 },
   { src: "/badges/iitb-n.png", alt: "IIT Bombay", label: "Super Resource Centre", seal: true },
   // Google for Education logo as used on the "/" route.
