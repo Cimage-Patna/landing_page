@@ -15,6 +15,37 @@ const ZEBRA: [number, number, number] = [249, 250, 251];
 
 const M = 44;
 
+/** jsPDF's built-in Helvetica has no rupee glyph (₹ = U+20B9) and renders it as
+ *  garbage, which also corrupts autotable's width measurement. Use "Rs." so the
+ *  amounts print cleanly and columns size correctly. */
+const money = (s: string) => s.replace(/₹\s?/g, "Rs. ");
+
+/** Load a same-origin image and return it as a PNG data URL (jsPDF can't embed
+ *  webp directly). Resolves null if it fails so the header falls back to text. */
+function loadLogoPng(
+  src: string,
+): Promise<{ data: string; w: number; h: number } | null> {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined") return resolve(null);
+    const img = new window.Image();
+    img.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return resolve(null);
+        ctx.drawImage(img, 0, 0);
+        resolve({ data: canvas.toDataURL("image/png"), w: img.naturalWidth, h: img.naturalHeight });
+      } catch {
+        resolve(null);
+      }
+    };
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
 /** finalY of the most recently drawn autotable. */
 function lastY(doc: jsPDF): number {
   return (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY;
@@ -49,50 +80,67 @@ const headStyles = {
   cellPadding: 7,
 };
 
-export function generateAllFeesPdf(studentName?: string): void {
+export async function generateAllFeesPdf(studentName?: string): Promise<void> {
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();
   const contentW = W - M * 2;
   const plans = Object.values(FEE_PLANS);
 
-  // ── Header band ───────────────────────────────────────────────────────────
+  // ── Header — brand strip + logo + title ──────────────────────────────────
+  const logo = await loadLogoPng("/cimage-logo.webp");
   doc.setFillColor(...RED);
-  doc.rect(0, 0, W, 96, "F");
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(30);
-  doc.text("CIMAGE", M, 50);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10.5);
-  doc.text("Group of Institutions   ·   Patna", M, 71);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
-  doc.text("Fee Structure", W - M, 44, { align: "right" });
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10.5);
-  doc.text("All Courses · Session 2026–2029", W - M, 62, { align: "right" });
-  if (studentName) {
-    doc.setFontSize(9.5);
-    doc.text(`Prepared for: ${studentName}`, W - M, 78, { align: "right" });
+  doc.rect(0, 0, W, 6, "F"); // top brand accent
+
+  if (logo) {
+    const h = 42;
+    const w = (h * logo.w) / logo.h;
+    doc.addImage(logo.data, "PNG", M, 26, w, h);
+  } else {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(26);
+    doc.setTextColor(...RED);
+    doc.text("CIMAGE", M, 56);
   }
 
-  // ── Main table — fee + payment milestones (no down/regular columns) ───────
-  let y = sectionHeading(doc, "Course-wise Fee Structure", 132);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.setTextColor(...INK);
+  doc.text("Fee Structure", W - M, 42, { align: "right" });
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(...MUTE);
+  doc.text("All Courses · Session 2026–2029", W - M, 58, { align: "right" });
+  if (studentName) {
+    doc.text(`Prepared for: ${studentName}`, W - M, 72, { align: "right" });
+  }
+
+  doc.setDrawColor(...RED);
+  doc.setLineWidth(1.4);
+  doc.line(M, 86, W - M, 86);
+
+  // ── Main table — regular fee plan ────────────────────────────────────────
+  let y = sectionHeading(doc, "Course-wise Fee Structure (Regular Plan)", 124);
   autoTable(doc, {
     startY: y + 12,
     head: [["Course", "Duration", "Total Fee", "At Admission", "Annual (Yr 2+)"]],
-    body: plans.map((p) => [p.course, p.duration, p.totals.complete, p.atAdmission, p.annual]),
+    body: plans.map((p) => [
+      p.course,
+      p.duration,
+      money(p.totals.regular),
+      money(p.atAdmission),
+      money(p.annual),
+    ]),
     theme: "grid",
     styles: baseStyles,
     headStyles,
     alternateRowStyles: { fillColor: ZEBRA },
     columnStyles: {
-      0: { cellWidth: 188, fontStyle: "bold" },
-      1: { halign: "center", cellWidth: 52 },
-      2: { halign: "right", fontStyle: "bold" },
-      3: { halign: "right" },
-      4: { halign: "right" },
+      0: { cellWidth: 168, fontStyle: "bold" },
+      1: { halign: "center", cellWidth: 62 },
+      2: { halign: "right", cellWidth: 93, fontStyle: "bold" },
+      3: { halign: "right", cellWidth: 93 },
+      4: { halign: "right", cellWidth: 91 },
     },
     margin: { left: M, right: M },
   });
@@ -102,13 +150,13 @@ export function generateAllFeesPdf(studentName?: string): void {
   autoTable(doc, {
     startY: y + 12,
     head: [["Charge", "Amount"]],
-    body: ONE_TIME_CHARGES.map((c) => [c.label, c.amount]),
+    body: ONE_TIME_CHARGES.map((c) => [c.label, money(c.amount)]),
     theme: "grid",
     styles: baseStyles,
     headStyles,
     alternateRowStyles: { fillColor: ZEBRA },
-    columnStyles: { 1: { halign: "right", cellWidth: 150 } },
-    tableWidth: 340,
+    columnStyles: { 0: { cellWidth: 230 }, 1: { halign: "right", cellWidth: 150 } },
+    tableWidth: 380,
     margin: { left: M, right: M },
   });
 
@@ -127,7 +175,7 @@ export function generateAllFeesPdf(studentName?: string): void {
   doc.setFontSize(9);
   doc.setTextColor(...MUTE);
   const note = doc.splitTextToSize(
-    "Total Fee shown is the complete one-time payment. Convenient down-payment and easy-installment plans are also available — please ask the admissions office. Indicative fees for the 2026–2029 session; GST/taxes and university/exam-board charges (where applicable) are extra. Final fees are confirmed at the time of admission.",
+    "This fee is provisional. For detailed and accurate fees, please contact the admission department. Figures shown are the Regular fee plan — a lower one-time (complete) payment and easy down-payment plans are also available. University registration/exam fees and applicable taxes are payable separately. Fees are indicative for the 2026–2029 session and confirmed at the time of admission.",
     contentW,
   );
   doc.text(note, M, y);

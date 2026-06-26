@@ -63,7 +63,7 @@ export default function MUFeeUnlock() {
 
   async function downloadAll(name?: string) {
     const { generateAllFeesPdf } = await import("@/lib/feePdf");
-    generateAllFeesPdf(name);
+    await generateAllFeesPdf(name);
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

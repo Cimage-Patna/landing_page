@@ -19,12 +19,12 @@ const FEATURES: Feature[] = [
     desc: "Java, Python, DBMS, Cloud & AI — the syllabus is rebuilt every year against what the IT market is actually hiring for.",
   },
   {
-    icon: "https://sot.upgrad.com/assets/system.gif",
+    icon: "/badges/iitb-n.png",
     title: "IIT Bombay E-Yantra Lab",
     desc: "The only BCA college in Bihar with an IIT Bombay-certified robotics & AI lab on campus.",
   },
   {
-    icon: "https://sot.upgrad.com/assets/intern.gif",
+    icon: "/badges/wipro.svg",
     title: "Wipro Centre of Excellence",
     desc: "An active MoU with Wipro Ltd. — a signed industry certification on your CV before you graduate.",
   },
@@ -34,7 +34,7 @@ const FEATURES: Feature[] = [
     desc: "Aptitude, mock interviews & GD prep from year one — 317 TCS offers came in a single drive.",
   },
   {
-    icon: "https://sot.upgrad.com/assets/map.gif",
+    icon: "/badges/gfe-g.png",
     title: "Google for Education Partner",
     desc: "The only Google for Education partner in the state — you train on the same tools the industry runs on.",
   },
