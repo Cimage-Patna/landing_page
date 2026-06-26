@@ -113,19 +113,19 @@ export const copy = {
     // Real CIMAGE guest/event photos (S3). Caption-less gallery — add per-photo
     // names later if needed. Shown by MUVisitors in place of the `items` rail.
     gallery: [
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.41.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.50.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.40+(1).jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+17.46.49.jpeg",
       "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.05.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.15.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.21.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.36.jpeg",
       "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.22.jpeg",
       "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.23.jpeg",
       "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.34.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.36.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.21.jpeg",
       "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.38.jpeg",
       "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.40.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.40+(1).jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+17.46.49.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.15.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.50.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.41.jpeg",
     ],
   },
   stack: {
