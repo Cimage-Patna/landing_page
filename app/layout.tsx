@@ -1,6 +1,7 @@
 import "./globals.css";
+import "./mu.css";
 import type { Metadata, Viewport } from "next";
-import { Big_Shoulders, Inter } from "next/font/google";
+import { Big_Shoulders, Inter, Fraunces, Poppins } from "next/font/google";
 import Script from "next/script";
 
 // Google Ads global site tag (gtag.js). Loaded once here so it runs on every
@@ -17,6 +18,24 @@ const display = Big_Shoulders({
 const body = Inter({
   subsets: ["latin"],
   variable: "--font-body",
+  display: "swap",
+});
+
+// Fraunces = the editorial serif used for headings; Poppins = geometric-sans
+// fallback for Galano Grotesque (loaded from a CDN in mu.css). Both feed CSS
+// variables consumed by the .mu-root scoped styles in mu.css.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--mu-fraunces",
+  display: "swap",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--mu-poppins",
   display: "swap",
 });
 
@@ -64,7 +83,9 @@ gtag('js', new Date());
 gtag('config', '${GOOGLE_ADS_ID}');`}
         </Script>
       </head>
-      <body>{children}</body>
+      <body>
+        <div className={`mu-root ${fraunces.variable} ${poppins.variable}`}>{children}</div>
+      </body>
     </html>
   );
 }

@@ -146,13 +146,13 @@ export default function MUReasons() {
   const r = copy.reasons;
 
   return (
-    <section className="bg-[#090909] py-16 text-white sm:py-24">
+    <section className="bg-[#f4f4f5] py-16 text-[#090909] sm:py-24">
       <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
         <div className="max-w-3xl">
           <h2 className="mu-serif text-[2.1rem] leading-[1.12] sm:text-[3rem]">
             Six reasons it <span className="mu-gradient-text not-italic">works.</span>
           </h2>
-          <p className="mt-4 text-[17px] text-white/60">{r.sub}</p>
+          <p className="mt-4 text-[17px] text-[#52525b]">{r.sub}</p>
         </div>
 
         <div className="mu-stack mt-12">

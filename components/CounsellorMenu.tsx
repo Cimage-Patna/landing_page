@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ADMISSION_PHONES } from "@/lib/contact";
 
-export default function CounsellorMenu() {
+// `hideTrigger` keeps the dialog + the "counsellor:open" listener mounted
+// (so Hero's "Get Guidance" still works) without rendering a toolbar button.
+export default function CounsellorMenu({ hideTrigger = false }: { hideTrigger?: boolean }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -33,25 +35,29 @@ export default function CounsellorMenu() {
 
   return (
     <>
-      {/* Desktop trigger — pill */}
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="nav-item hidden items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium sm:inline-flex"
-      >
-        <PhoneIcon />
-        <span>Talk to Counsellor</span>
-      </button>
+      {!hideTrigger && (
+        <>
+          {/* Desktop trigger — pill */}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="nav-item hidden items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium sm:inline-flex"
+          >
+            <PhoneIcon />
+            <span>Talk to Counsellor</span>
+          </button>
 
-      {/* Mobile trigger — icon */}
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Talk to Counsellor"
-        className="nav-item inline-flex h-10 w-10 items-center justify-center rounded-full border sm:hidden"
-      >
-        <PhoneIcon />
-      </button>
+          {/* Mobile trigger — icon */}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Talk to Counsellor"
+            className="nav-item inline-flex h-10 w-10 items-center justify-center rounded-full border sm:hidden"
+          >
+            <PhoneIcon />
+          </button>
+        </>
+      )}
 
       {mounted &&
         open &&

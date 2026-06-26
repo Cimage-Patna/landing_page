@@ -329,23 +329,27 @@
 .mu-prog-tab {
   flex: none;
   border-radius: 60px;
-  border: 1px solid #404040;
-  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.06);
   color: #ffffff;
   font-family: var(--mu-serif);
-  font-size: 14px;
-  font-weight: 400;
-  padding: 9px 20px;
+  font-size: 14.5px;
+  font-weight: 500;
+  padding: 9px 22px;
   line-height: 120%;
   cursor: pointer;
-  transition: 0.35s ease-in-out;
+  transition: 0.3s ease-in-out;
   white-space: nowrap;
 }
-.mu-prog-tab:hover { border-color: #6b6b6b; }
+.mu-prog-tab:hover {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.12);
+}
 .mu-prog-tab.is-active {
   background: #ffffff;
   border-color: #ffffff;
   color: #090909;
+  font-weight: 600;
 }
 
 /* prev/next circular buttons on the tab row */
@@ -389,25 +393,69 @@
   padding: 4px 2px 8px;
 }
 .mu-prog-card {
-  scroll-snap-align: start;
+  --t: 1; /* 1 = centred/active, 0 = far (set per-scroll in JS) */
+  scroll-snap-align: center;
   flex: 0 0 510px;
   max-width: 510px;
-  border-radius: 12px;
-  border: 1px solid #262626;
-  background: #0d0d0d;
+  border-radius: 16px;
+  border: 1px solid #232323;
+  background: linear-gradient(180deg, #141414 0%, #0c0c0c 100%);
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  transform-origin: center 60%;
+  transform: scale(calc(0.9 + 0.1 * var(--t)));
+  opacity: calc(0.46 + 0.54 * var(--t));
+  box-shadow: 0 10px 30px -22px rgba(0, 0, 0, 0.9);
+  transition:
+    transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.5s ease,
+    border-color 0.45s ease,
+    box-shadow 0.5s ease;
+  will-change: transform, opacity;
+}
+.mu-prog-card.is-focus {
+  border-color: rgba(255, 255, 255, 0.26);
+  box-shadow:
+    0 26px 60px -24px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset;
 }
 .mu-prog-imgwrap {
   position: relative;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   aspect-ratio: 16 / 9.6;
   background: #1a1a1a;
 }
-.mu-prog-imgwrap img { width: 100%; height: 100%; object-fit: cover; }
+.mu-prog-imgwrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(calc(1 + 0.08 * var(--t)));
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+/* depth gradient over the image, deepening as the card becomes active */
+.mu-prog-imgwrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 52%, rgba(0, 0, 0, 0.42) 100%);
+  opacity: calc(0.25 + 0.75 * var(--t));
+  transition: opacity 0.5s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mu-prog-card {
+    transform: none;
+    opacity: 1;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .mu-prog-imgwrap img {
+    transform: none;
+  }
+}
 
 .mu-prog-title { font-size: 26px; line-height: 124%; font-weight: 400; color: #fff; }
 .mu-prog-title span { font-weight: 700; color: #fff; }
@@ -485,24 +533,6 @@
 .mu-prog-railwrap { position: relative; }
 .mu-prog-fade { display: none; }
 
-/* swipe hint sits where the arrows are on desktop */
-.mu-prog-swipe {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  flex: none;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-}
-.mu-prog-swipe svg { animation: mu-prog-nudge 1.4s ease-in-out infinite; }
-@keyframes mu-prog-nudge {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(4px); }
-}
-
 @media (max-width: 1024px) {
   /* right-edge fade hinting that more cards continue off-screen */
   .mu-prog-fade {
@@ -515,9 +545,6 @@
     pointer-events: none;
     background: linear-gradient(to right, rgba(9, 9, 9, 0), #090909 88%);
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  .mu-prog-swipe svg { animation: none; }
 }
 
 /* ============================================================
@@ -545,12 +572,12 @@
   position: sticky;
   top: calc(var(--stack-base) + var(--i, 0) * var(--stack-peek));
   background: #ffffff;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #e4e4e7;
   border-radius: 14px;
   padding: 22px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 14px 34px -18px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* Trailing scroll room: lets the LAST card reach its pinned spot below the rest

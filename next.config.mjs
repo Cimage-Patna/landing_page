@@ -9,7 +9,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "cimage-web.s3.ap-south-1.amazonaws.com",
-        pathname: "/public/reels/**",
+        pathname: "/public/**",
       },
       {
         protocol: "https",

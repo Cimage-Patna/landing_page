@@ -110,6 +110,23 @@ export const copy = {
       { name: "Shri Padamjit Sahrawat", role: "Author & Commentator" },
       { name: "Vice-Chancellor", role: "Patliputra University" },
     ],
+    // Real CIMAGE guest/event photos (S3). Caption-less gallery — add per-photo
+    // names later if needed. Shown by MUVisitors in place of the `items` rail.
+    gallery: [
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.41.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.50.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.05.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.15.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.21.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.22.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.23.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.34.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.36.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.38.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.40.jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.40+(1).jpeg",
+      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+17.46.49.jpeg",
+    ],
   },
   stack: {
     display: "What you'll actually build.",
@@ -131,7 +148,7 @@ export const copy = {
       {
         title: "E-Yantra · IIT Bombay",
         body: "Robotics teams. Real competition tracks. Certified by an IIT.",
-        image: asset("/collab/Left-Image.webp"),
+        image: "https://cimage-web.s3.ap-south-1.amazonaws.com/public/Screenshot+2026-06-26+at+3.44.20%E2%80%AFPM.png",
         badge: "IIT Bombay · E-Yantra Certified",
       },
       {
@@ -200,7 +217,6 @@ export const copy = {
       { img: asset("/star-placements/sweta-kumari.webp"), name: "Sweta Kumari", company: "J.P. Morgan", location: "London, UK" },
       { img: asset("/star-placements/nishi-prakash.webp"), name: "Nishi Prakash", company: "Rackspace", location: "London, UK" },
       { img: asset("/star-placements/rahul-sharma.webp"), name: "Rahul Sharma", company: "Rackspace", location: "London, UK" },
-      { img: asset("/star-placements/ankit-raj-wipro.webp"), name: "Ankit Raj", company: "Wipro", location: "Zurich, Switzerland" },
       { img: asset("/star-placements/samiksha-gupta.webp"), name: "Samiksha Gupta", company: "Wipro", location: "Irving, Texas, USA" },
       { img: asset("/star-placements/suraj-prakash.webp"), name: "Suraj Prakash", company: "Wipro", location: "Sydney, Australia" },
       { img: asset("/star-placements/priyanka-kumari-tcs.webp"), name: "Priyanka Kumari", course: "BCA", company: "TCS", location: "Michigan, USA" },

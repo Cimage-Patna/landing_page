@@ -6,7 +6,7 @@ import { asset } from "@/lib/assets";
    their content so they sit consistently.
 
    ── To resize a logo: tweak its `scale` below (per-logo optical nudge). The
-      shared size caps live in app/m/mu.css: `.mu-recog-logobox img` (wide logos)
+      shared size caps live in app/mu.css: `.mu-recog-logobox img` (wide logos)
       and `.mu-recog-logobox.seal img` (the seal badges), plus the box height on
       `.mu-recog-logobox`. `seal` just gives a logo the taller cap. */
 const ITEMS: { src: string; alt: string; label: string; seal?: boolean; scale?: number }[] = [

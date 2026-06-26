@@ -14,18 +14,18 @@ type Card = { amount: string; line1: string; line2?: string; logos: BrandKey[] }
 // Each recruiter appears on exactly ONE card — no logo is repeated across the
 // bento. (Only 11 brand glyphs exist, so the shorter cards stay number-only.)
 const CARDS: Card[] = [
-  { amount: "13,500+", line1: "Alumni Placed", line2: "across 17+ years", logos: ["tcs", "accenture"] },
-  { amount: "₹37 LPA", line1: "Highest Package", line2: "BCA · single offer", logos: ["hsbc", "hdfcbank"] },
+  { amount: "13,500+", line1: "Students Placed", line2: "across 17+ years", logos: ["tcs", "accenture"] },
+  { amount: "₹37 LPA", line1: "Highest Package", line2: "BCA · single offer", logos: ["tcs", "ibm", "accenture", "hcl"] },
   { amount: "317", line1: "TCS Selections", line2: "in a single drive", logos: [] },
   { amount: "200+", line1: "Recruiting Companies", line2: "hiring on campus", logos: ["wipro", "hcl"] },
-  { amount: "₹4.5 LPA", line1: "Average Package", line2: "across the batch", logos: [] },
+  { amount: "₹4.5 LPA", line1: "Average Package", line2: "across the batch", logos: ["tcs", "wipro", "infosys", "cognizant"] },
   { amount: "17+", line1: "Years of Excellence", line2: "in IT & Management education", logos: [] },
   { amount: "130+", line1: "ICICI Bank PO Offers in 2026", line2: "₹4.5 LPA each", logos: ["icicibank"] },
   {
     amount: "50%+",
     line1: "of Bihar's IT Placements",
     line2: "across the state, year on year",
-    logos: ["ibm", "cognizant", "infosys", "cocacola"],
+    logos: ["ibm", "cognizant", "infosys", "accenture"],
   },
 ];
 

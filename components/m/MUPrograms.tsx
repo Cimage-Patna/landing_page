@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { copy } from "@/lib/copy";
 
@@ -93,6 +93,47 @@ export default function MUPrograms() {
     railRef.current?.scrollBy({ left: dir * 534, behavior: "smooth" });
   };
 
+  // Coverflow-style emphasis: the card nearest the rail centre gets full scale
+  // + brightness (--t → 1) and an image zoom; neighbours recede as they move
+  // away. Re-runs on scroll/resize and whenever the active tab swaps the cards.
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    let raf = 0;
+    const update = () => {
+      const rect = rail.getBoundingClientRect();
+      const centre = rect.left + rect.width / 2;
+      const cards = Array.from(rail.querySelectorAll<HTMLElement>(".mu-prog-card"));
+      if (!cards.length) return;
+      const dists = cards.map((c) => {
+        const r = c.getBoundingClientRect();
+        return Math.abs(r.left + r.width / 2 - centre);
+      });
+      const min = Math.min(...dists);
+      cards.forEach((c, i) => {
+        const w = c.getBoundingClientRect().width || 1;
+        const t = Math.max(0, 1 - (dists[i] - min) / w);
+        c.style.setProperty("--t", t.toFixed(3));
+        c.classList.toggle("is-focus", dists[i] === min);
+      });
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        update();
+      });
+    };
+    update();
+    rail.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      rail.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [active]);
+
   return (
     <section id="programs" className="bg-[#090909] py-16 text-white sm:py-24">
       <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
@@ -100,9 +141,9 @@ export default function MUPrograms() {
           Our <span className="italic">Programmes</span>
         </h2>
 
-        {/* tab pills + prev/next arrows */}
-        <div className="mt-8 flex items-center justify-between gap-4">
-          <div className="mu-no-scrollbar min-w-0 flex-1">
+        {/* tab pills — own full-width row so they never clip on any screen */}
+        <div className="mt-8">
+          <div className="mu-no-scrollbar w-full">
             <div className="mu-prog-tabs">
               {p.groups.map((g, i) => (
                 <button
@@ -116,18 +157,17 @@ export default function MUPrograms() {
               ))}
             </div>
           </div>
-          {/* swipe hint — mobile only; arrows take over from sm: up */}
-          <span className="mu-prog-swipe sm:hidden" aria-hidden="true">
-            Swipe
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </span>
-          <div className="mu-prog-arrows hidden sm:flex">
-            <button type="button" aria-label="Previous" className="mu-prog-arrow-btn" onClick={() => scrollBy(-1)}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
-            <button type="button" aria-label="Next" className="mu-prog-arrow-btn" onClick={() => scrollBy(1)}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
+
+          {/* prev/next arrows sit below the tabs (desktop only) */}
+          <div className="mt-4 hidden justify-end sm:flex">
+            <div className="mu-prog-arrows">
+              <button type="button" aria-label="Previous" className="mu-prog-arrow-btn" onClick={() => scrollBy(-1)}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </button>
+              <button type="button" aria-label="Next" className="mu-prog-arrow-btn" onClick={() => scrollBy(1)}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </button>
+            </div>
           </div>
         </div>
 

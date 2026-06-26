@@ -23,6 +23,9 @@ type LeadInput = {
   city?: string;
   state?: string;
   comment?: string;
+  // "fee" = the lightweight fee-structure download form (name + phone + course
+  // only). Anything else falls through to the full admission lead form.
+  form_type?: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -57,24 +60,30 @@ export async function POST(req: Request) {
     );
   }
 
+  const isFee = (body.form_type ?? "").trim() === "fee";
+
   const twelfthMarks = (body.twelfth_marks ?? "").trim();
   const board = (body.board ?? "").trim();
   const stream = (body.stream ?? "").trim();
 
-  if (!twelfthMarks || !board || !stream) {
-    return NextResponse.json(
-      { ok: false, error: "12th marks, board and stream are required." },
-      { status: 422 },
-    );
-  }
+  // The fee-structure download form only collects name, phone and course — skip
+  // the 12th-marks/board/stream gate that the full admission form enforces.
+  if (!isFee) {
+    if (!twelfthMarks || !board || !stream) {
+      return NextResponse.json(
+        { ok: false, error: "12th marks, board and stream are required." },
+        { status: 422 },
+      );
+    }
 
-  // 12th marks must be a percentage strictly between 40 and 100.
-  const marks = parseFloat(twelfthMarks.replace("%", "").trim());
-  if (!(marks > 40 && marks < 100)) {
-    return NextResponse.json(
-      { ok: false, error: "12th marks must be a percentage between 40 and 100." },
-      { status: 422 },
-    );
+    // 12th marks must be a percentage strictly between 40 and 100.
+    const marks = parseFloat(twelfthMarks.replace("%", "").trim());
+    if (!(marks > 40 && marks < 100)) {
+      return NextResponse.json(
+        { ok: false, error: "12th marks must be a percentage between 40 and 100." },
+        { status: 422 },
+      );
+    }
   }
 
   // Forward only the UTM params that were actually present on the URL.
@@ -89,6 +98,7 @@ export async function POST(req: Request) {
     phone,
     email: (body.email ?? "").trim(),
     course: (body.course ?? "BCA").trim(),
+    // Fee leads only collect name/phone/course; these are optional upstream.
     twelfth_marks: twelfthMarks,
     board,
     stream,
@@ -96,9 +106,11 @@ export async function POST(req: Request) {
     city: (body.district ?? body.city ?? "").trim(),
     state: (body.state ?? "Bihar").trim(),
     lead_type: "hot",
-    sub_source: SUB_SOURCE,
+    sub_source: isFee ? "fee-structure" : SUB_SOURCE,
     comment: (body.comment ?? "").trim(),
-    tags: TAGS,
+    // Fee-structure enquiries carry an extra "fee-structure" tag so the CRM can
+    // segment download leads from full admission applications.
+    tags: isFee ? [...TAGS, "fee-structure"] : TAGS,
     ...utm,
   };
 

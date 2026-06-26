@@ -1,57 +1,57 @@
 import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import Numbers from "@/components/Numbers";
-import BiharMosaic from "@/components/BiharMosaic";
-import WhyChoose from "@/components/WhyChoose";
-import Programs from "@/components/Programs";
-import Quadruped from "@/components/Quadruped";
-import Recruiters from "@/components/Recruiters";
-import Reasons from "@/components/Reasons";
-import Stack from "@/components/Stack";
-import Labs from "@/components/Labs";
-import PhysicalAI from "@/components/PhysicalAI";
-import StarPlacements from "@/components/StarPlacements";
-import GlobalAlumni from "@/components/GlobalAlumni";
-import CampusLife from "@/components/CampusLife";
-import Reels from "@/components/Reels";
-import JoinBanner from "@/components/JoinBanner";
-import Trust from "@/components/Trust";
-import Visitors from "@/components/Visitors";
-import Awards from "@/components/Awards";
-import FAQ from "@/components/FAQ";
-import About from "@/components/About";
-import Apply from "@/components/Apply";
-import StickyApply from "@/components/StickyApply";
+import MUHero from "@/components/m/MUHero";
+import MURecognised from "@/components/m/MURecognised";
+import MUStats from "@/components/m/MUStats";
+import MUWhyChoose from "@/components/m/MUWhyChoose";
+import MUPrograms from "@/components/m/MUPrograms";
+import MUFeeUnlock from "@/components/m/MUFeeUnlock";
+import MUReasons from "@/components/m/MUReasons";
+import MULabs from "@/components/m/MULabs";
+import MUPhysicalAI from "@/components/m/MUPhysicalAI";
+import MUQuadruped from "@/components/m/MUQuadruped";
+import MUStarPlacements from "@/components/m/MUStarPlacements";
+import MUPlacementMaps from "@/components/m/MUPlacementMaps";
+import MUAlumniWall from "@/components/m/MUAlumniWall";
+import MUVisitors from "@/components/m/MUVisitors";
+import MUCampus from "@/components/m/MUCampus";
+import MUReels from "@/components/m/MUReels";
+import MUAlumniVoices from "@/components/m/MUAlumniVoices";
+import MUAdmissionProcess from "@/components/m/MUAdmissionProcess";
+import MUFAQ from "@/components/m/MUFAQ";
+import MUApply from "@/components/m/MUApply";
+import MUStickyCta from "@/components/m/MUStickyCta";
+import MUApplyModal from "@/components/m/MUApplyModal";
+import MUBrandMarquee from "@/components/m/MUBrandMarquee";
 import Footer from "@/components/Footer";
 
 export default function Page() {
   return (
     <main>
       <Nav />
-      <Hero />
-      <Apply />
-      <Numbers />
-      <BiharMosaic />
-      <WhyChoose />
-      <Programs />
-      <Recruiters />
-      <CampusLife />
-      <Reels />
-      <PhysicalAI />
-      <Reasons />
-      <Stack />
-      <Labs />
-      <Quadruped />
-      <StarPlacements />
-      <GlobalAlumni />
-      <JoinBanner />
-      <Trust />
-      <Visitors />
-      <Awards />
-      <FAQ />
-      <About />
-      <StickyApply />
+      <MUHero />
+      <MURecognised />
+      <MUStats />
+      <MUReasons />
+      <MUPrograms />
+      <MUWhyChoose />
+      <MULabs />
+      <MUPhysicalAI />
+      <MUStarPlacements />
+      <MUPlacementMaps />
+      <MUAlumniWall />
+      <MUQuadruped />
+      <MUVisitors />
+      <MUCampus />
+      <MUReels />
+      <MUAlumniVoices />
+      <MUAdmissionProcess />
+      <MUFAQ />
+      <MUBrandMarquee />
+      <MUApply />
       <Footer />
+      <MUStickyCta />
+      <MUApplyModal />
+      <MUFeeUnlock />
     </main>
   );
 }

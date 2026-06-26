@@ -22,12 +22,11 @@ export default function MUHero() {
       {/* bottom-centred content */}
       <div className="mu-herofull-content">
         <h1 className="mu-herofull-head">
-          <span>Where Bihar</span>
-          <span className="mu-serif accent">meets the world.</span>
+          <span>Bihar&apos;s most successful</span>
+          <span className="mu-serif accent">IT &amp; Management college.</span>
         </h1>
         <p className="mu-herofull-sub">
-          Bihar&apos;s #1 institute for IT &amp; Management — where students are trained, certified and
-          placed from Bengaluru to London, Dubai and the Big Four.
+          Home to Bihar&apos;s highest placements and most gold medallists, with a premium campus in the heart of Patna.
         </p>
 
         <div className="mu-herofull-btns">
