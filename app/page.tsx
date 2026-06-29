@@ -10,6 +10,7 @@ import MULabs from "@/components/m/MULabs";
 import MUPhysicalAI from "@/components/m/MUPhysicalAI";
 import MUQuadruped from "@/components/m/MUQuadruped";
 import MUStarPlacements from "@/components/m/MUStarPlacements";
+import MUOfferWall from "@/components/m/MUOfferWall";
 import MUPlacementMaps from "@/components/m/MUPlacementMaps";
 import MUAlumniWall from "@/components/m/MUAlumniWall";
 import MUVisitors from "@/components/m/MUVisitors";
@@ -32,17 +33,18 @@ export default function Page() {
       <MURecognised />
       <MUStats />
       <MUReasons />
+      <MUPhysicalAI />
       <MUPrograms />
+      <MUReels />
       <MUWhyChoose />
       <MULabs />
-      <MUPhysicalAI />
       <MUStarPlacements />
+      <MUOfferWall />
       <MUPlacementMaps />
       <MUAlumniWall />
       <MUQuadruped />
       <MUVisitors />
       <MUCampus />
-      <MUReels />
       <MUAlumniVoices />
       <MUAdmissionProcess />
       <MUFAQ />

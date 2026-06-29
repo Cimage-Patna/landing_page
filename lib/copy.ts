@@ -1,4 +1,5 @@
 import { asset } from "./assets";
+import { OFFER_LETTERS } from "./offerLetters";
 // Reel media is served from S3 (CDN-friendly, keeps heavy video off the app host).
 const REELS = "https://cimage-web.s3.ap-south-1.amazonaws.com/public/reels";
 
@@ -127,6 +128,15 @@ export const copy = {
       "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.50.jpeg",
       "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.41.jpeg",
     ],
+  },
+  // Immersive "wall of offer letters" (MUOfferWall). 149 real offer letters,
+  // sourced from cimage.in/offer-letters and re-hosted on S3 — see OFFER_LETTERS
+  // in lib/offerLetters.ts. The wall auto-fills and loops however many you add.
+  offerLetters: {
+    display: "Pehle CIMAGE jaisa",
+    displayAccent: "offer letter dikhao.",
+    sub: "Real company offer letters our students have earned — and counting. Tap any letter to view it full-size.",
+    items: OFFER_LETTERS.map((img) => ({ img })),
   },
   stack: {
     display: "What you'll actually build.",

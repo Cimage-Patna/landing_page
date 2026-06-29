@@ -329,9 +329,9 @@
 .mu-prog-tab {
   flex: none;
   border-radius: 60px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.03);
+  color: #090909;
   font-family: var(--mu-serif);
   font-size: 14.5px;
   font-weight: 500;
@@ -342,13 +342,13 @@
   white-space: nowrap;
 }
 .mu-prog-tab:hover {
-  border-color: rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.06);
 }
 .mu-prog-tab.is-active {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: #090909;
+  background: #090909;
+  border-color: #090909;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -361,7 +361,7 @@
   border-radius: 50%;
   border: 1px solid transparent;
   background: transparent;
-  color: #fff;
+  color: #090909;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -381,7 +381,7 @@
   mask-composite: exclude;
   pointer-events: none;
 }
-.mu-prog-arrow-btn:hover { background: rgba(255, 255, 255, 0.07); }
+.mu-prog-arrow-btn:hover { background: rgba(0, 0, 0, 0.05); }
 .mu-prog-arrow-btn:disabled { opacity: 0.35; cursor: default; }
 
 .mu-prog-rail {
@@ -398,8 +398,8 @@
   flex: 0 0 510px;
   max-width: 510px;
   border-radius: 16px;
-  border: 1px solid #232323;
-  background: linear-gradient(180deg, #141414 0%, #0c0c0c 100%);
+  border: 1px solid #e4e4e7;
+  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -407,7 +407,7 @@
   transform-origin: center 60%;
   transform: scale(calc(0.9 + 0.1 * var(--t)));
   opacity: calc(0.46 + 0.54 * var(--t));
-  box-shadow: 0 10px 30px -22px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 10px 30px -22px rgba(0, 0, 0, 0.35);
   transition:
     transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
     opacity 0.5s ease,
@@ -416,18 +416,17 @@
   will-change: transform, opacity;
 }
 .mu-prog-card.is-focus {
-  border-color: rgba(255, 255, 255, 0.26);
+  border-color: rgba(0, 0, 0, 0.16);
   box-shadow:
-    0 26px 60px -24px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    0 1px 0 0 rgba(255, 255, 255, 0.06) inset;
+    0 26px 60px -26px rgba(0, 0, 0, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.05);
 }
 .mu-prog-imgwrap {
   position: relative;
   border-radius: 10px;
   overflow: hidden;
   aspect-ratio: 16 / 9.6;
-  background: #1a1a1a;
+  background: #e5e5e5;
 }
 .mu-prog-imgwrap img {
   width: 100%;
@@ -457,9 +456,9 @@
   }
 }
 
-.mu-prog-title { font-size: 26px; line-height: 124%; font-weight: 400; color: #fff; }
-.mu-prog-title span { font-weight: 700; color: #fff; }
-.mu-prog-desc { font-size: 14px; line-height: 155%; color: #e5e5e5; min-height: 44px; max-width: 94%; }
+.mu-prog-title { font-size: 26px; line-height: 124%; font-weight: 400; color: #090909; }
+.mu-prog-title span { font-weight: 700; color: #090909; }
+.mu-prog-desc { font-size: 14px; line-height: 155%; color: #525252; min-height: 44px; max-width: 94%; }
 
 .mu-prog-info {
   display: grid;
@@ -472,15 +471,15 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1px solid #3a3a3a;
+  border: 1px solid #d4d4d8;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-top: 1px;
-  color: #d4d4d4;
+  color: #52525b;
 }
-.mu-prog-flexi .lbl { font-size: 15px; line-height: 120%; font-weight: 500; color: #fafafa; }
-.mu-prog-flexi .val { font-size: 13.5px; line-height: 140%; color: #a3a3a3; margin-top: 4px; }
+.mu-prog-flexi .lbl { font-size: 15px; line-height: 120%; font-weight: 500; color: #090909; }
+.mu-prog-flexi .val { font-size: 13.5px; line-height: 140%; color: #737373; margin-top: 4px; }
 .mu-prog-flexi .val span { font-size: 11px; }
 
 /* gradient-border black button (MU .btnBlack.borderGradient.hoverWhiteEffect) */
@@ -543,7 +542,7 @@
     bottom: 10px;
     width: 56px;
     pointer-events: none;
-    background: linear-gradient(to right, rgba(9, 9, 9, 0), #090909 88%);
+    background: linear-gradient(to right, rgba(244, 244, 245, 0), #f4f4f5 88%);
   }
 }
 
@@ -1678,4 +1677,84 @@
   .mu-recog-label {
     font-size: 11.5px;
   }
+}
+
+/* ============================================================
+   OFFER WALL — immersive vertical-marquee wall of offer letters
+   (MUOfferWall). Three columns drift up/down behind fade masks
+   with a subtle 3D tilt; tap a card to open the full letter.
+   ============================================================ */
+.mu-offerwall-stage {
+  position: relative;
+  height: 640px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 11%, #000 89%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 11%, #000 89%, transparent);
+  perspective: 1400px;
+}
+.mu-offer-wall {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+  transform: rotateX(8deg) scale(1.05);
+  transform-origin: center top;
+}
+.mu-offer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  will-change: transform;
+  animation: mu-offer-up 52s linear infinite;
+}
+.mu-offer-col.is-down {
+  animation-name: mu-offer-down;
+}
+/* organic, slightly different drift speed per column */
+.mu-offer-col:nth-child(1) { animation-duration: 54s; }
+.mu-offer-col:nth-child(2) { animation-duration: 64s; }
+.mu-offer-col:nth-child(3) { animation-duration: 48s; }
+.mu-offer-col:nth-child(4) { animation-duration: 60s; }
+@keyframes mu-offer-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+@keyframes mu-offer-down {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+.mu-offerwall-stage:hover .mu-offer-col {
+  animation-play-state: paused;
+}
+.mu-offer-card {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0f0f0f;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  cursor: zoom-in;
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.mu-offer-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.mu-offer-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 22px 50px -22px rgba(0, 0, 0, 0.9);
+}
+@media (max-width: 640px) {
+  .mu-offerwall-stage { height: 540px; }
+  .mu-offer-wall { gap: 4px; padding: 0 10px; transform: rotateX(6deg) scale(1.03); }
+  .mu-offer-col { gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mu-offer-col { animation: none; }
+  .mu-offer-wall { transform: none; }
+  .mu-offerwall-stage { height: auto; -webkit-mask-image: none; mask-image: none; }
 }

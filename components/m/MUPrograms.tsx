@@ -33,22 +33,22 @@ function facts(groupLabel: string) {
 
 const ICONS = {
   format: (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 3 2 8l10 5 10-5-10-5Z" /><path d="M6 10.5V15c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4.5" />
     </svg>
   ),
   eligibility: (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M3 21h18M5 21V8l7-4 7 4v13" /><path d="M9 21v-5h6v5M9.5 11h0M14.5 11h0" />
     </svg>
   ),
   duration: (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" />
     </svg>
   ),
   deadline: (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M6 2h12M6 22h12M8 2c0 4 8 6 8 10s-8 6-8 10M16 2c0 4-8 6-8 10s8 6 8 10" />
     </svg>
   ),
@@ -135,7 +135,7 @@ export default function MUPrograms() {
   }, [active]);
 
   return (
-    <section id="programs" className="bg-[#090909] py-16 text-white sm:py-24">
+    <section id="programs" className="bg-[#f4f4f5] py-16 text-[#090909] sm:py-24">
       <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
         <h2 className="mu-serif text-[2.1rem] leading-[1.1] sm:text-[3rem]">
           Our <span className="italic">Programmes</span>

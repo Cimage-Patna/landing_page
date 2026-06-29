@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { copy } from "@/lib/copy";
 import { Reveal } from "./ui";
 
@@ -44,13 +43,7 @@ export default function MUReels() {
               >
                 <span className="block rounded-[15px] bg-[#090909] p-[3px]">
                   <span className="relative block aspect-[9/16] w-36 overflow-hidden rounded-xl sm:w-44">
-                    <Image
-                      src={r.cover}
-                      alt={r.name}
-                      fill
-                      sizes="(max-width: 640px) 144px, 176px"
-                      className="object-cover"
-                    />
+                    <ReelCover r={r} active={i === 1} />
                     <span className="absolute inset-0 grid place-items-center bg-black/20 opacity-0 transition-opacity group-hover:opacity-100">
                       <PlayIcon />
                     </span>
@@ -85,7 +78,7 @@ function ReelViewer({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const touchY = useRef<number | null>(null);
   const [progress, setProgress] = useState(0);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false); // start unmuted
 
   const go = (d: number) =>
     setIndex((prev) => {
@@ -113,7 +106,14 @@ function ReelViewer({
   useEffect(() => {
     setProgress(0);
     const v = videoRef.current;
-    if (v) v.play().catch(() => {});
+    if (!v) return;
+    v.play().catch(() => {
+      // Browsers block unmuted autoplay before a user gesture — fall back to
+      // muted so the reel still plays; one tap on the speaker unmutes it.
+      v.muted = true;
+      setMuted(true);
+      v.play().catch(() => {});
+    });
   }, [index]);
 
   const cur = items[index];
@@ -198,6 +198,73 @@ function ReelViewer({
         </div>
       </div>
     </div>
+  );
+}
+
+/* Story-bar cover that plays its reel inline (muted loop) only while it's in
+   view, and pauses when scrolled away. Tapping it (via the parent button) opens
+   the full-screen viewer, where sound is allowed because the tap is a gesture. */
+function ReelCover({ r, active }: { r: ReelItem; active: boolean }) {
+  const ref = useRef<HTMLVideoElement | null>(null);
+  useEffect(() => {
+    if (!active) return;
+    const v = ref.current;
+    if (!v) return;
+
+    let onGesture: (() => void) | null = null;
+    const playWithAudio = () => {
+      v.muted = false;
+      v.play().catch(() => {
+        // Browser blocked unmuted autoplay — play muted now, then unmute the
+        // moment the visitor taps/clicks/keys anywhere on the page.
+        v.muted = true;
+        v.play().catch(() => {});
+        if (!onGesture) {
+          onGesture = () => {
+            v.muted = false;
+            v.play().catch(() => {});
+            document.removeEventListener("pointerdown", onGesture!);
+            document.removeEventListener("keydown", onGesture!);
+            onGesture = null;
+          };
+          document.addEventListener("pointerdown", onGesture);
+          document.addEventListener("keydown", onGesture);
+        }
+      });
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) playWithAudio();
+        else v.pause();
+      },
+      { threshold: 0.5 },
+    );
+    io.observe(v);
+    return () => {
+      io.disconnect();
+      if (onGesture) {
+        document.removeEventListener("pointerdown", onGesture);
+        document.removeEventListener("keydown", onGesture);
+      }
+    };
+  }, [active]);
+
+  // Only the active (2nd) reel plays inline; the rest are static covers.
+  if (!active) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={r.cover} alt={r.name} className="h-full w-full object-cover" />;
+  }
+  return (
+    <video
+      ref={ref}
+      src={r.video}
+      poster={r.cover}
+      loop
+      playsInline
+      preload="metadata"
+      className="h-full w-full object-cover"
+    />
   );
 }
 
