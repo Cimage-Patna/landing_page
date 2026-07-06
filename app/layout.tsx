@@ -61,6 +61,14 @@ export const viewport: Viewport = {
 // every load so returning visitors with a stale 'theme=dark' aren't stranded.
 const noFlashThemeScript = `(function(){try{document.documentElement.setAttribute('data-theme','light');}catch(e){}})();`;
 
+// Google Tag Manager — loaded on every page via this root layout.
+const GTM_ID = "GTM-WCHC69L6";
+const gtmScript = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`;
+
 export default function RootLayout({
   children,
 }: {
@@ -69,6 +77,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
       <head>
+        {/* Google Tag Manager — as high in <head> as possible */}
+        <script dangerouslySetInnerHTML={{ __html: gtmScript }} />
+
         <script dangerouslySetInnerHTML={{ __html: noFlashThemeScript }} />
 
         {/* Google tag (gtag.js) — Google Ads */}
@@ -84,6 +95,17 @@ gtag('config', '${GOOGLE_ADS_ID}');`}
         </Script>
       </head>
       <body>
+        {/* Google Tag Manager (noscript) — immediately after <body> */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
+
         <div className={`mu-root ${fraunces.variable} ${poppins.variable}`}>{children}</div>
       </body>
     </html>

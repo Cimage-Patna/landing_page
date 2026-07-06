@@ -1,7 +1,7 @@
-import { asset } from "./assets";
+import { asset, S3_BASE } from "./assets";
 import { OFFER_LETTERS } from "./offerLetters";
 // Reel media is served from S3 (CDN-friendly, keeps heavy video off the app host).
-const REELS = "https://cimage-web.s3.ap-south-1.amazonaws.com/public/reels";
+const REELS = `${S3_BASE}/reels`;
 
 export const copy = {
   hero: {
@@ -114,19 +114,19 @@ export const copy = {
     // Real CIMAGE guest/event photos (S3). Caption-less gallery — add per-photo
     // names later if needed. Shown by MUVisitors in place of the `items` rail.
     gallery: [
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.40+(1).jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+17.46.49.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.05.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.36.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.22.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.23.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.34.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.21.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.38.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.40.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.11.15.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.50.jpeg",
-      "https://cimage-web.s3.ap-south-1.amazonaws.com/public/WhatsApp+Image+2026-06-26+at+16.10.41.jpeg",
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.40+(1).jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+17.46.49.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.05.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.36.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.22.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.23.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.34.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.21.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.38.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.40.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.11.15.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.10.50.jpeg`,
+      `${S3_BASE}/WhatsApp+Image+2026-06-26+at+16.10.41.jpeg`,
     ],
   },
   // Immersive "wall of offer letters" (MUOfferWall). 149 real offer letters,
@@ -158,7 +158,7 @@ export const copy = {
       {
         title: "E-Yantra · IIT Bombay",
         body: "Robotics teams. Real competition tracks. Certified by an IIT.",
-        image: "https://cimage-web.s3.ap-south-1.amazonaws.com/public/Screenshot+2026-06-26+at+3.44.20%E2%80%AFPM.png",
+        image: `${S3_BASE}/Screenshot+2026-06-26+at+3.44.20%E2%80%AFPM.png`,
         badge: "IIT Bombay · E-Yantra Certified",
       },
       {

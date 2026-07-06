@@ -8,7 +8,11 @@
  *
  * Already-absolute URLs (e.g. the S3-hosted reels) are returned untouched.
  */
-const DEFAULT_BASE = "https://cimage-web.s3.ap-south-1.amazonaws.com/public/public";
+/** Single source of truth for the S3 bucket's public base URL. Build any direct
+ *  S3 image URL as `${S3_BASE}/<key>` so the host lives in exactly one place. */
+export const S3_BASE = "https://cimage-web.s3.ap-south-1.amazonaws.com/public";
+
+const DEFAULT_BASE = `${S3_BASE}/public`;
 const BASE = (process.env.NEXT_PUBLIC_ASSET_BASE ?? DEFAULT_BASE).replace(/\/+$/, "");
 
 export function asset(path: string): string {
