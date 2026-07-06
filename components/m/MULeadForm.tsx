@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { copy } from "@/lib/copy";
 import { reportApplyConversion } from "@/lib/gtag";
+import { captureGclid } from "@/lib/tracking";
 import { Arrow } from "./ui";
 
 /* The "request a call" lead form — heading, fields, submit + success/error and
@@ -31,6 +32,7 @@ export default function MULeadForm() {
       if (value) utm[key] = value;
     }
     utmRef.current = utm;
+    captureGclid(); // persist gclid from the landing URL
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -48,7 +50,8 @@ export default function MULeadForm() {
     setStatus("loading");
     setErrorMsg("");
     const fields = Object.fromEntries(new FormData(form)) as Record<string, string>;
-    const payload = { ...fields, ...utmRef.current };
+    const gclid = captureGclid();
+    const payload = { ...fields, ...utmRef.current, gclid };
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
@@ -73,6 +76,7 @@ export default function MULeadForm() {
             twelfth_marks: fields.twelfth_marks ?? "",
             board: fields.board ?? "",
             stream: fields.stream ?? "",
+            gclid,
             formLocation: window.location.host,
           }),
         );

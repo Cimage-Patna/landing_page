@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { copy } from "@/lib/copy";
+import { captureGclid } from "@/lib/tracking";
 
 /* Fee-structure unlock popup. Mounted once; opened from anywhere (e.g. the
    toolbar "Unlock Fee" button) by dispatching a window "fee:open" event. It
@@ -38,6 +39,7 @@ export default function MUFeeUnlock() {
       if (v) utm[key] = v;
     }
     utmRef.current = utm;
+    captureGclid(); // persist gclid from the landing URL
   }, []);
 
   // Opened from the toolbar "Unlock Fee" button (and anywhere else) via event.
@@ -81,12 +83,14 @@ export default function MUFeeUnlock() {
     setError("");
     setStatus("loading");
 
+    const gclid = captureGclid();
     const payload = {
       name,
       phone,
       course: selected,
       form_type: "fee",
       comment: `Fee-structure download — ${selected}`,
+      gclid,
       ...utmRef.current,
     };
 
@@ -117,6 +121,7 @@ export default function MUFeeUnlock() {
           twelfth_marks: "",
           board: "",
           stream: "",
+          gclid,
           formLocation: window.location.host,
         }),
       );

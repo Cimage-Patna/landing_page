@@ -7,6 +7,7 @@ import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
 import { asset } from "@/lib/assets";
 import { reportApplyConversion } from "@/lib/gtag";
+import { captureGclid } from "@/lib/tracking";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -40,6 +41,7 @@ export default function Apply() {
       if (value) utm[key] = value;
     }
     utmRef.current = utm;
+    captureGclid(); // persist gclid from the landing URL
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -57,7 +59,8 @@ export default function Apply() {
     setStatus("loading");
     setErrorMsg("");
     const fields = Object.fromEntries(new FormData(form)) as Record<string, string>;
-    const payload = { ...fields, ...utmRef.current };
+    const gclid = captureGclid();
+    const payload = { ...fields, ...utmRef.current, gclid };
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
@@ -82,6 +85,7 @@ export default function Apply() {
             twelfth_marks: fields.twelfth_marks ?? "",
             board: fields.board ?? "",
             stream: fields.stream ?? "",
+            gclid,
             formLocation: window.location.host,
           }),
         );

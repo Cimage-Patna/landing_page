@@ -23,6 +23,7 @@ type Lead = {
   twelfth_marks?: string;
   board?: string;
   stream?: string;
+  gclid?: string;
   formLocation?: string;
 };
 
@@ -63,6 +64,7 @@ export default function ThankYouPage() {
         "12th Marks": data.twelfth_marks || "",
         Board: data.board || "",
         Stream: data.stream || "",
+        gclid: data.gclid || "",
       });
 
       // Fire once — clear so a refresh doesn't re-push the conversion.

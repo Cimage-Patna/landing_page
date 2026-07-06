@@ -23,6 +23,8 @@ type LeadInput = {
   city?: string;
   state?: string;
   comment?: string;
+  // Google Ads click id — appended to the landing URL as ?gclid=… on ad clicks.
+  gclid?: string;
   // "fee" = the lightweight fee-structure download form (name + phone + course
   // only). Anything else falls through to the full admission lead form.
   form_type?: string;
@@ -107,6 +109,8 @@ export async function POST(req: Request) {
     state: (body.state ?? "Bihar").trim(),
     lead_type: "hot",
     sub_source: isFee ? "fee-structure" : SUB_SOURCE,
+    // Google Ads click id — stored with the lead for offline-conversion upload.
+    gclid: (body.gclid ?? "").trim(),
     comment: (body.comment ?? "").trim(),
     // Fee-structure enquiries carry an extra "fee-structure" tag so the CRM can
     // segment download leads from full admission applications.
