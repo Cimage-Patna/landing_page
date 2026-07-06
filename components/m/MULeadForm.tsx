@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { copy } from "@/lib/copy";
 import { reportApplyConversion } from "@/lib/gtag";
 import { Arrow } from "./ui";
@@ -17,6 +18,7 @@ const inputCls =
 
 export default function MULeadForm() {
   const a = copy.apply;
+  const router = useRouter();
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const utmRef = useRef<Record<string, string>>({});
@@ -45,7 +47,8 @@ export default function MULeadForm() {
 
     setStatus("loading");
     setErrorMsg("");
-    const payload = { ...Object.fromEntries(new FormData(form)), ...utmRef.current };
+    const fields = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    const payload = { ...fields, ...utmRef.current };
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
@@ -55,8 +58,29 @@ export default function MULeadForm() {
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
       if (!res.ok || !data.ok) throw new Error(data.error || "");
       reportApplyConversion();
-      setStatus("success");
+
+      // Stash the entered details for the /thank-you page (confirmation +
+      // GTM lead_generated push), then redirect there.
+      try {
+        sessionStorage.setItem(
+          "cimage_lead",
+          JSON.stringify({
+            name: fields.name ?? "",
+            email: fields.email ?? "",
+            phone: fields.phone ?? "",
+            course: fields.course ?? "",
+            district: fields.district ?? "",
+            twelfth_marks: fields.twelfth_marks ?? "",
+            board: fields.board ?? "",
+            stream: fields.stream ?? "",
+            formLocation: window.location.host,
+          }),
+        );
+      } catch {
+        /* ignore storage errors */
+      }
       form.reset();
+      router.push("/thank-you");
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : "");
       setStatus("error");

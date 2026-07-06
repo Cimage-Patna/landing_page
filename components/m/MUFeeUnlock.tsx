@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { copy } from "@/lib/copy";
 
@@ -19,6 +20,7 @@ const inputCls =
 
 export default function MUFeeUnlock() {
   const courses = copy.apply.courses;
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
@@ -100,7 +102,28 @@ export default function MUFeeUnlock() {
     }
 
     await downloadAll(name);
-    setStatus("done");
+
+    // Stash details for the /thank-you page (confirmation + GTM lead_generated),
+    // then redirect. The PDF download has already been triggered.
+    try {
+      sessionStorage.setItem(
+        "cimage_lead",
+        JSON.stringify({
+          name,
+          email: "",
+          phone,
+          course: selected,
+          district: "",
+          twelfth_marks: "",
+          board: "",
+          stream: "",
+          formLocation: window.location.host,
+        }),
+      );
+    } catch {
+      /* ignore storage errors */
+    }
+    router.push("/thank-you");
   }
 
   if (!mounted || !open) return null;

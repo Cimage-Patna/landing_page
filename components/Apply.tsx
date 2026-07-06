@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
@@ -24,6 +25,7 @@ const inputCls =
 
 export default function Apply() {
   const a = copy.apply;
+  const router = useRouter();
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   // Capture UTM params once on mount — the query string may be stripped by
@@ -54,7 +56,8 @@ export default function Apply() {
 
     setStatus("loading");
     setErrorMsg("");
-    const payload = { ...Object.fromEntries(new FormData(form)), ...utmRef.current };
+    const fields = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    const payload = { ...fields, ...utmRef.current };
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
@@ -67,8 +70,26 @@ export default function Apply() {
       };
       if (!res.ok || !data.ok) throw new Error(data.error || "");
       reportApplyConversion();
-      setStatus("success");
+      try {
+        sessionStorage.setItem(
+          "cimage_lead",
+          JSON.stringify({
+            name: fields.name ?? "",
+            email: fields.email ?? "",
+            phone: fields.phone ?? "",
+            course: fields.course ?? "",
+            district: fields.district ?? "",
+            twelfth_marks: fields.twelfth_marks ?? "",
+            board: fields.board ?? "",
+            stream: fields.stream ?? "",
+            formLocation: window.location.host,
+          }),
+        );
+      } catch {
+        /* ignore storage errors */
+      }
       form.reset();
+      router.push("/thank-you");
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : "");
       setStatus("error");
