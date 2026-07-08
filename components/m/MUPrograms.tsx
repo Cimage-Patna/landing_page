@@ -54,14 +54,6 @@ const ICONS = {
   ),
 };
 
-function DiagArrow() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function Flexi({ icon, label, value, note }: { icon: React.ReactNode; label: string; value: string; note?: string }) {
   return (
     <div className="mu-prog-flexi">
@@ -196,11 +188,6 @@ export default function MUPrograms() {
                   <Flexi icon={ICONS.duration} label="Duration" value={f.duration} />
                   <Flexi icon={ICONS.deadline} label="Intake" value={f.deadline} />
                 </div>
-
-                <a href={item.href} target="_blank" rel="noopener noreferrer" className="mu-prog-btn">
-                  Explore Programme
-                  <DiagArrow />
-                </a>
               </article>
             );
           })}

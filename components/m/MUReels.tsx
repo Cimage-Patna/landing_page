@@ -43,7 +43,7 @@ export default function MUReels() {
               >
                 <span className="block rounded-[15px] bg-[#090909] p-[3px]">
                   <span className="relative block aspect-[9/16] w-36 overflow-hidden rounded-xl sm:w-44">
-                    <ReelCover r={r} active={i === 1} />
+                    <ReelCover r={r} active={i === 1} muteInline={open} />
                     <span className="absolute inset-0 grid place-items-center bg-black/20 opacity-0 transition-opacity group-hover:opacity-100">
                       <PlayIcon />
                     </span>
@@ -204,8 +204,18 @@ function ReelViewer({
 /* Story-bar cover that plays its reel inline (muted loop) only while it's in
    view, and pauses when scrolled away. Tapping it (via the parent button) opens
    the full-screen viewer, where sound is allowed because the tap is a gesture. */
-function ReelCover({ r, active }: { r: ReelItem; active: boolean }) {
+function ReelCover({ r, active, muteInline }: { r: ReelItem; active: boolean; muteInline: boolean }) {
   const ref = useRef<HTMLVideoElement | null>(null);
+
+  // While the full-screen viewer is open, mute the inline reel so its audio
+  // doesn't play over the viewer's; restore sound once the viewer closes.
+  useEffect(() => {
+    if (!active) return;
+    const v = ref.current;
+    if (!v) return;
+    v.muted = muteInline;
+  }, [active, muteInline]);
+
   useEffect(() => {
     if (!active) return;
     const v = ref.current;
