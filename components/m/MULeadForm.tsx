@@ -51,7 +51,8 @@ export default function MULeadForm() {
     setErrorMsg("");
     const fields = Object.fromEntries(new FormData(form)) as Record<string, string>;
     const gclid = captureGclid();
-    const payload = { ...fields, ...utmRef.current, gclid };
+    // landing_page → the CRM tag (e.g. "/bba" is tagged "BBA"); see /api/lead.
+    const payload = { ...fields, ...utmRef.current, gclid, landing_page: window.location.pathname };
     try {
       const res = await fetch("/api/lead", {
         method: "POST",

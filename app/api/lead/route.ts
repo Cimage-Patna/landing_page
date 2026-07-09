@@ -9,7 +9,22 @@ const LEAD_ENDPOINT =
   "https://backend-admission.cimagepatna.com/api/leads/ingest/mediagarh-landing/";
 
 const SUB_SOURCE = "general-landing";
-const TAGS = ["mediagarh", "ads"];
+
+// Every lead is tagged with the landing page it came from + "ads". Course-
+// specific landing pages send their pathname (landing_page) and we stamp their
+// course name here — the map is server-side so the tag can't be tampered with
+// from the client. The home page and the Meta landing page fall back to the
+// "general-landing" tag.
+const DEFAULT_PAGE_TAG = "general-landing";
+const PAGE_TAGS: Record<string, string> = {
+  "/btech": "B.Tech",
+  "/bca": "BCA",
+  "/bba": "BBA",
+  "/bsc-it": "B.Sc-IT",
+  "/bcom": "B.Com.(P)",
+  "/mca": "MCA",
+  "/mba": "MBA",
+};
 
 type LeadInput = {
   name?: string;
@@ -28,6 +43,9 @@ type LeadInput = {
   // "fee" = the lightweight fee-structure download form (name + phone + course
   // only). Anything else falls through to the full admission lead form.
   form_type?: string;
+  // Pathname of the landing page the form was submitted from (e.g. "/bba"),
+  // used to derive the course tag. See PAGE_TAGS above.
+  landing_page?: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -88,6 +106,16 @@ export async function POST(req: Request) {
     }
   }
 
+  // Derive the landing-page tag from the submitted pathname (strip any trailing
+  // slash and query/hash). Unknown paths — including the home page — fall back
+  // to the default "general-landing" tag.
+  const landingPath = (body.landing_page ?? "")
+    .trim()
+    .replace(/[?#].*$/, "")
+    .replace(/\/+$/, "");
+  const pageTag = PAGE_TAGS[landingPath] ?? DEFAULT_PAGE_TAG;
+  const baseTags = [pageTag, "ads"];
+
   // Forward only the UTM params that were actually present on the URL.
   const utm: Record<string, string> = {};
   for (const key of UTM_KEYS) {
@@ -114,7 +142,7 @@ export async function POST(req: Request) {
     comment: (body.comment ?? "").trim(),
     // Fee-structure enquiries carry an extra "fee-structure" tag so the CRM can
     // segment download leads from full admission applications.
-    tags: isFee ? [...TAGS, "fee-structure"] : TAGS,
+    tags: isFee ? [...baseTags, "fee-structure"] : baseTags,
     ...utm,
   };
 

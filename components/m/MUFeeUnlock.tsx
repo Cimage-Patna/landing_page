@@ -91,6 +91,8 @@ export default function MUFeeUnlock() {
       form_type: "fee",
       comment: `Fee-structure download — ${selected}`,
       gclid,
+      // landing_page → the CRM tag (e.g. "/bba" is tagged "BBA"); see /api/lead.
+      landing_page: window.location.pathname,
       ...utmRef.current,
     };
 
