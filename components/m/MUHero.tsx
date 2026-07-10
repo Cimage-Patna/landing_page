@@ -1,7 +1,25 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { copy } from "@/lib/copy";
 import HeroVideo from "@/components/HeroVideo";
+
+// Per-course hero headline. Course landing pages re-export the home page, so we
+// switch the H1 by the current route. Home, the Meta page and any unmapped path
+// fall back to the general "IT & Management college." headline. The tagline
+// below the H1 (HERO_SUB) is the same on every page for now.
+const HERO_SUB =
+  "Home to Bihar’s highest placements and most gold medallists, with a premium campus in the heart of Patna.";
+const DEFAULT_HEAD = { lead: "Bihar’s most successful", accent: "IT & Management college." };
+const HERO_HEADS: Record<string, { lead: string; accent: string }> = {
+  "/btech": { lead: "Bihar’s most successful", accent: "B.Tech college." },
+  "/bca": { lead: "Bihar’s most successful", accent: "BCA college." },
+  "/bba": { lead: "Bihar’s most successful", accent: "BBA college." },
+  "/bsc-it": { lead: "Bihar’s most successful", accent: "B.Sc-IT college." },
+  "/bcom": { lead: "Bihar’s most successful", accent: "B.Com. college." },
+  "/mca": { lead: "Bihar’s most successful", accent: "MCA college." },
+  "/mba": { lead: "Bihar’s most successful", accent: "MBA college." },
+};
 
 /* MU programme-style hero: a full-bleed immersive video (the "/" footage) with a
    top + bottom scrim and bottom-centred content — serif/italic heading, bold
@@ -10,6 +28,8 @@ import HeroVideo from "@/components/HeroVideo";
    (MURecognised). Same design on web + phone; the button row stacks on mobile. */
 export default function MUHero() {
   const h = copy.hero;
+  const pathname = usePathname();
+  const head = HERO_HEADS[pathname ?? ""] ?? DEFAULT_HEAD;
 
   return (
     <section id="top" className="mu-herofull">
@@ -22,12 +42,10 @@ export default function MUHero() {
       {/* bottom-centred content */}
       <div className="mu-herofull-content">
         <h1 className="mu-herofull-head">
-          <span>Bihar&apos;s most successful</span>
-          <span className="mu-serif accent">IT &amp; Management college.</span>
+          <span>{head.lead}</span>
+          <span className="mu-serif accent">{head.accent}</span>
         </h1>
-        <p className="mu-herofull-sub">
-          Home to Bihar&apos;s highest placements and most gold medallists, with a premium campus in the heart of Patna.
-        </p>
+        <p className="mu-herofull-sub">{HERO_SUB}</p>
 
         <div className="mu-herofull-btns">
           <button

@@ -1,8 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { copy } from "@/lib/copy";
+
+// On a course-specific landing page, hide that course's own card from the
+// programmes rail (they're already on its page) and title the section "Our
+// Other Programmes". Keyed by route → the programme item.name to drop. Home,
+// the Meta page and any unmapped path show the full list titled "Our Programmes".
+const HIDE_COURSE: Record<string, string> = {
+  "/btech": "B.Tech",
+  "/bca": "BCA",
+  "/bba": "BBA",
+  "/bsc-it": "B.Sc. (IT)",
+  "/bcom": "B.Com (P)",
+  "/mca": "MCA",
+  "/mba": "MBA",
+};
 
 /* Exact replica of MU's .ourProgramme — black band, "Our Programmes" heading,
    category tab pills with prev/next arrows, and a horizontal rail of large
@@ -76,9 +91,12 @@ function Flexi({ icon, label, value, note }: { icon: React.ReactNode; label: str
 
 export default function MUPrograms() {
   const p = copy.programs;
+  const pathname = usePathname();
+  const hideCourse = HIDE_COURSE[pathname ?? ""]; // undefined on home / unmapped
   const [active, setActive] = useState(0);
   const railRef = useRef<HTMLDivElement | null>(null);
   const group = p.groups[active];
+  const items = group.items.filter((it) => it.name !== hideCourse);
   const f = facts(group.label);
 
   const scrollBy = (dir: 1 | -1) => {
@@ -130,7 +148,7 @@ export default function MUPrograms() {
     <section id="programs" className="bg-[#f4f4f5] py-16 text-[#090909] sm:py-24">
       <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
         <h2 className="mu-serif text-[2.1rem] leading-[1.1] sm:text-[3rem]">
-          Our <span className="italic">Programmes</span>
+          Our {hideCourse ? "Other " : ""}<span className="italic">Programmes</span>
         </h2>
 
         {/* tab pills — own full-width row so they never clip on any screen */}
@@ -166,7 +184,7 @@ export default function MUPrograms() {
         {/* card rail — wrapper holds the right-edge fade cue */}
         <div className="mu-prog-railwrap mt-6">
         <div ref={railRef} className="mu-no-scrollbar mu-prog-rail">
-          {group.items.map((item) => {
+          {items.map((item) => {
             const isUG = !/post/i.test(group.label);
             return (
               <article key={item.name} className="mu-prog-card">
