@@ -465,7 +465,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 22px 18px;
 }
-.mu-prog-flexi { display: flex; align-items: flex-start; gap: 12px; }
+/* min-width:0 lets the text column shrink inside the grid track instead of
+   overflowing the card on narrow screens (grid/flex items default to
+   min-width:auto). */
+.mu-prog-flexi { display: flex; align-items: flex-start; gap: 12px; min-width: 0; }
+.mu-prog-flexi > div { min-width: 0; }
 .mu-prog-flexi .ic {
   flex: none;
   width: 38px;
@@ -478,8 +482,8 @@
   margin-top: 1px;
   color: #52525b;
 }
-.mu-prog-flexi .lbl { font-size: 15px; line-height: 120%; font-weight: 500; color: #090909; }
-.mu-prog-flexi .val { font-size: 13.5px; line-height: 140%; color: #737373; margin-top: 4px; }
+.mu-prog-flexi .lbl { font-size: 15px; line-height: 120%; font-weight: 500; color: #090909; overflow-wrap: break-word; }
+.mu-prog-flexi .val { font-size: 13.5px; line-height: 140%; color: #737373; margin-top: 4px; overflow-wrap: break-word; }
 .mu-prog-flexi .val span { font-size: 11px; }
 
 /* gradient-border black button (MU .btnBlack.borderGradient.hoverWhiteEffect) */
@@ -523,14 +527,60 @@
   .mu-prog-title { font-size: 21px; }
 }
 @media (max-width: 560px) {
-  /* ~1.5 cards in view: one full card + a half-card peek on the right. */
-  .mu-prog-card { flex-basis: 70vw; max-width: 70vw; }
-  .mu-prog-info { gap: 16px 12px; }
+  /* One full card + a small peek on the right, with tighter padding so the
+     card reads as a compact, professional tile and nothing overflows. */
+  .mu-prog-card {
+    flex-basis: 82vw;
+    max-width: 82vw;
+    padding: 12px;
+    gap: 12px;
+    border-radius: 14px;
+  }
+  .mu-prog-title { font-size: 18px; }
+  .mu-prog-desc { font-size: 13px; line-height: 150%; min-height: 0; max-width: 100%; }
+  /* Single-column facts so each value gets the full card width. */
+  .mu-prog-info { grid-template-columns: 1fr; gap: 12px; }
+  .mu-prog-flexi { gap: 10px; }
+  .mu-prog-flexi .ic { width: 32px; height: 32px; }
+  .mu-prog-flexi .lbl { font-size: 13.5px; }
+  .mu-prog-flexi .val { font-size: 12.5px; margin-top: 2px; }
 }
 
 /* Scroll affordances for the programmes rail */
 .mu-prog-railwrap { position: relative; }
 .mu-prog-fade { display: none; }
+
+/* "Swipe to explore" hint — hidden on desktop (arrows do the job), shown on
+   touch/mobile widths where the arrows are hidden. */
+.mu-prog-swipe { display: none; }
+@media (max-width: 1024px) {
+  .mu-prog-swipe {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    margin: 16px auto 0;
+    padding: 7px 15px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid #e4e4e7;
+    color: #52525b;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .mu-prog-swipe svg {
+    color: #18181b;
+    animation: mu-prog-swipe-move 1.5s ease-in-out infinite;
+  }
+}
+@keyframes mu-prog-swipe-move {
+  0%, 100% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mu-prog-swipe svg { animation: none; }
+}
 
 @media (max-width: 1024px) {
   /* right-edge fade hinting that more cards continue off-screen */

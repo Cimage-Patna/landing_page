@@ -181,6 +181,16 @@ export default function MUPrograms() {
           </div>
         </div>
 
+        {/* swipe hint — shown only on touch/mobile widths where the arrows hide */}
+        <div className="mu-prog-swipe" aria-hidden="true">
+          <svg width="26" height="18" viewBox="0 0 26 18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 9h16" />
+            <path d="M8 5 4 9l4 4" />
+            <path d="M18 5l4 4-4 4" />
+          </svg>
+          Swipe to explore
+        </div>
+
         {/* card rail — wrapper holds the right-edge fade cue */}
         <div className="mu-prog-railwrap mt-6">
         <div ref={railRef} className="mu-no-scrollbar mu-prog-rail">
