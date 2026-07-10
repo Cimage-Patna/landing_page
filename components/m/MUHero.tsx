@@ -10,6 +10,12 @@ import HeroVideo from "@/components/HeroVideo";
 // below the H1 (HERO_SUB) is the same on every page for now.
 const HERO_SUB =
   "Home to Bihar’s highest placements and most gold medallists, with a premium campus in the heart of Patna.";
+// Route-specific tagline overrides. B.Tech is new for Batch 2026, so it leads
+// with the programme and labs rather than placement/gold-medallist claims.
+const HERO_SUB_OVERRIDES: Record<string, string> = {
+  "/btech":
+    "New for Batch 2026 — B.Tech in CSE, AI-ML, ECE, Electrical & Civil, with an IIT Bombay–certified robotics lab, industry-integrated training and a premium campus in the heart of Patna.",
+};
 const DEFAULT_HEAD = { lead: "Bihar’s most successful", accent: "IT & Management college." };
 const HERO_HEADS: Record<string, { lead: string; accent: string }> = {
   "/btech": { lead: "Bihar’s most successful", accent: "B.Tech college." },
@@ -30,6 +36,7 @@ export default function MUHero() {
   const h = copy.hero;
   const pathname = usePathname();
   const head = HERO_HEADS[pathname ?? ""] ?? DEFAULT_HEAD;
+  const sub = HERO_SUB_OVERRIDES[pathname ?? ""] ?? HERO_SUB;
 
   return (
     <section id="top" className="mu-herofull">
@@ -45,7 +52,7 @@ export default function MUHero() {
           <span>{head.lead}</span>
           <span className="mu-serif accent">{head.accent}</span>
         </h1>
-        <p className="mu-herofull-sub">{HERO_SUB}</p>
+        <p className="mu-herofull-sub">{sub}</p>
 
         <div className="mu-herofull-btns">
           <button
