@@ -196,6 +196,8 @@ export default function MUPrograms() {
         <div ref={railRef} className="mu-no-scrollbar mu-prog-rail">
           {items.map((item) => {
             const isUG = !/post/i.test(group.label);
+            // B.Tech is a 4-year degree; every other UG course is 3 years.
+            const duration = item.name === "B.Tech" ? "4 Years (Incl. industry training)" : f.duration;
             return (
               <article key={item.name} className="mu-prog-card">
                 <a href={item.href} target="_blank" rel="noopener noreferrer" className="mu-prog-imgwrap block">
@@ -213,7 +215,7 @@ export default function MUPrograms() {
                 <div className="mu-prog-info">
                   <Flexi icon={ICONS.format} label="Format" value={f.format.value} note={f.format.note} />
                   <Flexi icon={ICONS.eligibility} label="Eligibility" value={f.eligibility} />
-                  <Flexi icon={ICONS.duration} label="Duration" value={f.duration} />
+                  <Flexi icon={ICONS.duration} label="Duration" value={duration} />
                   <Flexi icon={ICONS.deadline} label="Intake" value={f.deadline} />
                 </div>
               </article>
