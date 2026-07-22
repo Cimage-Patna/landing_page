@@ -546,6 +546,13 @@
   .mu-prog-flexi .val { font-size: 12.5px; margin-top: 2px; }
 }
 
+/* 360° virtual campus tour embed — 16:9 on desktop, taller on phones so the
+   tour's own controls stay usable on a narrow screen. */
+.mu-vtour-frame { aspect-ratio: 16 / 9; }
+@media (max-width: 640px) {
+  .mu-vtour-frame { aspect-ratio: 4 / 5; min-height: 420px; }
+}
+
 /* Scroll affordances for the programmes rail */
 .mu-prog-railwrap { position: relative; }
 .mu-prog-fade { display: none; }

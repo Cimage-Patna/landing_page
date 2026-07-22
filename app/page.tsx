@@ -15,6 +15,7 @@ import MUPlacementMaps from "@/components/m/MUPlacementMaps";
 import MUAlumniWall from "@/components/m/MUAlumniWall";
 import MUVisitors from "@/components/m/MUVisitors";
 import MUCampus from "@/components/m/MUCampus";
+import MUVirtualTour from "@/components/m/MUVirtualTour";
 import MUReels from "@/components/m/MUReels";
 import MUAlumniVoices from "@/components/m/MUAlumniVoices";
 import MUAdmissionProcess from "@/components/m/MUAdmissionProcess";
@@ -35,6 +36,7 @@ export default function Page() {
       <MUReasons />
       <MUPhysicalAI />
       <MUPrograms />
+      <MUVirtualTour />
       <MUReels />
       <MUWhyChoose />
       <MULabs />
