@@ -8,6 +8,13 @@ export const runtime = "nodejs";
 const LEAD_ENDPOINT =
   "https://backend-admission.cimagepatna.com/api/leads/ingest/mediagarh-landing/";
 
+// Dry-run: log the payload instead of POSTing to the live CRM. On by default in
+// `next dev` so local testing never creates real leads; force with LEAD_DRY_RUN=1
+// or opt back into live from dev with LEAD_DRY_RUN=0.
+const LEAD_DRY_RUN =
+  process.env.LEAD_DRY_RUN === "1" ||
+  (process.env.LEAD_DRY_RUN !== "0" && process.env.NODE_ENV === "development");
+
 const SUB_SOURCE = "general-landing";
 
 // Every lead is tagged with the landing page it came from + "ads". Course-
@@ -46,6 +53,10 @@ type LeadInput = {
   // Pathname of the landing page the form was submitted from (e.g. "/bba"),
   // used to derive the course tag. See PAGE_TAGS above.
   landing_page?: string;
+  // Phone-OTP outcome from the client: true → tag "otp-verified", false →
+  // "otp-unverified", undefined → OTP was off, no otp tag. (Verification is
+  // client-side for data accuracy only; we never receive/trust an ID token.)
+  otp_verified?: boolean;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -114,7 +125,10 @@ export async function POST(req: Request) {
     .replace(/[?#].*$/, "")
     .replace(/\/+$/, "");
   const pageTag = PAGE_TAGS[landingPath] ?? DEFAULT_PAGE_TAG;
-  const baseTags = [pageTag, "ads"];
+  // Append the OTP outcome tag when OTP was in play (field present).
+  const otpTag =
+    body.otp_verified === true ? "otp-verified" : body.otp_verified === false ? "otp-unverified" : null;
+  const baseTags = otpTag ? [pageTag, "ads", otpTag] : [pageTag, "ads"];
 
   // Forward only the UTM params that were actually present on the URL.
   const utm: Record<string, string> = {};
@@ -145,6 +159,13 @@ export async function POST(req: Request) {
     tags: isFee ? [...baseTags, "fee-structure"] : baseTags,
     ...utm,
   };
+
+  // Local/dev: don't create real CRM leads. Log what *would* be sent (incl. the
+  // computed tags) so the OTP flow can be verified end-to-end safely.
+  if (LEAD_DRY_RUN) {
+    console.log("[LEAD] DRY-RUN — not sent to CRM. Payload:", JSON.stringify(payload));
+    return NextResponse.json({ ok: true, dryRun: true });
+  }
 
   try {
     const res = await fetch(LEAD_ENDPOINT, {

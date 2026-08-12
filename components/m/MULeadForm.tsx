@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { copy } from "@/lib/copy";
 import { reportApplyConversion } from "@/lib/gtag";
 import { captureGclid } from "@/lib/tracking";
+import { isOtpConfigured, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
+import OtpPanel from "./OtpPanel";
 import { Arrow } from "./ui";
 
 /* The "request a call" lead form — heading, fields, submit + success/error and
@@ -22,6 +24,14 @@ export default function MULeadForm() {
   const router = useRouter();
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  // OTP step: while phase === "otp" the form stays mounted but hidden (so typed
+  // data survives a back/error) and the OtpPanel is shown instead.
+  const [phase, setPhase] = useState<"form" | "otp">("form");
+  const [pending, setPending] = useState<{
+    fields: Record<string, string>;
+    phoneE164: string;
+    mode: Extract<OtpMode, "soft" | "hard">;
+  } | null>(null);
   const utmRef = useRef<Record<string, string>>({});
 
   useEffect(() => {
@@ -35,7 +45,7 @@ export default function MULeadForm() {
     captureGclid(); // persist gclid from the landing URL
   }, []);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
 
@@ -47,12 +57,36 @@ export default function MULeadForm() {
       return;
     }
 
-    setStatus("loading");
     setErrorMsg("");
     const fields = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    const mode = otpModeForPath(window.location.pathname);
+    const phoneE164 = toE164India(fields.phone ?? "");
+
+    // off → submit straight through (no otp tag). If OTP can't run (no Firebase
+    // config or an unusable number) never block — submit as otp-unverified.
+    if (mode === "off") return void finalize(fields, null);
+    if (!isOtpConfigured() || !phoneE164) return void finalize(fields, false);
+
+    // Show the OTP step; the lead is POSTed once it resolves (verified or not).
+    setPending({ fields, phoneE164, mode });
+    setPhase("otp");
+  }
+
+  // Submits the lead. otpVerified: true/false stamps the tag; null = no OTP.
+  async function finalize(fields: Record<string, string>, otpVerified: boolean | null) {
+    setPhase("form");
+    setStatus("loading");
+    setErrorMsg("");
     const gclid = captureGclid();
-    // landing_page → the CRM tag (e.g. "/bba" is tagged "BBA"); see /api/lead.
-    const payload = { ...fields, ...utmRef.current, gclid, landing_page: window.location.pathname };
+    const payload = {
+      ...fields,
+      phone: tenDigits(fields.phone ?? ""), // CRM needs exactly 10 digits
+      ...utmRef.current,
+      gclid,
+      // landing_page → the CRM tag (e.g. "/bba" is tagged "BBA"); see /api/lead.
+      landing_page: window.location.pathname,
+      ...(otpVerified === null ? {} : { otp_verified: otpVerified }),
+    };
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
@@ -84,7 +118,6 @@ export default function MULeadForm() {
       } catch {
         /* ignore storage errors */
       }
-      form.reset();
       router.push("/thank-you");
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : "");
@@ -94,15 +127,20 @@ export default function MULeadForm() {
 
   return (
     <>
-      <h3 className="text-[24px] font-bold text-[#090909]">{a.formHeading}</h3>
-      <p className="mt-2 text-[14px] text-[#737373]">{a.formSub}</p>
+      {phase !== "otp" && (
+        <>
+          <h3 className="text-[24px] font-bold text-[#090909]">{a.formHeading}</h3>
+          <p className="mt-2 text-[14px] text-[#737373]">{a.formSub}</p>
+        </>
+      )}
 
       {status === "success" ? (
         <div className="mt-6 rounded-2xl border border-[#1c7c54]/25 bg-[#1c7c54]/10 p-6 text-center">
           <p className="font-semibold text-[#1c7c54]">{a.successMsg}</p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="mt-6 space-y-3.5" noValidate>
+        <>
+        <form onSubmit={handleSubmit} className={phase === "otp" ? "hidden" : "mt-6 space-y-3.5"} noValidate>
           <Field label="Full name">
             <input name="name" required type="text" autoComplete="name" placeholder="Your name" className={inputCls} />
           </Field>
@@ -194,6 +232,18 @@ export default function MULeadForm() {
             <p className="text-center text-[14px] text-[#b2212a]">{errorMsg || a.errorMsg}</p>
           )}
         </form>
+
+        {phase === "otp" && pending && (
+          <OtpPanel
+            phoneE164={pending.phoneE164}
+            phoneDisplay={pending.fields.phone ?? ""}
+            mode={pending.mode}
+            form="lead"
+            onResolved={(r) => finalize(pending.fields, r.verified)}
+            onBack={() => setPhase("form")}
+          />
+        )}
+        </>
       )}
 
       <p className="mt-5 text-center text-[12px] leading-relaxed text-[#909090]">

@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { copy } from "@/lib/copy";
 import { captureGclid } from "@/lib/tracking";
+import { isOtpConfigured, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
+import OtpPanel from "./OtpPanel";
 
 /* Fee-structure unlock popup. Mounted once; opened from anywhere (e.g. the
    toolbar "Unlock Fee" button) by dispatching a window "fee:open" event. It
@@ -27,6 +29,13 @@ export default function MUFeeUnlock() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const [course, setCourse] = useState(courses[0]?.value ?? "BCA");
+  // OTP step (same contract as MULeadForm): never blocks the fee download.
+  const [phase, setPhase] = useState<"form" | "otp">("form");
+  const [pending, setPending] = useState<{
+    fields: { name: string; phone: string; selected: string };
+    phoneE164: string;
+    mode: Extract<OtpMode, "soft" | "hard">;
+  } | null>(null);
   const utmRef = useRef<Record<string, string>>({});
 
   useEffect(() => setMounted(true), []);
@@ -47,6 +56,8 @@ export default function MUFeeUnlock() {
     const onOpen = () => {
       setStatus("idle");
       setError("");
+      setPhase("form");
+      setPending(null);
       setOpen(true);
     };
     window.addEventListener("fee:open", onOpen);
@@ -70,7 +81,7 @@ export default function MUFeeUnlock() {
     await generateAllFeesPdf(name);
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const name = String(fd.get("name") ?? "").trim();
@@ -81,18 +92,38 @@ export default function MUFeeUnlock() {
     if (phone.replace(/\D/g, "").length < 10) return setError("Enter a valid 10-digit mobile number.");
 
     setError("");
+    const fields = { name, phone, selected };
+    const mode = otpModeForPath(window.location.pathname);
+    const phoneE164 = toE164India(phone);
+
+    // off → straight through (no otp tag). If OTP can't run, never block — the
+    // student still gets the PDF and the lead is tagged otp-unverified.
+    if (mode === "off") return void finalize(fields, null);
+    if (!isOtpConfigured() || !phoneE164) return void finalize(fields, false);
+
+    setPending({ fields, phoneE164, mode });
+    setPhase("otp");
+  }
+
+  async function finalize(
+    fields: { name: string; phone: string; selected: string },
+    otpVerified: boolean | null,
+  ) {
+    const { name, phone, selected } = fields;
+    setPhase("form");
     setStatus("loading");
 
     const gclid = captureGclid();
     const payload = {
       name,
-      phone,
+      phone: tenDigits(phone), // CRM needs exactly 10 digits
       course: selected,
       form_type: "fee",
       comment: `Fee-structure download — ${selected}`,
       gclid,
       // landing_page → the CRM tag (e.g. "/bba" is tagged "BBA"); see /api/lead.
       landing_page: window.location.pathname,
+      ...(otpVerified === null ? {} : { otp_verified: otpVerified }),
       ...utmRef.current,
     };
 
@@ -160,12 +191,16 @@ export default function MUFeeUnlock() {
           </div>
         ) : (
           <>
-            <h3 className="text-[24px] font-bold text-[#090909]">Unlock the fee structure</h3>
-            <p className="mt-2 text-[14px] text-[#737373]">
-              A few details and your course-wise CIMAGE fee PDF downloads instantly.
-            </p>
+            {phase !== "otp" && (
+              <>
+                <h3 className="text-[24px] font-bold text-[#090909]">Unlock the fee structure</h3>
+                <p className="mt-2 text-[14px] text-[#737373]">
+                  A few details and your course-wise CIMAGE fee PDF downloads instantly.
+                </p>
+              </>
+            )}
 
-            <form onSubmit={handleSubmit} className="mt-6 space-y-3.5" noValidate>
+            <form onSubmit={handleSubmit} className={phase === "otp" ? "hidden" : "mt-6 space-y-3.5"} noValidate>
               <label className="block">
                 <span className="mb-1.5 block text-[13px] font-medium text-[#525252]">Full name</span>
                 <input name="name" required type="text" autoComplete="name" placeholder="Your name" className={inputCls} />
@@ -209,9 +244,22 @@ export default function MUFeeUnlock() {
               {error && <p className="text-center text-[14px] text-[#b2212a]">{error}</p>}
             </form>
 
-            <p className="mt-5 text-center text-[12px] leading-relaxed text-[#909090]">
-              No spam. A counsellor calls within one working day.
-            </p>
+            {phase === "otp" && pending && (
+              <OtpPanel
+                phoneE164={pending.phoneE164}
+                phoneDisplay={pending.fields.phone}
+                mode={pending.mode}
+                form="fee"
+                onResolved={(r) => finalize(pending.fields, r.verified)}
+                onBack={() => setPhase("form")}
+              />
+            )}
+
+            {phase !== "otp" && (
+              <p className="mt-5 text-center text-[12px] leading-relaxed text-[#909090]">
+                No spam. A counsellor calls within one working day.
+              </p>
+            )}
           </>
         )}
       </div>
