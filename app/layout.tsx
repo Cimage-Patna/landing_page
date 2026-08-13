@@ -1,43 +1,19 @@
 import "./globals.css";
 import "./mu.css";
 import type { Metadata, Viewport } from "next";
-import { Big_Shoulders, Inter, Fraunces, Poppins } from "next/font/google";
 import Script from "next/script";
 
 // Google Ads global site tag (gtag.js). Loaded once here so it runs on every
 // page (home + the Meta landing page, which share this root layout).
 const GOOGLE_ADS_ID = "AW-10885034048";
 
-const display = Big_Shoulders({
-  subsets: ["latin"],
-  weight: ["700", "800", "900"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const body = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-// Fraunces = the editorial serif used for headings; Poppins = geometric-sans
-// fallback for Galano Grotesque (loaded from a CDN in mu.css). Both feed CSS
-// variables consumed by the .mu-root scoped styles in mu.css.
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--mu-fraunces",
-  display: "swap",
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--mu-poppins",
-  display: "swap",
-});
+// Fonts load at RUNTIME via a <link> in <head> (see below) instead of
+// next/font/google, which fetched them from fonts.gstatic.com at BUILD time — a
+// transient network blip in the Amplify build container was failing deploys.
+// The --font-display / --font-body / --mu-fraunces / --mu-poppins CSS vars are
+// defined in globals.css :root.
+const FONTS_HREF =
+  "https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@700;800;900&family=Fraunces:ital,wght@0,400..700;1,400..700&family=Inter:wght@100..900&family=Poppins:wght@400;500;600;700;800&display=swap";
 
 export const metadata: Metadata = {
   title: "CIMAGE Patna — Best IT & Management College in Bihar",
@@ -75,10 +51,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Google Tag Manager — as high in <head> as possible */}
         <script dangerouslySetInnerHTML={{ __html: gtmScript }} />
+
+        {/* Fonts — runtime load (see FONTS_HREF note above) */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href={FONTS_HREF} rel="stylesheet" />
 
         <script dangerouslySetInnerHTML={{ __html: noFlashThemeScript }} />
 
@@ -106,7 +87,7 @@ gtag('config', '${GOOGLE_ADS_ID}');`}
           />
         </noscript>
 
-        <div className={`mu-root ${fraunces.variable} ${poppins.variable}`}>{children}</div>
+        <div className="mu-root">{children}</div>
       </body>
     </html>
   );

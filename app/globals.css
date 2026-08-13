@@ -5,6 +5,16 @@
   --color-accent-dim: #b07314;
 }
 
+/* Font-family tokens. The fonts load via a <link> in the layout <head> (runtime,
+   not build time) so a build-env network blip can't fail the Amplify deploy;
+   these map the CSS vars the app already uses to the loaded families. */
+:root {
+  --font-display: "Big Shoulders", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --mu-fraunces: "Fraunces", Georgia, "Times New Roman", serif;
+  --mu-poppins: "Poppins", system-ui, sans-serif;
+}
+
 /* Theme tokens — used by ParticleField canvas and a few inline styles */
 :root,
 [data-theme="dark"] {
