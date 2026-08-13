@@ -202,12 +202,16 @@ export default function MUFeeUnlock() {
 
             <form onSubmit={handleSubmit} className={phase === "otp" ? "hidden" : "mt-6 space-y-3.5"} noValidate>
               <label className="block">
-                <span className="mb-1.5 block text-[13px] font-medium text-[#525252]">Full name</span>
+                <span className="mb-1.5 block text-[13px] font-medium text-[#525252]">
+                  Full name<span className="text-[#b2212a]"> *</span>
+                </span>
                 <input name="name" required type="text" autoComplete="name" placeholder="Your name" className={inputCls} />
               </label>
 
               <label className="block">
-                <span className="mb-1.5 block text-[13px] font-medium text-[#525252]">Mobile number</span>
+                <span className="mb-1.5 block text-[13px] font-medium text-[#525252]">
+                  Mobile number<span className="text-[#b2212a]"> *</span>
+                </span>
                 <input
                   name="phone"
                   required
@@ -220,7 +224,9 @@ export default function MUFeeUnlock() {
               </label>
 
               <label className="block">
-                <span className="mb-1.5 block text-[13px] font-medium text-[#525252]">Course</span>
+                <span className="mb-1.5 block text-[13px] font-medium text-[#525252]">
+                  Course<span className="text-[#b2212a]"> *</span>
+                </span>
                 <select name="course" value={course} onChange={(e) => setCourse(e.target.value)} className={inputCls}>
                   {courses.map((c) => (
                     <option key={c.value} value={c.value}>

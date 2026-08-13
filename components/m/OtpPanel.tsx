@@ -191,6 +191,7 @@ export default function OtpPanel({
         <button
           type="button"
           onClick={continueUnverified}
+          style={{ color: "#ffffff" }}
           className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#1d4ed8] to-[#1e3a8a] px-6 text-[15px] font-semibold text-white shadow-lg transition hover:brightness-110 active:scale-[0.99]"
         >
           Continue
@@ -233,7 +234,8 @@ export default function OtpPanel({
         type="button"
         onClick={confirmCode}
         disabled={busy || step === "sending" || code.length !== 6}
-        className="mt-4 flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#1d4ed8] to-[#1e3a8a] px-6 text-[15px] font-semibold text-white shadow-lg transition hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+        style={{ color: "#ffffff" }}
+        className="mt-4 flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#1d4ed8] to-[#1e3a8a] px-6 text-[15px] font-semibold text-white shadow-lg transition hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
       >
         {busy ? "Verifying…" : step === "sending" ? "Sending…" : "Verify & submit"}
       </button>

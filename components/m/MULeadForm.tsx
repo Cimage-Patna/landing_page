@@ -48,17 +48,23 @@ export default function MULeadForm() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+    const fields = Object.fromEntries(new FormData(form)) as Record<string, string>;
 
-    // 12th marks must be a percentage strictly between 40 and 100.
-    const marks = parseFloat(String(new FormData(form).get("twelfth_marks") ?? "").replace("%", "").trim());
-    if (!(marks > 40 && marks < 100)) {
-      setErrorMsg("Enter your 12th marks as a percentage between 40 and 100.");
+    // Every required field must be present/valid BEFORE we send an OTP — no
+    // point texting a code for a form that can't be submitted.
+    const fail = (msg: string) => {
+      setErrorMsg(msg);
       setStatus("error");
-      return;
-    }
+    };
+    const marks = parseFloat(String(fields.twelfth_marks ?? "").replace("%", "").trim());
+    if (!(fields.name ?? "").trim()) return fail("Please enter your full name.");
+    if (tenDigits(fields.phone ?? "").length !== 10) return fail("Enter a valid 10-digit mobile number.");
+    if (!(fields.course ?? "").trim()) return fail("Please select a course.");
+    if (!(marks > 40 && marks < 100)) return fail("Enter your 12th marks as a percentage between 40 and 100.");
+    if (!(fields.board ?? "").trim()) return fail("Please select your board.");
+    if (!(fields.stream ?? "").trim()) return fail("Please select your stream.");
 
     setErrorMsg("");
-    const fields = Object.fromEntries(new FormData(form)) as Record<string, string>;
     const mode = otpModeForPath(window.location.pathname);
     const phoneE164 = toE164India(fields.phone ?? "");
 
@@ -141,11 +147,11 @@ export default function MULeadForm() {
       ) : (
         <>
         <form onSubmit={handleSubmit} className={phase === "otp" ? "hidden" : "mt-6 space-y-3.5"} noValidate>
-          <Field label="Full name">
+          <Field label="Full name" required>
             <input name="name" required type="text" autoComplete="name" placeholder="Your name" className={inputCls} />
           </Field>
           <div className="grid gap-3.5 sm:grid-cols-2">
-            <Field label="Phone">
+            <Field label="Phone" required>
               <input
                 name="phone"
                 required
@@ -156,7 +162,7 @@ export default function MULeadForm() {
                 className={inputCls}
               />
             </Field>
-            <Field label="Course">
+            <Field label="Course" required>
               <select name="course" defaultValue="BCA" className={inputCls}>
                 {a.courses.map((c) => (
                   <option key={c.value} value={c.value}>
@@ -168,7 +174,7 @@ export default function MULeadForm() {
           </div>
 
           <div className="grid grid-cols-2 gap-3.5">
-            <Field label="12th marks (%)">
+            <Field label="12th marks (%)" required>
               <input
                 name="twelfth_marks"
                 required
@@ -191,7 +197,7 @@ export default function MULeadForm() {
           </div>
 
           <div className="grid grid-cols-2 gap-3.5">
-            <Field label="Board">
+            <Field label="Board" required>
               <select name="board" required defaultValue="" className={inputCls}>
                 <option value="" disabled>
                   Select board
@@ -203,7 +209,7 @@ export default function MULeadForm() {
                 ))}
               </select>
             </Field>
-            <Field label="Stream">
+            <Field label="Stream" required>
               <select name="stream" required defaultValue="" className={inputCls}>
                 <option value="" disabled>
                   Select stream
@@ -253,10 +259,13 @@ export default function MULeadForm() {
   );
 }
 
-function Field({ label, children }: { label: string; children: ReactNode }) {
+function Field({ label, required, children }: { label: string; required?: boolean; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[13px] font-medium text-[#525252]">{label}</span>
+      <span className="mb-1.5 block text-[13px] font-medium text-[#525252]">
+        {label}
+        {required && <span className="text-[#b2212a]"> *</span>}
+      </span>
       {children}
     </label>
   );
