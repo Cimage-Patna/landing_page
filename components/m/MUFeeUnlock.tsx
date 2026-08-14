@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { copy } from "@/lib/copy";
 import { captureGclid } from "@/lib/tracking";
-import { isOtpConfigured, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
+import { isOtpConfigured, leadDataLayer, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
 import OtpPanel from "./OtpPanel";
 
 /* Fee-structure unlock popup. Mounted once; opened from anywhere (e.g. the
@@ -35,6 +35,7 @@ export default function MUFeeUnlock() {
     fields: { name: string; phone: string; selected: string };
     phoneE164: string;
     mode: Extract<OtpMode, "soft" | "hard">;
+    leadData: Record<string, unknown>;
   } | null>(null);
   const utmRef = useRef<Record<string, string>>({});
 
@@ -101,7 +102,14 @@ export default function MUFeeUnlock() {
     if (mode === "off") return void finalize(fields, null);
     if (!isOtpConfigured() || !phoneE164) return void finalize(fields, false);
 
-    setPending({ fields, phoneE164, mode });
+    const leadData = leadDataLayer({
+      name,
+      phone,
+      course: selected,
+      gclid: captureGclid(),
+      formLocation: window.location.host,
+    });
+    setPending({ fields, phoneE164, mode, leadData });
     setPhase("otp");
   }
 
@@ -256,6 +264,7 @@ export default function MUFeeUnlock() {
                 phoneDisplay={pending.fields.phone}
                 mode={pending.mode}
                 form="fee"
+                leadData={pending.leadData}
                 onResolved={(r) => finalize(pending.fields, r.verified)}
                 onBack={() => setPhase("form")}
               />

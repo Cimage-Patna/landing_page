@@ -80,6 +80,39 @@ export type OtpEvent =
   | "otp_failed"
   | "otp_skipped";
 
+// Builds the SAME rich payload the /thank-you `lead_generated` event carries
+// (see app/thank-you/page.tsx), so OTP funnel events can be enriched identically.
+export type LeadFields = {
+  name?: string;
+  email?: string;
+  phone?: string;
+  course?: string;
+  district?: string;
+  twelfth_marks?: string;
+  board?: string;
+  stream?: string;
+  gclid?: string;
+  formLocation?: string;
+};
+
+export function leadDataLayer(f: LeadFields): Record<string, unknown> {
+  const digits = (f.phone || "").replace(/\D/g, "").slice(-10); // +91 + last 10, per GTM spec
+  return {
+    formLocation: f.formLocation || (typeof window !== "undefined" ? window.location.hostname : ""),
+    user_data: {
+      full_name: f.name || "",
+      email: f.email || "",
+      phone: digits ? `+91${digits}` : "",
+    },
+    course_name: f.course || "",
+    district: f.district || "",
+    "12th Marks": f.twelfth_marks || "",
+    Board: f.board || "",
+    Stream: f.stream || "",
+    gclid: f.gclid || "",
+  };
+}
+
 export function otpEvent(event: OtpEvent, params: Record<string, unknown> = {}): void {
   if (typeof window === "undefined") return;
   try {

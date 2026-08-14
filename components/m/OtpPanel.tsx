@@ -25,6 +25,8 @@ type Props = {
   phoneDisplay: string; // what to show the user (masked below)
   mode: Extract<OtpMode, "soft" | "hard">;
   form: "lead" | "fee"; // instrumentation label
+  // Same payload lead_generated carries — merged into otp_started/sent/verified.
+  leadData?: Record<string, unknown>;
   onResolved: (r: OtpResolution) => void;
   onBack: () => void; // return to the form to edit the number
 };
@@ -47,6 +49,7 @@ export default function OtpPanel({
   phoneE164,
   mode,
   form,
+  leadData = {},
   onResolved,
   onBack,
 }: Props) {
@@ -103,7 +106,7 @@ export default function OtpPanel({
       sendFailuresRef.current = 0;
       setStep("code");
       setCooldown(RESEND_COOLDOWN_SECONDS);
-      otpEvent("otp_sent", { form, mode });
+      otpEvent("otp_sent", { form, mode, ...leadData });
     } catch {
       sendFailuresRef.current += 1;
       otpEvent("otp_failed", { form, mode, stage: "send" });
@@ -125,7 +128,7 @@ export default function OtpPanel({
   useEffect(() => {
     if (startedRef.current) return;
     startedRef.current = true;
-    otpEvent("otp_started", { form, mode });
+    otpEvent("otp_started", { form, mode, ...leadData });
     void sendCode();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -155,7 +158,7 @@ export default function OtpPanel({
     setErr(null);
     try {
       await confirmRef.current.confirm(code.trim());
-      otpEvent("otp_verified", { form, mode });
+      otpEvent("otp_verified", { form, mode, ...leadData });
       resolve({ verified: true });
     } catch (e) {
       const codeStr = (e as { code?: string })?.code ?? "";

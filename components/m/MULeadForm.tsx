@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { copy } from "@/lib/copy";
 import { reportApplyConversion } from "@/lib/gtag";
 import { captureGclid } from "@/lib/tracking";
-import { isOtpConfigured, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
+import { isOtpConfigured, leadDataLayer, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
 import OtpPanel from "./OtpPanel";
 import { Arrow } from "./ui";
 
@@ -31,6 +31,7 @@ export default function MULeadForm() {
     fields: Record<string, string>;
     phoneE164: string;
     mode: Extract<OtpMode, "soft" | "hard">;
+    leadData: Record<string, unknown>;
   } | null>(null);
   const utmRef = useRef<Record<string, string>>({});
 
@@ -74,7 +75,19 @@ export default function MULeadForm() {
     if (!isOtpConfigured() || !phoneE164) return void finalize(fields, false);
 
     // Show the OTP step; the lead is POSTed once it resolves (verified or not).
-    setPending({ fields, phoneE164, mode });
+    const leadData = leadDataLayer({
+      name: fields.name,
+      email: fields.email,
+      phone: fields.phone,
+      course: fields.course,
+      district: fields.district,
+      twelfth_marks: fields.twelfth_marks,
+      board: fields.board,
+      stream: fields.stream,
+      gclid: captureGclid(),
+      formLocation: window.location.host,
+    });
+    setPending({ fields, phoneE164, mode, leadData });
     setPhase("otp");
   }
 
@@ -245,6 +258,7 @@ export default function MULeadForm() {
             phoneDisplay={pending.fields.phone ?? ""}
             mode={pending.mode}
             form="lead"
+            leadData={pending.leadData}
             onResolved={(r) => finalize(pending.fields, r.verified)}
             onBack={() => setPhase("form")}
           />
