@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { copy } from "@/lib/copy";
+import { defaultCourseForPath } from "@/lib/course";
 import { reportApplyConversion } from "@/lib/gtag";
 import { captureGclid } from "@/lib/tracking";
 import { isOtpConfigured, leadDataLayer, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
@@ -22,6 +23,9 @@ const inputCls =
 export default function MULeadForm() {
   const a = copy.apply;
   const router = useRouter();
+  // Default the course dropdown to this landing page's course (usePathname works
+  // on SSR + client, so no hydration mismatch), preventing cross-selection.
+  const defaultCourse = defaultCourseForPath(usePathname());
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   // OTP step: while phase === "otp" the form stays mounted but hidden (so typed
@@ -176,7 +180,7 @@ export default function MULeadForm() {
               />
             </Field>
             <Field label="Course" required>
-              <select name="course" defaultValue="BCA" className={inputCls}>
+              <select name="course" defaultValue={defaultCourse} className={inputCls}>
                 {a.courses.map((c) => (
                   <option key={c.value} value={c.value}>
                     {c.label}

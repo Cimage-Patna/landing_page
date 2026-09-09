@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { copy } from "@/lib/copy";
+import { defaultCourseForPath } from "@/lib/course";
 import { captureGclid } from "@/lib/tracking";
 import { isOtpConfigured, leadDataLayer, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
 import OtpPanel from "./OtpPanel";
@@ -24,11 +25,13 @@ const inputCls =
 export default function MUFeeUnlock() {
   const courses = copy.apply.courses;
   const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
-  const [course, setCourse] = useState(courses[0]?.value ?? "BCA");
+  // Default to this landing page's course so fee downloads aren't cross-selected.
+  const [course, setCourse] = useState(defaultCourseForPath(pathname, courses[0]?.value ?? "BCA"));
   // OTP step (same contract as MULeadForm): never blocks the fee download.
   const [phase, setPhase] = useState<"form" | "otp">("form");
   const [pending, setPending] = useState<{
