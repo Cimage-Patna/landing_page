@@ -343,11 +343,6 @@ export const copy = {
     // admission backend. Backend must whitelist each `value` string below.
     courses: [
       { label: "BCA", value: "BCA" },
-      { label: "B.Tech – Computer Science & Engineering (CSE)", value: "B.Tech-CSE" },
-      { label: "B.Tech – Artificial Intelligence & Machine Learning (AI-ML)", value: "B.Tech-AIML" },
-      { label: "B.Tech – Electronics & Communication Engineering (ECE)", value: "B.Tech-ECE" },
-      { label: "B.Tech – Electrical Engineering (EE)", value: "B.Tech-EE" },
-      { label: "B.Tech – Civil Engineering (CE)", value: "B.Tech-CE" },
       { label: "MCA", value: "MCA" },
       { label: "B.Sc-IT", value: "B.Sc-IT" },
       { label: "MBA", value: "MBA" },
