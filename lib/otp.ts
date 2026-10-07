@@ -44,13 +44,13 @@ export const HARD_FALLBACK_TIMEOUT_MS = 90_000;
 // (A NEXT_PUBLIC_* env var of the same name still overrides, if you ever need to
 // point the site at a different Firebase project without a code change.)
 export const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? "AIzaSyCOlRbXV4EoFsWWuEwnfufsPivPw3XD_Jo",
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? "cimage-landing-otp.firebaseapp.com",
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? "cimage-landing-otp",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? "AIzaSyDHo6tHbJRw4dmp1e_AAf8VFHeFmIjfaXI",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? "landingpage-otp.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? "landingpage-otp",
   storageBucket:
-    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? "cimage-landing-otp.firebasestorage.app",
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? "111338086046",
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? "1:111338086046:web:35495cc2e8eb87ac5a658f",
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? "landingpage-otp.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? "935892709404",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? "1:935892709404:web:19336ead5237a420406fd9",
 };
 
 // True only when enough config is present to actually run OTP. When false, the
