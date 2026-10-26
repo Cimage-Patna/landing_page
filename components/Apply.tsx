@@ -7,7 +7,7 @@ import Reveal from "./Reveal";
 import { copy } from "@/lib/copy";
 import { asset } from "@/lib/assets";
 import { reportApplyConversion } from "@/lib/gtag";
-import { captureGclid } from "@/lib/tracking";
+import { captureFbc, captureGclid } from "@/lib/tracking";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -42,6 +42,7 @@ export default function Apply() {
     }
     utmRef.current = utm;
     captureGclid(); // persist gclid from the landing URL
+    captureFbc(); // persist Meta fbclid as the _fbc cookie
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

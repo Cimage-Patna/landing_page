@@ -72,6 +72,38 @@ const UTM_KEYS = [
   "utm_content",
 ] as const;
 
+function readCookie(req: Request, name: string): string {
+  for (const part of (req.headers.get("cookie") ?? "").split(";")) {
+    const [key, ...rest] = part.trim().split("=");
+    if (key === name) {
+      try {
+        return decodeURIComponent(rest.join("="));
+      } catch {
+        return rest.join("=");
+      }
+    }
+  }
+  return "";
+}
+
+// Meta attribution for the CRM's Conversions API integration. Only sent for
+// visitors who came from a Meta ad (an `_fbc` cookie, see lib/tracking.ts).
+// The CRM sees this server, not the visitor, so the visitor's IP, browser and
+// page are forwarded explicitly — Meta uses them to match the lead.
+function metaAttribution(req: Request): Record<string, string> {
+  const fbc = readCookie(req, "_fbc");
+  if (!fbc) return {};
+  const out: Record<string, string> = {
+    fbc,
+    client_ip_address: (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim(),
+    client_user_agent: req.headers.get("user-agent") ?? "",
+    event_source_url: req.headers.get("referer") ?? "",
+  };
+  const fbp = readCookie(req, "_fbp"); // only exists if the Meta Pixel is installed
+  if (fbp) out.fbp = fbp;
+  return out;
+}
+
 export async function POST(req: Request) {
   let body: LeadInput;
   try {
@@ -158,6 +190,7 @@ export async function POST(req: Request) {
     // segment download leads from full admission applications.
     tags: isFee ? [...baseTags, "fee-structure"] : baseTags,
     ...utm,
+    ...metaAttribution(req),
   };
 
   // Local/dev: don't create real CRM leads. Log what *would* be sent (incl. the

@@ -27,3 +27,30 @@ export function captureGclid(): string {
   }
   return "";
 }
+
+/**
+ * Meta click id (fbclid) capture.
+ *
+ * Meta appends `?fbclid=…` on ad clicks. We store it the way the Meta Pixel
+ * would — an `_fbc` cookie, `fb.1.<ms>.<fbclid>` — so /api/lead can read it
+ * server-side and the CRM can report the lead's later stages back to Meta
+ * (Conversions API). 90 days, matching gclid. A fresh fbclid overrides.
+ */
+const FBC_MAX_AGE = 90 * 24 * 60 * 60; // seconds
+
+export function captureFbc(): void {
+  if (typeof window === "undefined") return;
+  try {
+    const fbclid = new URLSearchParams(window.location.search).get("fbclid");
+    if (!fbclid) return;
+    const current = document.cookie
+      .split("; ")
+      .find((c) => c.startsWith("_fbc="))
+      ?.slice("_fbc=".length);
+    if (current && current.endsWith(`.${fbclid}`)) return; // same click, keep its time
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `_fbc=fb.1.${Date.now()}.${fbclid}; Max-Age=${FBC_MAX_AGE}; Path=/; SameSite=Lax${secure}`;
+  } catch {
+    /* ignore */
+  }
+}

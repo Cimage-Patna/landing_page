@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { copy } from "@/lib/copy";
 import { defaultCourseForPath } from "@/lib/course";
 import { reportApplyConversion } from "@/lib/gtag";
-import { captureGclid } from "@/lib/tracking";
+import { captureFbc, captureGclid } from "@/lib/tracking";
 import { isOtpConfigured, leadDataLayer, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
 import OtpPanel from "./OtpPanel";
 import { Arrow } from "./ui";
@@ -48,6 +48,7 @@ export default function MULeadForm() {
     }
     utmRef.current = utm;
     captureGclid(); // persist gclid from the landing URL
+    captureFbc(); // persist Meta fbclid as the _fbc cookie
   }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

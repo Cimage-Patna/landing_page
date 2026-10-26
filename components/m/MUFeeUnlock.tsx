@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { copy } from "@/lib/copy";
 import { defaultCourseForPath } from "@/lib/course";
-import { captureGclid } from "@/lib/tracking";
+import { captureFbc, captureGclid } from "@/lib/tracking";
 import { isOtpConfigured, leadDataLayer, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
 import OtpPanel from "./OtpPanel";
 
@@ -53,6 +53,7 @@ export default function MUFeeUnlock() {
     }
     utmRef.current = utm;
     captureGclid(); // persist gclid from the landing URL
+    captureFbc(); // persist Meta fbclid as the _fbc cookie
   }, []);
 
   // Opened from the toolbar "Unlock Fee" button (and anywhere else) via event.
