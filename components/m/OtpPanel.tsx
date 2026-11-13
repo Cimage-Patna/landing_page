@@ -37,7 +37,7 @@ type Props = {
   backend?: BackendOtp | null; // set → use the CRM's OTP instead of Firebase
 };
 
-type ErrKind = null | "wrong" | "expired" | "network" | "send" | "locked";
+type ErrKind = null | "wrong" | "expired" | "network" | "send" | "locked" | "stale";
 
 const ERR_TEXT: Record<Exclude<ErrKind, null>, string> = {
   wrong: "That code doesn’t match. Please re-enter the 6-digit code.",
@@ -45,6 +45,7 @@ const ERR_TEXT: Record<Exclude<ErrKind, null>, string> = {
   network: "Network issue — please check your connection and try again.",
   send: "Couldn’t send the code just now. Tap Resend to try again.",
   locked: "Too many attempts. Tap Resend to get a new code.",
+  stale: "That code can’t be used any more. Tap Resend to get a new one.",
 };
 
 function maskPhone(e164: string): string {
@@ -64,6 +65,7 @@ export default function OtpPanel({
   const recaptchaId = useId().replace(/:/g, "_") + "-recaptcha";
   const codeLength = backend?.codeLength ?? 6;
   const challengeRef = useRef<string | null>(null); // backend engine
+  const verifyingRef = useRef(false); // a check is in flight
   const captchaHostRef = useRef<HTMLDivElement | null>(null);
   const verifierRef = useRef<RecaptchaVerifier | null>(null);
   const confirmRef = useRef<ConfirmationResult | null>(null);
@@ -193,10 +195,21 @@ export default function OtpPanel({
       setErr("wrong");
       return;
     }
+    if (verifyingRef.current) return; // a double tap must not send two checks
+    verifyingRef.current = true;
     setBusy(true);
     setErr(null);
     if (backend) {
-      const r = await verifyBackendOtp(challengeRef.current as string, code.trim());
+      const id = challengeRef.current as string;
+      const entered = code.trim();
+      let r = await verifyBackendOtp(id, entered);
+      if (!r.ok && r.code === "NETWORK") {
+        // On mobile data the reply can be lost even though the CRM accepted the
+        // code; it answers a repeat of the right code again, so retry once.
+        await new Promise((ok) => setTimeout(ok, 1200));
+        r = await verifyBackendOtp(id, entered);
+      }
+      verifyingRef.current = false;
       setBusy(false);
       if (r.ok) {
         otpEvent("otp_verified", { form, mode, engine: "crm", ...leadData });
@@ -205,9 +218,9 @@ export default function OtpPanel({
       }
       otpEvent("otp_failed", { form, mode, engine: "crm", stage: "confirm", reason: r.code });
       if (r.code === "OTP_INVALID" && r.attemptsRemaining) setErr("wrong");
+      else if (r.code === "OTP_TOO_MANY_ATTEMPTS") setErr("locked");
       else if (r.code === "OTP_EXPIRED") setErr("expired");
-      else if (r.code === "OTP_INVALID" || r.code === "OTP_TOO_MANY_ATTEMPTS" || r.code === "OTP_ALREADY_USED")
-        setErr("locked");
+      else if (r.code === "OTP_INVALID" || r.code === "OTP_ALREADY_USED") setErr("stale");
       else setErr("network");
       return;
     }
@@ -223,6 +236,7 @@ export default function OtpPanel({
       else if (codeStr === "auth/code-expired") setErr("expired");
       else setErr("network");
     } finally {
+      verifyingRef.current = false;
       setBusy(false);
     }
   }
