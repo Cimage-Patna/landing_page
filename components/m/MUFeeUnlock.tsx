@@ -8,6 +8,7 @@ import { defaultCourseForPath } from "@/lib/course";
 import { captureFbc, captureGclid } from "@/lib/tracking";
 import { isOtpConfigured, leadDataLayer, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
 import OtpPanel from "./OtpPanel";
+import { useBackendOtp, type BackendOtp } from "@/lib/otpBackend";
 
 /* Fee-structure unlock popup. Mounted once; opened from anywhere (e.g. the
    toolbar "Unlock Fee" button) by dispatching a window "fee:open" event. It
@@ -39,7 +40,10 @@ export default function MUFeeUnlock() {
     phoneE164: string;
     mode: Extract<OtpMode, "soft" | "hard">;
     leadData: Record<string, unknown>;
+    backend: BackendOtp | null;
   } | null>(null);
+  // The CRM's OTP switch for this page; null → the existing Firebase/env flow.
+  const backendOtp = useBackendOtp();
   const utmRef = useRef<Record<string, string>>({});
 
   useEffect(() => setMounted(true), []);
@@ -98,13 +102,13 @@ export default function MUFeeUnlock() {
 
     setError("");
     const fields = { name, phone, selected };
-    const mode = otpModeForPath(window.location.pathname);
+    const mode = backendOtp ? backendOtp.mode : otpModeForPath(window.location.pathname);
     const phoneE164 = toE164India(phone);
 
     // off → straight through (no otp tag). If OTP can't run, never block — the
     // student still gets the PDF and the lead is tagged otp-unverified.
     if (mode === "off") return void finalize(fields, null);
-    if (!isOtpConfigured() || !phoneE164) return void finalize(fields, false);
+    if ((!backendOtp && !isOtpConfigured()) || !phoneE164) return void finalize(fields, false);
 
     const leadData = leadDataLayer({
       name,
@@ -113,13 +117,14 @@ export default function MUFeeUnlock() {
       gclid: captureGclid(),
       formLocation: window.location.host,
     });
-    setPending({ fields, phoneE164, mode, leadData });
+    setPending({ fields, phoneE164, mode, leadData, backend: backendOtp });
     setPhase("otp");
   }
 
   async function finalize(
     fields: { name: string; phone: string; selected: string },
     otpVerified: boolean | null,
+    otpToken?: string,
   ) {
     const { name, phone, selected } = fields;
     setPhase("form");
@@ -136,6 +141,8 @@ export default function MUFeeUnlock() {
       // landing_page → the CRM tag (e.g. "/bba" is tagged "BBA"); see /api/lead.
       landing_page: window.location.pathname,
       ...(otpVerified === null ? {} : { otp_verified: otpVerified }),
+      // CRM OTP only: the CRM checks this token itself and sets the otp tag.
+      ...(otpToken ? { otp_token: otpToken } : {}),
       ...utmRef.current,
     };
 
@@ -269,7 +276,8 @@ export default function MUFeeUnlock() {
                 mode={pending.mode}
                 form="fee"
                 leadData={pending.leadData}
-                onResolved={(r) => finalize(pending.fields, r.verified)}
+                backend={pending.backend}
+                onResolved={(r) => finalize(pending.fields, r.verified, r.token)}
                 onBack={() => setPhase("form")}
               />
             )}

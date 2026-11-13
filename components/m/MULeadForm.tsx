@@ -8,6 +8,7 @@ import { reportApplyConversion } from "@/lib/gtag";
 import { captureFbc, captureGclid } from "@/lib/tracking";
 import { isOtpConfigured, leadDataLayer, otpModeForPath, tenDigits, toE164India, type OtpMode } from "@/lib/otp";
 import OtpPanel from "./OtpPanel";
+import { useBackendOtp, type BackendOtp } from "@/lib/otpBackend";
 import { Arrow } from "./ui";
 
 /* The "request a call" lead form — heading, fields, submit + success/error and
@@ -36,7 +37,10 @@ export default function MULeadForm() {
     phoneE164: string;
     mode: Extract<OtpMode, "soft" | "hard">;
     leadData: Record<string, unknown>;
+    backend: BackendOtp | null;
   } | null>(null);
+  // The CRM's OTP switch for this page; null → the existing Firebase/env flow.
+  const backendOtp = useBackendOtp();
   const utmRef = useRef<Record<string, string>>({});
 
   useEffect(() => {
@@ -71,13 +75,13 @@ export default function MULeadForm() {
     if (!(fields.stream ?? "").trim()) return fail("Please select your stream.");
 
     setErrorMsg("");
-    const mode = otpModeForPath(window.location.pathname);
+    const mode = backendOtp ? backendOtp.mode : otpModeForPath(window.location.pathname);
     const phoneE164 = toE164India(fields.phone ?? "");
 
     // off → submit straight through (no otp tag). If OTP can't run (no Firebase
     // config or an unusable number) never block — submit as otp-unverified.
     if (mode === "off") return void finalize(fields, null);
-    if (!isOtpConfigured() || !phoneE164) return void finalize(fields, false);
+    if ((!backendOtp && !isOtpConfigured()) || !phoneE164) return void finalize(fields, false);
 
     // Show the OTP step; the lead is POSTed once it resolves (verified or not).
     const leadData = leadDataLayer({
@@ -92,12 +96,12 @@ export default function MULeadForm() {
       gclid: captureGclid(),
       formLocation: window.location.host,
     });
-    setPending({ fields, phoneE164, mode, leadData });
+    setPending({ fields, phoneE164, mode, leadData, backend: backendOtp });
     setPhase("otp");
   }
 
   // Submits the lead. otpVerified: true/false stamps the tag; null = no OTP.
-  async function finalize(fields: Record<string, string>, otpVerified: boolean | null) {
+  async function finalize(fields: Record<string, string>, otpVerified: boolean | null, otpToken?: string) {
     setPhase("form");
     setStatus("loading");
     setErrorMsg("");
@@ -110,6 +114,8 @@ export default function MULeadForm() {
       // landing_page → the CRM tag (e.g. "/bba" is tagged "BBA"); see /api/lead.
       landing_page: window.location.pathname,
       ...(otpVerified === null ? {} : { otp_verified: otpVerified }),
+      // CRM OTP only: the CRM checks this token itself and sets the otp tag.
+      ...(otpToken ? { otp_token: otpToken } : {}),
     };
     try {
       const res = await fetch("/api/lead", {
@@ -264,7 +270,8 @@ export default function MULeadForm() {
             mode={pending.mode}
             form="lead"
             leadData={pending.leadData}
-            onResolved={(r) => finalize(pending.fields, r.verified)}
+            backend={pending.backend}
+            onResolved={(r) => finalize(pending.fields, r.verified, r.token)}
             onBack={() => setPhase("form")}
           />
         )}

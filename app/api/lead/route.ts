@@ -57,6 +57,9 @@ type LeadInput = {
   // "otp-unverified", undefined → OTP was off, no otp tag. (Verification is
   // client-side for data accuracy only; we never receive/trust an ID token.)
   otp_verified?: boolean;
+  // CRM OTP (lib/otpBackend.ts): the verification token. Forwarded untouched —
+  // the CRM checks it and replaces the otp tag above with its own verdict.
+  otp_token?: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -189,6 +192,9 @@ export async function POST(req: Request) {
     // Fee-structure enquiries carry an extra "fee-structure" tag so the CRM can
     // segment download leads from full admission applications.
     tags: isFee ? [...baseTags, "fee-structure"] : baseTags,
+    ...(typeof body.otp_token === "string" && body.otp_token && body.otp_token.length <= 4096
+      ? { otp_token: body.otp_token }
+      : {}),
     ...utm,
     ...metaAttribution(req),
   };

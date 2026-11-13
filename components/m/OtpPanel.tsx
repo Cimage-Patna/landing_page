@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ConfirmationResult, RecaptchaVerifier } from "firebase/auth";
 import { getOtpAuth, otpSignOut } from "@/lib/otpFirebase";
+import { getTurnstileToken, sendBackendOtp, verifyBackendOtp, type BackendOtp } from "@/lib/otpBackend";
 import {
   HARD_FALLBACK_TIMEOUT_MS,
   MAX_SEND_FAILURES,
@@ -16,9 +17,13 @@ import {
 
    Contract: it NEVER blocks the lead. It always resolves via onResolved() with
    verified true/false — verify, skip (soft), or fall back (hard, after repeated
-   send failures or a timeout). The form then POSTs the lead either way. */
+   send failures or a timeout). The form then POSTs the lead either way.
 
-export type OtpResolution = { verified: boolean; fallback?: boolean };
+   Two engines, same UI: Firebase (the default) or, when the CRM has switched
+   OTP on for this page, the CRM's own OTP (`backend` prop). The backend engine
+   returns a verification token the CRM checks when the lead arrives. */
+
+export type OtpResolution = { verified: boolean; fallback?: boolean; token?: string };
 
 type Props = {
   phoneE164: string; // +91XXXXXXXXXX, for Firebase
@@ -29,15 +34,17 @@ type Props = {
   leadData?: Record<string, unknown>;
   onResolved: (r: OtpResolution) => void;
   onBack: () => void; // return to the form to edit the number
+  backend?: BackendOtp | null; // set → use the CRM's OTP instead of Firebase
 };
 
-type ErrKind = null | "wrong" | "expired" | "network" | "send";
+type ErrKind = null | "wrong" | "expired" | "network" | "send" | "locked";
 
 const ERR_TEXT: Record<Exclude<ErrKind, null>, string> = {
   wrong: "That code doesn’t match. Please re-enter the 6-digit code.",
   expired: "That code has expired. Tap Resend to get a new one.",
   network: "Network issue — please check your connection and try again.",
   send: "Couldn’t send the code just now. Tap Resend to try again.",
+  locked: "Too many attempts. Tap Resend to get a new code.",
 };
 
 function maskPhone(e164: string): string {
@@ -52,8 +59,12 @@ export default function OtpPanel({
   leadData = {},
   onResolved,
   onBack,
+  backend = null,
 }: Props) {
   const recaptchaId = useId().replace(/:/g, "_") + "-recaptcha";
+  const codeLength = backend?.codeLength ?? 6;
+  const challengeRef = useRef<string | null>(null); // backend engine
+  const captchaHostRef = useRef<HTMLDivElement | null>(null);
   const verifierRef = useRef<RecaptchaVerifier | null>(null);
   const confirmRef = useRef<ConfirmationResult | null>(null);
   const sendFailuresRef = useRef(0);
@@ -72,15 +83,17 @@ export default function OtpPanel({
     (r: OtpResolution) => {
       if (resolvedRef.current) return;
       resolvedRef.current = true;
-      try {
-        verifierRef.current?.clear();
-      } catch {
-        /* ignore */
+      if (!backend) {
+        try {
+          verifierRef.current?.clear();
+        } catch {
+          /* ignore */
+        }
+        void otpSignOut(); // no lingering auth state
       }
-      void otpSignOut(); // no lingering auth state
       onResolved(r);
     },
-    [onResolved],
+    [onResolved, backend],
   );
 
   const sendCode = useCallback(async () => {
@@ -89,6 +102,26 @@ export default function OtpPanel({
     setErr(null);
     setStep((s) => (s === "code" ? "code" : "sending"));
     try {
+      if (backend) {
+        const captcha =
+          backend.captchaSiteKey && captchaHostRef.current
+            ? await getTurnstileToken(backend.captchaSiteKey, captchaHostRef.current)
+            : undefined;
+        const r = await sendBackendOtp(backend, phoneE164.replace(/\D/g, "").slice(-10), captcha);
+        if (!r.ok && r.code === "OTP_RESEND_COOLDOWN" && challengeRef.current) {
+          // A code is already on its way — just wait out the cooldown.
+          setStep("code");
+          setCooldown(r.retryAfter ?? backend.resendCooldown);
+          return;
+        }
+        if (!r.ok) throw new Error(r.code);
+        challengeRef.current = r.challengeId;
+        sendFailuresRef.current = 0;
+        setStep("code");
+        setCooldown(r.resendAfter);
+        otpEvent("otp_sent", { form, mode, engine: "crm", ...leadData });
+        return;
+      }
       const auth = await getOtpAuth();
       if (!auth) throw new Error("unconfigured");
       const { RecaptchaVerifier, signInWithPhoneNumber } = await import("firebase/auth");
@@ -107,9 +140,15 @@ export default function OtpPanel({
       setStep("code");
       setCooldown(RESEND_COOLDOWN_SECONDS);
       otpEvent("otp_sent", { form, mode, ...leadData });
-    } catch {
+    } catch (e) {
       sendFailuresRef.current += 1;
-      otpEvent("otp_failed", { form, mode, stage: "send" });
+      otpEvent("otp_failed", {
+        form,
+        mode,
+        stage: "send",
+        // CRM engine: its status code (e.g. OTP_RATE_LIMITED) shows in GTM.
+        ...(backend ? { engine: "crm", reason: e instanceof Error ? e.message : "unknown" } : {}),
+      });
       // Hard mode: stop trying after repeated failures and offer the fallback.
       if (mode === "hard" && sendFailuresRef.current >= MAX_SEND_FAILURES) {
         setStep("fallback");
@@ -121,7 +160,7 @@ export default function OtpPanel({
     } finally {
       sendingRef.current = false;
     }
-  }, [phoneE164, recaptchaId, form, mode]);
+  }, [phoneE164, recaptchaId, form, mode, backend]);
 
   // Kick off the first send on mount. startedRef guards React StrictMode's
   // dev double-invoke so we don't send (and burn a reCAPTCHA token) twice.
@@ -150,13 +189,30 @@ export default function OtpPanel({
   }, [mode]);
 
   async function confirmCode() {
-    if (code.replace(/\D/g, "").length !== 6 || !confirmRef.current) {
+    if (code.replace(/\D/g, "").length !== codeLength || !(backend ? challengeRef.current : confirmRef.current)) {
       setErr("wrong");
       return;
     }
     setBusy(true);
     setErr(null);
+    if (backend) {
+      const r = await verifyBackendOtp(challengeRef.current as string, code.trim());
+      setBusy(false);
+      if (r.ok) {
+        otpEvent("otp_verified", { form, mode, engine: "crm", ...leadData });
+        resolve({ verified: true, token: r.token });
+        return;
+      }
+      otpEvent("otp_failed", { form, mode, engine: "crm", stage: "confirm", reason: r.code });
+      if (r.code === "OTP_INVALID" && r.attemptsRemaining) setErr("wrong");
+      else if (r.code === "OTP_EXPIRED") setErr("expired");
+      else if (r.code === "OTP_INVALID" || r.code === "OTP_TOO_MANY_ATTEMPTS" || r.code === "OTP_ALREADY_USED")
+        setErr("locked");
+      else setErr("network");
+      return;
+    }
     try {
+      if (!confirmRef.current) throw new Error("no-confirmation");
       await confirmRef.current.confirm(code.trim());
       otpEvent("otp_verified", { form, mode, ...leadData });
       resolve({ verified: true });
@@ -186,6 +242,7 @@ export default function OtpPanel({
     return (
       <div className="mt-2 text-center">
         <div id={recaptchaId} />
+        <div ref={captchaHostRef} />
         <h3 className="text-[22px] font-bold text-[#090909]">We’ll call to confirm</h3>
         <p className="mt-2 text-[14px] leading-relaxed text-[#525252]">
           We couldn’t verify your number by SMS right now — no problem. Your details are saved and
@@ -206,12 +263,13 @@ export default function OtpPanel({
   // ── Send / code entry ─────────────────────────────────────────────────────
   return (
     <div className="mt-2">
-      {/* invisible reCAPTCHA host */}
+      {/* invisible reCAPTCHA host (Firebase) / Turnstile host (CRM) */}
       <div id={recaptchaId} />
+      <div ref={captchaHostRef} className="flex justify-center" />
 
       <h3 className="text-[22px] font-bold text-[#090909]">Verify your mobile</h3>
       <p className="mt-2 text-[14px] text-[#737373]">
-        {step === "sending" ? "Sending a 6-digit code to " : "Enter the 6-digit code sent to "}
+        {step === "sending" ? `Sending a ${codeLength}-digit code to ` : `Enter the ${codeLength}-digit code sent to `}
         <span className="font-medium text-[#090909]">{maskPhone(phoneE164)}</span>.{" "}
         <button type="button" onClick={onBack} className="font-medium text-[#1d4ed8] underline">
           Change
@@ -223,10 +281,10 @@ export default function OtpPanel({
         type="text"
         inputMode="numeric"
         autoComplete="one-time-code"
-        maxLength={6}
+        maxLength={codeLength}
         value={code}
-        onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-        placeholder="______"
+        onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, codeLength))}
+        placeholder={"_".repeat(codeLength)}
         disabled={step === "sending"}
         className="mt-5 w-full rounded-xl border border-[#e0e0e0] bg-white px-4 py-3.5 text-center text-[22px] tracking-[0.5em] text-[#090909] outline-none transition focus:border-[#090909] focus:ring-2 focus:ring-[#fad133]/40 disabled:opacity-60"
       />
@@ -236,7 +294,7 @@ export default function OtpPanel({
       <button
         type="button"
         onClick={confirmCode}
-        disabled={busy || step === "sending" || code.length !== 6}
+        disabled={busy || step === "sending" || code.length !== codeLength}
         style={{ color: "#ffffff" }}
         className="mt-4 flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#1d4ed8] to-[#1e3a8a] px-6 text-[15px] font-semibold text-white shadow-lg transition hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
       >
